@@ -13,61 +13,74 @@
             margin: 0;
             padding: 20px;
             animation: rainbow 5s linear infinite;
+            cursor: url('https://cur.cursors-4u.net/nature/nat-10/nat908.cur'), auto;
         }
         @keyframes rainbow {
             0% {filter: hue-rotate(0deg);}
             100% {filter: hue-rotate(360deg);}
         }
         h1 {
-            font-size: 4rem;
-            text-shadow: 5px 5px 0 #00ff00, -5px -5px 0 #0000ff;
-            transform: skew(-15deg);
-            letter-spacing: 10px;
+            font-size: 4.5rem;
+            text-shadow: 5px 5px 0 #00ff00, -5px -5px 0 #0000ff, 10px 10px 5px #ff00ff;
+            transform: skew(-15deg) rotate(3deg);
+            letter-spacing: 12px;
         }
         p {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: bold;
             background-color: #000000;
             color: #ffffff;
-            padding: 10px;
-            border: 5px dotted #ff00ff;
-            transform: rotate(-5deg);
+            padding: 15px;
+            border: 8px dotted #ff00ff;
+            transform: rotate(-7deg);
+            text-shadow: 2px 2px #ff0000;
         }
         .date {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             color: #ffff00;
-            text-decoration: underline wavy #ff0000;
+            text-decoration: underline wavy #ff0000 3px;
             font-style: italic;
-            margin-top: 20px;
+            margin-top: 25px;
+            transform: scale(1.1) rotate(5deg);
         }
         .box {
-            border: 10px ridge #00ff00;
+            border: 12px ridge #00ff00;
             background-image: url('https://media.tenor.com/Tl2Tx4VecFQAAAAd/computer-words.gif');
-            padding: 30px;
-            box-shadow: 0 0 50px #ff00ff;
-            transform: perspective(500px) rotateX(10deg);
+            padding: 35px;
+            box-shadow: 0 0 60px #ff00ff, 0 0 100px #00ffff;
+            transform: perspective(600px) rotateX(12deg) rotateY(5deg);
         }
         marquee {
             background-color: #ff0000;
             color: #ffff00;
-            font-size: 1.5rem;
-            padding: 10px 0;
+            font-size: 1.7rem;
+            padding: 12px 0;
+            font-weight: bold;
         }
         blink {
-            animation: blinker 1s linear infinite;
+            animation: blinker 0.8s linear infinite;
         }
         @keyframes blinker {
             50% {opacity: 0;}
         }
+        img {
+            animation: spin 5s linear infinite;
+        }
+        @keyframes spin {
+            100% {transform: rotate(360deg);}
+        }
     </style>
 </head>
 <body>
-    <marquee>Welcome to the ultimate web experience!</marquee>
+    <marquee scrollamount="12">Welcome to the ULTIMATE web experience! CSS MASTERY LEVEL: 9000+</marquee>
     <div class="box">
         <h1>WEB謎完全に理解した</h1>
         <p>2024/11/3 公開予定</p>
-        <p class="date"><blink>Stay tuned!</blink></p>
+        <p class="date"><blink>Stay tuned! 必見！！</blink></p>
     </div>
-    <img src="https://media.tenor.com/PPo52HNSEgMAAAAi/cat-spinning.gif" alt="Spinning cat" width="100">
+    <img src="https://media.tenor.com/PPo52HNSEgMAAAAi/cat-spinning.gif" alt="Spinning cat" width="120">
+    <marquee direction="up" height="100" scrollamount="3">
+        <span style="color: #00ff00;">CSS</span> is <span style="color: #ff00ff;">LIFE</span>
+    </marquee>
 </body>
 </html>
