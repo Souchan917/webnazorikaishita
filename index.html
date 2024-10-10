@@ -6,44 +6,68 @@
     <title>WEB謎完全に理解した</title>
     <style>
         body {
-            font-family: 'Courier New', monospace;
-            background-color: hotpink;
-            color: lime;
-            text-align: left;
+            font-family: 'Comic Sans MS', cursive;
+            background: linear-gradient(45deg, #ff00ff, #00ffff, #ffff00);
+            color: #ff0000;
+            text-align: center;
             margin: 0;
-            padding: 50px;
-            border: 10px solid blue;
+            padding: 20px;
+            animation: rainbow 5s linear infinite;
         }
-
+        @keyframes rainbow {
+            0% {filter: hue-rotate(0deg);}
+            100% {filter: hue-rotate(360deg);}
+        }
         h1 {
-            font-size: 7rem;
-            color: orange;
-            letter-spacing: -10px;
-            margin-left: -100px;
-            text-shadow: 5px 5px 5px black;
-        }
-
-        p {
             font-size: 4rem;
-            color: navy;
-            margin-left: 150px;
-            line-height: 0.5;
-            font-weight: bold;
+            text-shadow: 5px 5px 0 #00ff00, -5px -5px 0 #0000ff;
+            transform: skew(-15deg);
+            letter-spacing: 10px;
         }
-
+        p {
+            font-size: 2rem;
+            font-weight: bold;
+            background-color: #000000;
+            color: #ffffff;
+            padding: 10px;
+            border: 5px dotted #ff00ff;
+            transform: rotate(-5deg);
+        }
         .date {
-            font-size: 3.5rem;
-            color: cyan;
+            font-size: 1.5rem;
+            color: #ffff00;
+            text-decoration: underline wavy #ff0000;
             font-style: italic;
-            text-decoration: underline;
-            margin-left: 250px;
-            text-shadow: 3px 3px 3px red;
+            margin-top: 20px;
+        }
+        .box {
+            border: 10px ridge #00ff00;
+            background-image: url('https://media.tenor.com/Tl2Tx4VecFQAAAAd/computer-words.gif');
+            padding: 30px;
+            box-shadow: 0 0 50px #ff00ff;
+            transform: perspective(500px) rotateX(10deg);
+        }
+        marquee {
+            background-color: #ff0000;
+            color: #ffff00;
+            font-size: 1.5rem;
+            padding: 10px 0;
+        }
+        blink {
+            animation: blinker 1s linear infinite;
+        }
+        @keyframes blinker {
+            50% {opacity: 0;}
         }
     </style>
 </head>
 <body>
-    <h1>WEB謎完全に理解した</h1>
-    <p>2024/11/3 公開予定</p>
-    <p class="date">必見！</p>
+    <marquee>Welcome to the ultimate web experience!</marquee>
+    <div class="box">
+        <h1>WEB謎完全に理解した</h1>
+        <p>2024/11/3 公開予定</p>
+        <p class="date"><blink>Stay tuned!</blink></p>
+    </div>
+    <img src="https://media.tenor.com/PPo52HNSEgMAAAAi/cat-spinning.gif" alt="Spinning cat" width="100">
 </body>
 </html>
