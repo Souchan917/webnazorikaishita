@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WEB謎 - Digital_Chaos</title>
+    <title>BRAIN</title>
     <style>
         :root {
-            --primary: #1a1a1a;
-            --accent: #ff3366;
-            --chaos1: #00ff00;
-            --chaos2: #ff00ff;
-            --glitch: #0ff;
+            --primary: #f0f0f0;
+            --accent: #FF69B4;
+            --chaos1: #87CEEB;
+            --chaos2: #E6E6FA;
+            --glitch: #FF8DC7;
         }
 
         @keyframes chaosBackground {
@@ -52,7 +52,7 @@
             margin: 0;
             min-height: 100vh;
             background: var(--primary);
-            color: #ffffff;
+            color: #333;
             font-family: "Helvetica Neue", monospace;
             cursor: crosshair;
             overflow-x: hidden;
@@ -61,10 +61,10 @@
             align-items: center;
             background: linear-gradient(
                 45deg,
-                #1a1a1a,
-                #2a1a2a,
-                #1a2a2a,
-                #2a2a1a
+                #f0f0f0,
+                #e6e6fa,
+                #f0f8ff,
+                #fff0f5
             );
             background-size: 400% 400%;
             animation: chaosBackground 15s ease infinite;
@@ -89,8 +89,8 @@
                 45deg,
                 transparent,
                 transparent 10px,
-                rgba(255, 255, 255, 0.1) 10px,
-                rgba(255, 255, 255, 0.1) 20px
+                rgba(135, 206, 235, 0.1) 10px,
+                rgba(135, 206, 235, 0.1) 20px
             );
             pointer-events: none;
             mix-blend-mode: overlay;
@@ -105,6 +105,7 @@
             animation: glitchText 3s infinite;
             letter-spacing: -0.05em;
             filter: drop-shadow(0 0 5px var(--accent));
+            color: #333;
         }
 
         .subtitle {
@@ -115,29 +116,39 @@
             text-transform: uppercase;
             letter-spacing: 0.5em;
             animation: glitchText 4s infinite;
+            color: #444;
         }
 
         .description {
-            font-size: clamp(1rem, 2vw, 1.2rem);
-            line-height: 1.6;
-            margin: 2rem auto;
-            max-width: 800px;
-            padding: 2rem;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            position: relative;
+        font-size: clamp(1rem, 2vw, 1.2rem);
+        line-height: 1.8;
+        margin: 2rem auto;
+        max-width: 800px;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.9); /* 背景を少し濃くしてコントラストを強化 */
+        color: #222; /* テキスト色をより濃いグレーに */
+        border: 1px solid rgba(135, 206, 235, 0.5);
+        border-radius: 10px; /* 少し丸みを追加 */
+        backdrop-filter: blur(8px);
+        position: relative;
+    }
+
+        .description p {
+            margin: 0.5rem 0; /* 各段落の間隔を広げて読みやすさを向上 */
         }
 
         .description::before {
-            content: 'ERROR_LOG_//:';
+            content: 'BRAIN_LOG_//:';
             position: absolute;
-            top: -1rem;
+            top: -1.5rem;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 0.8rem;
-            color: var(--chaos1);
+            font-size: 1rem;
+            color: var(--accent);
             font-family: monospace;
+            background-color: #ffffff;
+            padding: 0 0.5rem;
+            border-radius: 5px;
         }
 
         .start-button {
@@ -169,27 +180,13 @@
         }
 
         .start-button:hover {
-            color: #fff;
+            color: #333;
             border-color: transparent;
         }
 
         .start-button:hover::before {
             opacity: 1;
         }
-
-        .chaos-text {
-            position: absolute;
-            pointer-events: none;
-            user-select: none;
-            font-family: monospace;
-            opacity: 0.3;
-            mix-blend-mode: difference;
-        }
-
-        .chaos-text:nth-child(1) { top: 10%; left: 5%; transform: rotate(-15deg); }
-        .chaos-text:nth-child(2) { top: 30%; right: 8%; transform: rotate(25deg); }
-        .chaos-text:nth-child(3) { bottom: 15%; left: 12%; transform: rotate(5deg); }
-        .chaos-text:nth-child(4) { bottom: 25%; right: 15%; transform: rotate(-10deg); }
 
         @media (max-width: 768px) {
             .content-container {
@@ -205,30 +202,29 @@
 </head>
 <body>
     <div class="chaos-overlay"></div>
-    
-    <div class="chaos-text">SYSTEM_ERROR_404</div>
-    <div class="chaos-text">MEMORY_OVERFLOW</div>
-    <div class="chaos-text">DATA_CORRUPTED</div>
-    <div class="chaos-text">BUFFER_OVERFLOW</div>
 
     <div class="content-container">
-        <h1 class="title">WEB<br>ENIGMA</h1>
-        <div class="subtitle">Digital Chaos Initiative</div>
+        <h1 class="title">BRAIN</h1>
+        <div class="subtitle">Web Puzzle Challenge</div>
         
         <div class="description">
-            System.out.println("Welcome to the void");<br>
-            深層のデジタル迷宮へようこそ。<br>
-            全てのエラーは真実への道標。<br>
-            バグは特徴であり、グリッチは道しるべ。
+            <p>&lt;p&gt;この度、WEB謎を完全に理解してしまいました。&lt;/p&gt;</p>
+            <p>&lt;p&gt;様々な仲間と作ったWEB謎をお楽しみください。&lt;/p&gt;</p>
+            <p>&lt;p&gt;あなたの直感と推理力が試されるステージが待っています。&lt;/p&gt;</p>
+            <p>&lt;hr style="border: none; border-top: 1px solid rgba(135, 206, 235, 0.3); margin: 20px 0;"&gt;</p>
+            <p>&lt;p&gt;&lt;strong&gt;概要:&lt;/strong&gt; 私は今回、ある大胆な挑戦を試みました。それは「ブラインドコーディング」です。&lt;/p&gt;</p>
+            <p>&lt;p&gt;WEBを完全に理解した私は、仲間たちと共にWEB謎を仕上げましたが、これまで一度たりともサイトを開いていません。&lt;/p&gt;</p>
+            <p>&lt;p&gt;しかし、私は完全に理解しているので、問題なく動作するはずです。あなたの挑戦をお待ちしています！&lt;/p&gt;</p>
         </div>
+        
 
         <button class="start-button" id="startButton">
-            EXECUTE_SEQUENCE();
+            START_CHALLENGE();
         </button>
     </div>
 
     <script>
-        // カオス効果のためのランダムグリッチ
+        // グリッチエフェクト
         setInterval(() => {
             document.querySelector('.title').style.setProperty(
                 '--glitch-offset', 
@@ -244,15 +240,6 @@
                 window.location.href = 'question-1.html';
             }, 800);
         });
-
-        // ランダムなエラーテキストの生成
-        setInterval(() => {
-            const texts = document.querySelectorAll('.chaos-text');
-            texts.forEach(text => {
-                text.style.transform = `rotate(${Math.random() * 40 - 20}deg)`;
-                text.style.opacity = Math.random() * 0.5;
-            });
-        }, 2000);
     </script>
 </body>
 </html>
