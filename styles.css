@@ -1,0 +1,193 @@
+/* 🌈✨ スーパーモダンでクールなCSS 2024年版 ✨🌈 */
+:root {
+    --super-cool-color1: #ff00ff;
+    --super-cool-color2: #00ffff;
+    --awesome-gradient: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff);
+    --epic-shadow: 0 0 10px #ff00ff, 0 0 20px #00ffff, 0 0 30px #ff00ff;
+}
+
+/* 超クールなアニメーション定義 */
+@keyframes rainbowText {
+    0% { color: red; }
+    20% { color: yellow; }
+    40% { color: lime; }
+    60% { color: cyan; }
+    80% { color: magenta; }
+    100% { color: red; }
+}
+
+@keyframes spinAndZoom {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.2); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes floatingElement {
+    0%, 100% { transform: translateY(0) rotate(0); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+/* ベーススタイル - モダンなデザイン！ */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Comic Sans MS", "Papyrus", fantasy;
+    background: repeating-linear-gradient(
+        45deg,
+        #ff00ff1a 0px,
+        #00ffff1a 10px,
+        #ff00ff1a 20px
+    );
+    min-height: 100vh;
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="8" fill="%23ff00ff"/></svg>'), auto;
+}
+
+/* スーパークールなコンテナ */
+.question-container {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: 3px solid transparent;
+    border-image: var(--awesome-gradient) 1;
+    box-shadow: var(--epic-shadow);
+    animation: floatingElement 3s infinite ease-in-out;
+    padding: 20px;
+    margin: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+/* 3Dナビゲーション */
+.question-nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.8);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.nav-button {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: var(--awesome-gradient);
+    color: white;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transform-style: preserve-3d;
+    animation: spinAndZoom 5s infinite linear;
+}
+
+.nav-button:hover {
+    transform: scale(1.2) rotate(360deg);
+    box-shadow: var(--epic-shadow);
+}
+
+.nav-button.disabled {
+    animation: none;
+    background: #666;
+    opacity: 0.5;
+    transform: scale(0.9) translateZ(-10px);
+}
+
+/* クールな問題画像エフェクト */
+.question-image {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    margin: 0 auto 20px;
+    display: block;
+    border: 5px solid transparent;
+    border-image: var(--awesome-gradient) 1;
+    filter: drop-shadow(0 0 10px var(--super-cool-color1));
+    transition: all 0.3s ease;
+}
+
+.question-image:hover {
+    transform: scale(1.05) rotate(2deg);
+    filter: drop-shadow(0 0 20px var(--super-cool-color2));
+}
+
+/* フューチャリスティックなフォーム */
+.answer-form {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+    animation: floatingElement 4s infinite ease-in-out;
+}
+
+.answer-input {
+    flex: 1;
+    max-width: 200px;
+    padding: 10px;
+    border: 2px solid var(--super-cool-color1);
+    border-radius: 25px;
+    background: rgba(0, 0, 0, 0.1);
+    color: #ff00ff;
+    font-family: "Comic Sans MS", cursive;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.answer-input:focus {
+    outline: none;
+    box-shadow: var(--epic-shadow);
+    transform: scale(1.1);
+}
+
+.submit-button {
+    padding: 10px 30px;
+    background: var(--awesome-gradient);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: rainbowText 2s infinite;
+}
+
+.submit-button:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: var(--epic-shadow);
+}
+
+/* レスポンシブデザイン（スーパーモダン！） */
+@media (max-width: 480px) {
+    .question-nav {
+        transform: scale(0.8);
+    }
+    
+    .answer-form {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .answer-input {
+        max-width: 100%;
+        font-size: 1.2em;
+    }
+    
+    .submit-button {
+        width: 100%;
+        font-size: 1.2em;
+        animation: rainbowText 1s infinite;
+    }
+}
+
+/* クールなローディングアニメーション */
+@keyframes neonPulse {
+    0% { opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { opacity: 0.5; }
+}
+

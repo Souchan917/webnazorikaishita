@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEB謎 - 問題1</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .question-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            background: #f5f5f5;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-button {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button.disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .question-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .question-image {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            margin: 0 auto 20px;
+            display: block;
+        }
+
+        .answer-form {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .answer-input {
+            flex: 1;
+            max-width: 200px;
+            padding: 10px;
+            border: 2px solid var(--secondary-color);
+            border-radius: 5px;
+        }
+
+        .submit-button {
+            padding: 10px 20px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 480px) {
+            .question-nav {
+                padding: 10px 5px;
+            }
+
+            .nav-button {
+                width: 30px;
+                height: 30px;
+                font-size: 14px;
+            }
+
+            .answer-form {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .answer-input {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="question-container">
+        <img src="question1.jpg" alt="問題1の画像" class="question-image">
+        
+        <form id="answerForm" class="answer-form">
+            <input type="text" id="answerInput" class="answer-input" placeholder="解答を入力" required>
+            <button type="submit" class="submit-button">送信</button>
+        </form>
+    </div>
+
+    <script type="module">
+        import { PuzzleQuestion } from './puzzleNavigation.js';
+        
+        // 問題1の設定
+        new PuzzleQuestion('正解の文字列', 2); // 実際の正解を設定してください
+    </script>
+</body>
+</html>
