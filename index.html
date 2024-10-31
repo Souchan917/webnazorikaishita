@@ -1,102 +1,146 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WEB謎完全に理解した</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <title>WEB謎 - ゲーム概要</title>
     <style>
+        /* 全体スタイル */
         body {
-            font-family: 'Noto Sans JP', sans-serif;
-            background: linear-gradient(45deg, #ff69b4, #87cefa, #ffd700);
-            color: #000000;
-            text-align: center;
+            font-family: "Arial", sans-serif;
+            background-color: #fafafa;
+            color: #333;
             margin: 0;
-            padding: 20px;
-            animation: rainbow 10s linear infinite;
+            padding: 0;
+            text-align: center;
         }
-        @keyframes rainbow {
-            0% {filter: hue-rotate(0deg);}
-            100% {filter: hue-rotate(360deg);}
-        }
-        h1 {
-            font-size: 3.5rem;
-            color: #ffffff;
-            text-shadow: 
-                2px 2px 0 #ff0000,
-                -2px -2px 0 #0000ff,
-                4px 4px 4px #000000;
-            transform: skew(-10deg);
-            letter-spacing: 3px;
-            background-color: rgba(0, 0, 0, 0.6);
-            padding: 10px;
-            border-radius: 15px;
-        }
-        p {
-            font-size: 1.8rem;
-            font-weight: bold;
-            background-color: rgba(255, 255, 255, 0.8);
-            color: #000000;
-            padding: 15px;
-            border: 5px dotted #ff00ff;
-            transform: rotate(-3deg);
-            margin: 20px 0;
-        }
-        .date {
-            font-size: 1.6rem;
-            color: #0000ff;
-            text-decoration: underline wavy #ff0000 2px;
-            font-style: italic;
-            margin-top: 25px;
-            background-color: rgba(255, 255, 0, 0.7);
-            display: inline-block;
-            padding: 5px 15px;
+
+        /* コンテナ */
+        .content-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 30px;
+            background: linear-gradient(135deg, #ffffff, #f2f2f2);
+            border: 1px solid #e0e0e0;
             border-radius: 10px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
         }
-        .box {
-            border: 8px ridge #00ff00;
-            background-color: rgba(255, 255, 255, 0.6);
-            padding: 35px;
-            box-shadow: 0 0 30px #ff00ff;
-            transform: perspective(500px) rotateX(5deg);
+
+        /* セクションタイトル */
+        .section-title {
+            font-size: 1.6rem;
+            color: #4A90E2;
+            margin-top: 25px;
+            text-decoration: underline;
+            text-align: left;
         }
-        .marquee-container {
-            overflow: hidden;
-            background-color: #000000;
-            padding: 10px 0;
+
+        /* セクション内容 */
+        .section-content {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #666;
+            padding: 10px 20px;
+            text-align: left;
+            margin-bottom: 20px;
         }
-        .marquee-text {
+
+        /* ボタンスタイル */
+        .button {
             display: inline-block;
-            white-space: nowrap;
-            animation: marquee 20s linear infinite;
-            color: #ffffff;
-            font-size: 1.5rem;
-            font-weight: bold;
+            margin: 15px 10px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            color: white;
+            background-color: #4A90E2;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
         }
-        @keyframes marquee {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
+
+        .button:hover {
+            background-color: #357ABD;
         }
-        .blink {
-            animation: blinker 1s linear infinite;
-        }
-        @keyframes blinker {
-            50% {opacity: 0.5;}
-        }
-        img {
-            margin-top: 20px;
+
+        /* スマートフォン対応 */
+        @media (max-width: 480px) {
+            .content-container {
+                padding: 20px;
+            }
+            
+            .section-title {
+                font-size: 1.4rem;
+            }
+            
+            .section-content {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="marquee-container">
-        <div class="marquee-text">Welcome to the ULTIMATE web experience! CSS MASTERY LEVEL: 9000+</div>
+
+    <!-- コンテンツセクション -->
+    <div class="content-container">
+        <!-- ゲームの概要説明 -->
+        <h2 class="section-title">ゲームの概要</h2>
+        <p class="section-content">
+            このゲームはあなたの推理力と洞察力を試す謎解きゲームです。各ステージを解き明かし、最終ステージで見事クリアを目指してください。
+        </p>
+
+        <!-- クリア条件 -->
+        <h2 class="section-title">クリア条件</h2>
+        <p class="section-content">
+            すべてのステージをクリアし、最終問題で正しい答えを見つけ出すことがクリア条件となります。
+        </p>
+
+        <!-- 注意事項 -->
+        <h2 class="section-title">注意事項</h2>
+        <p class="section-content">
+            このゲームは途中でのセーブが自動で行われますが、ブラウザの設定やキャッシュを削除するとデータが失われる場合があります。
+        </p>
+
+        <!-- ヒント説明 -->
+        <h2 class="section-title">ヒントについて</h2>
+        <p class="section-content">
+            ヒントは必要に応じてステージごとに表示されます。ヒントを活用してゲームを進めてください。
+        </p>
+
+        <!-- ゲームの初期化について -->
+        <h2 class="section-title">ゲームの初期化</h2>
+        <p class="section-content">
+            ゲームの進行状況をリセットしたい場合は、以下の初期化ボタンを押してください。リセットすると、最初からプレイすることができます。
+        </p>
+
+        <!-- 初期化ボタン -->
+        <button class="button" onclick="resetGame()">初期化</button>
+
+        <!-- 予備の説明欄 -->
+        <h2 class="section-title">予備の説明</h2>
+        <p class="section-content">
+            ここには予備の情報が表示されます。ゲームを進める上で参考になる情報が随時追加されることがあります。
+        </p>
+
+        <!-- スタートボタン -->
+        <button class="button" onclick="startGame()">スタート</button>
     </div>
-    <div class="box">
-        <h1>WEB謎完全に理解した</h1>
-        <p>2024/11/3 公開予定</p>
-        <p class="date"><span class="blink">Stay tuned! 必見！！</span></p>
-    </div>
-    <img src="https://media.tenor.com/PPo52HNSEgMAAAAi/cat-spinning.gif" alt="Spinning cat" width="100">
+
+    <script>
+        // 初期化ボタンの機能
+        function resetGame() {
+            if (confirm("ゲームの進行状況をリセットします。よろしいですか？")) {
+                localStorage.clear();
+                alert("ゲームの進行状況がリセットされました。最初から始めてください。");
+            }
+        }
+
+        // スタートボタンの機能
+        function startGame() {
+            window.location.href = "C:/Users/Hso03/Documents/GitHub/webnazorikaishita/instructions.html";
+        }
+    </script>
+
 </body>
 </html>
