@@ -3,113 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WEB謎 - 問題ページ</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>WEB謎 - レトロスタイル</title>
     <style>
-        /* 基本スタイル */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
-            text-align: center;
             margin: 0;
             padding: 0;
+            background: #00FFFF;
+            font-family: "Comic Sans MS", "MS Sans Serif", sans-serif;
+            color: #000080;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm40 40h40v40H40V40zm0-40h2l-2 2V0zm0 4l4-4h2l-6 6V4zm0 4l8-8h2L40 10V8zm0 4L52 0h2L40 14v-2zm0 4L56 0h2L40 18v-2zm0 4L60 0h2L40 22v-2zm0 4L64 0h2L40 26v-2zm0 4L68 0h2L40 30v-2zm0 4L72 0h2L40 34v-2zm0 4L76 0h2L40 38v-2z' fill='%2300ffff' fill-opacity='0.4'/%3E%3C/svg%3E");
         }
 
-        /* ナビゲーションバー */
         .navbar-container {
-            display: flex;
-            justify-content: center; /* ナビゲーションバーを中央揃え */
-            overflow-x: auto; /* 横スクロール対応 */
-            white-space: nowrap;
-            padding: 10px 0;
-            background-color: #ffcccc;
+            background: linear-gradient(to right, #FF00FF, #FF69B4, #FF00FF);
+            padding: 10px;
+            border-top: 3px solid #FFFF00;
+            border-bottom: 3px solid #FFFF00;
+            overflow-x: auto;
         }
 
         .navbar {
             display: flex;
             justify-content: center;
             gap: 5px;
+            max-width: 900px;
+            margin: 0 auto;
         }
 
         .nav-button {
-            flex: 0 0 auto; /* ボタン幅が一定 */
-            padding: 10px 15px;
-            background-color: #ff9999;
-            color: white;
-            font-size: 1rem;
-            border: none;
-            border-radius: 5px;
+            background: #00FF00;
+            border: 3px outset #00CC00;
+            color: #000080;
+            font-weight: bold;
+            font-size: 16px;
+            padding: 5px 15px;
             cursor: pointer;
+            font-family: "MS Sans Serif", sans-serif;
+            text-shadow: 1px 1px #FFFFFF;
+        }
+
+        .nav-button:active {
+            border-style: inset;
         }
 
         .nav-button.disabled {
-            background-color: #cccccc;
+            background: #CCCCCC;
+            border: 3px outset #999999;
+            color: #666666;
             cursor: not-allowed;
         }
 
-        /* コンテンツセクション */
         .content-container {
-            max-width: 90%;
+            max-width: 800px;
             margin: 20px auto;
             padding: 20px;
-            background-color: #ffffff;
-            border: 3px solid #ff66cc;
-            border-radius: 15px;
-            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+            background: #FFFFFF;
+            border: 3px solid #000080;
+            box-shadow: 10px 10px 0 #000080;
+            text-align: center;
         }
 
-        /* 問題の画像や動画 */
+        h1 {
+            color: #FF00FF;
+            text-shadow: 2px 2px #000080;
+            font-size: 36px;
+            margin: 0 0 20px 0;
+            padding: 10px;
+            background: #00FFFF;
+            border: 2px solid #000080;
+        }
+
         .problem-media {
             max-width: 100%;
             height: auto;
+            border: 5px solid #000080;
             margin: 20px 0;
         }
 
-        /* 解答欄 */
         .answer-section {
+            background: #FFFF00;
+            padding: 20px;
+            border: 3px solid #000080;
+            margin-top: 20px;
             display: flex;
             justify-content: center;
-            align-items: center;
             gap: 10px;
-            margin-top: 20px;
+            flex-wrap: wrap;
         }
 
         .answer-input {
             padding: 10px;
-            font-size: 1rem;
-            border: 2px solid #ff66cc;
-            border-radius: 5px;
+            font-size: 16px;
+            border: 3px inset #CCCCCC;
             width: 200px;
+            background: #FFFFFF;
+            font-family: "MS Sans Serif", sans-serif;
         }
 
         .submit-button {
+            background: #FF00FF;
+            border: 3px outset #CC00CC;
+            color: #FFFFFF;
+            font-weight: bold;
             padding: 10px 20px;
-            font-size: 1rem;
-            background-color: #ff66cc;
-            color: white;
-            border: none;
-            border-radius: 5px;
             cursor: pointer;
-            box-shadow: 3px 3px 5px #666;
+            font-family: "MS Sans Serif", sans-serif;
+            text-shadow: 1px 1px #000000;
         }
 
-        /* スマートフォン対応 */
+        .submit-button:active {
+            border-style: inset;
+        }
+
+        marquee {
+            background: #000080;
+            color: #FFFF00;
+            padding: 5px 0;
+            margin: 10px 0;
+        }
+
         @media (max-width: 480px) {
+            .content-container {
+                margin: 10px;
+                padding: 10px;
+            }
+
             .answer-section {
                 flex-direction: column;
+                align-items: center;
             }
 
             .answer-input {
-                width: 100%;
+                width: 80%;
             }
         }
     </style>
 </head>
 <body>
-    <!-- ナビゲーションバー -->
+    <marquee scrollamount="5">🌟 WEB謎へようこそ！最高にクールな謎解きサイトです！！ 🌟</marquee>
+
     <div class="navbar-container">
         <div class="navbar">
-            <button class="nav-button" onclick="window.location.href='instructions.html'">ホーム</button>
+            <button class="nav-button" onclick="window.location.href='instructions.html'">HOME</button>
             <button class="nav-button" id="nav1">1</button>
             <button class="nav-button" id="nav2">2</button>
             <button class="nav-button" id="nav3">3</button>
@@ -122,22 +157,18 @@
         </div>
     </div>
 
-    <!-- コンテンツセクション -->
     <div class="content-container">
-        <h1>問題タイトル</h1>
+        <h1>⭐️ 問題タイトル ⭐️</h1>
         
-        <!-- 問題の画像や動画 -->
-        <img src="path/to/image.jpg" alt="問題の画像" class="problem-media" id="problemMedia">
+        <img src="/api/placeholder/800/400" alt="問題の画像" class="problem-media" id="problemMedia">
         
-        <!-- 解答欄と送信ボタン -->
         <div class="answer-section">
-            <input type="text" class="answer-input" id="answerInput" placeholder="解答を入力...">
-            <button type="button" class="submit-button" id="submitAnswer">送信</button>
+            <input type="text" class="answer-input" id="answerInput" placeholder="答えを入力してね！">
+            <button type="button" class="submit-button" id="submitAnswer">✨ 送信 ✨</button>
         </div>
     </div>
 
     <script>
-        // ナビゲーションボタンの状態管理
         function updateNavigation() {
             const progress = parseInt(localStorage.getItem('puzzleProgress') || '1');
             for (let i = 1; i <= 9; i++) {
@@ -153,19 +184,17 @@
             }
         }
 
-        // 解答の送信処理
         document.getElementById('submitAnswer').addEventListener('click', () => {
             const answer = document.getElementById('answerInput').value.trim().toLowerCase();
-            if (answer === '正解') {  // 正解を任意の解答に変更
-                alert('正解です！次の問題へ進みます。');
-                localStorage.setItem('puzzleProgress', '5'); // 次の問題番号に進捗を更新
-                window.location.href = 'question-5.html';     // 次の問題ページに移動
+            if (answer === '正解') {
+                alert('🎉 正解です！次の問題へGO！ 🎉');
+                localStorage.setItem('puzzleProgress', '5');
+                window.location.href = 'question-5.html';
             } else {
-                alert('不正解です。もう一度考えてみましょう。');
+                alert('😢 残念！もう一度チャレンジ！ 😢');
             }
         });
 
-        // ページ読み込み時にナビゲーションを更新
         updateNavigation();
     </script>
 </body>
