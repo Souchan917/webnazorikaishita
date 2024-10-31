@@ -5,126 +5,239 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WEB謎 - ゲーム概要</title>
     <style>
-        /* 全体スタイル */
-        body {
-            font-family: "Arial", sans-serif;
-            background-color: #fafafa;
-            color: #333;
+        /* 基本スタイル */
+        :root {
+            --primary: #2d3436;
+            --accent: #6c5ce7;
+            --gradient-start: #a8e6cf;
+            --gradient-end: #3498db;
+            --text-primary: #2d3436;
+            --text-secondary: #636e72;
+            --card-bg: rgba(255, 255, 255, 0.95);
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        * {
             margin: 0;
             padding: 0;
-            text-align: center;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(-45deg, var(--gradient-start), var(--gradient-end));
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
         /* コンテナ */
         .content-container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 30px;
-            background: linear-gradient(135deg, #ffffff, #f2f2f2);
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 40px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* メインタイトル */
+        .main-title {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 40px;
+            text-align: center;
+            font-weight: 800;
+            letter-spacing: 2px;
+            position: relative;
+        }
+
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+            border-radius: 2px;
+        }
+
+        /* セクションカード */
+        .section-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
 
         /* セクションタイトル */
         .section-title {
-            font-size: 1.6rem;
-            color: #4A90E2;
-            margin-top: 25px;
-            text-decoration: underline;
-            text-align: left;
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .section-title::before {
+            content: '▹';
+            margin-right: 10px;
+            color: var(--gradient-end);
         }
 
         /* セクション内容 */
         .section-content {
-            font-size: 1rem;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
             line-height: 1.8;
-            color: #666;
-            padding: 10px 20px;
-            text-align: left;
-            margin-bottom: 20px;
+            padding: 10px 0;
         }
 
-        /* ボタンスタイル */
+        /* ボタン */
+        .button-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
         .button {
-            display: inline-block;
-            margin: 15px 10px;
-            padding: 10px 20px;
-            font-size: 1rem;
-            color: white;
-            background-color: #4A90E2;
+            padding: 15px 40px;
+            font-size: 1.1rem;
             border: none;
-            border-radius: 5px;
+            border-radius: 30px;
             cursor: pointer;
-            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .button-primary {
+            background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            box-shadow: 0 10px 20px rgba(108, 92, 231, 0.2);
+        }
+
+        .button-secondary {
+            background: white;
+            color: var(--accent);
+            border: 2px solid var(--accent);
         }
 
         .button:hover {
-            background-color: #357ABD;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(108, 92, 231, 0.3);
         }
 
-        /* スマートフォン対応 */
-        @media (max-width: 480px) {
+        .button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+        }
+
+        .button:hover::after {
+            transform: translateX(100%);
+            transition: transform 0.6s ease;
+        }
+
+        /* レスポンシブデザイン */
+        @media (max-width: 768px) {
             .content-container {
+                margin: 20px;
                 padding: 20px;
             }
-            
-            .section-title {
-                font-size: 1.4rem;
+
+            .main-title {
+                font-size: 2rem;
             }
-            
+
+            .section-title {
+                font-size: 1.3rem;
+            }
+
             .section-content {
-                font-size: 0.9rem;
+                font-size: 1rem;
+            }
+
+            .button-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .button {
+                width: 100%;
             }
         }
     </style>
 </head>
 <body>
-
-    <!-- コンテンツセクション -->
     <div class="content-container">
-        <!-- ゲームの概要説明 -->
-        <h2 class="section-title">ゲームの概要</h2>
-        <p class="section-content">
-            このゲームはあなたの推理力と洞察力を試す謎解きゲームです。各ステージを解き明かし、最終ステージで見事クリアを目指してください。
-        </p>
+        <h1 class="main-title">Web謎解きアドベンチャー</h1>
 
-        <!-- クリア条件 -->
-        <h2 class="section-title">クリア条件</h2>
-        <p class="section-content">
-            すべてのステージをクリアし、最終問題で正しい答えを見つけ出すことがクリア条件となります。
-        </p>
+        <div class="section-card">
+            <h2 class="section-title">ゲームの概要</h2>
+            <p class="section-content">
+                このゲームはあなたの推理力と洞察力を試す謎解きゲームです。各ステージを解き明かし、最終ステージで見事クリアを目指してください。独創的なパズルと挑戦的な謎があなたを待っています。
+            </p>
+        </div>
 
-        <!-- 注意事項 -->
-        <h2 class="section-title">注意事項</h2>
-        <p class="section-content">
-            このゲームは途中でのセーブが自動で行われますが、ブラウザの設定やキャッシュを削除するとデータが失われる場合があります。
-        </p>
+        <div class="section-card">
+            <h2 class="section-title">クリア条件</h2>
+            <p class="section-content">
+                すべてのステージをクリアし、最終問題で正しい答えを見つけ出すことがクリア条件となります。各ステージには独自の謎が用意されており、順を追って解いていく必要があります。
+            </p>
+        </div>
 
-        <!-- ヒント説明 -->
-        <h2 class="section-title">ヒントについて</h2>
-        <p class="section-content">
-            ヒントは必要に応じてステージごとに表示されます。ヒントを活用してゲームを進めてください。
-        </p>
+        <div class="section-card">
+            <h2 class="section-title">ヒントシステム</h2>
+            <p class="section-content">
+                ヒントは必要に応じてステージごとに表示されます。賢明にヒントを活用することで、より深い謎解きの体験を楽しむことができます。ただし、すべての謎には適切なタイミングがあります。
+            </p>
+        </div>
 
-        <!-- ゲームの初期化について -->
-        <h2 class="section-title">ゲームの初期化</h2>
-        <p class="section-content">
-            ゲームの進行状況をリセットしたい場合は、以下の初期化ボタンを押してください。リセットすると、最初からプレイすることができます。
-        </p>
+        <div class="section-card">
+            <h2 class="section-title">注意事項</h2>
+            <p class="section-content">
+                このゲームは途中でのセーブが自動で行われますが、ブラウザの設定やキャッシュを削除するとデータが失われる場合があります。重要な進捗は必要に応じてメモを取ることをお勧めします。
+            </p>
+        </div>
 
-        <!-- 初期化ボタン -->
-        <button class="button" onclick="resetGame()">初期化</button>
-
-        <!-- 予備の説明欄 -->
-        <h2 class="section-title">予備の説明</h2>
-        <p class="section-content">
-            ここには予備の情報が表示されます。ゲームを進める上で参考になる情報が随時追加されることがあります。
-        </p>
-
-        <!-- スタートボタン -->
-        <button class="button" onclick="startGame()">スタート</button>
+        <div class="button-container">
+            <button class="button button-secondary" onclick="resetGame()">ゲームをリセット</button>
+            <button class="button button-primary" onclick="startGame()">アドベンチャーを開始</button>
+        </div>
     </div>
 
     <script>
@@ -132,7 +245,7 @@
         function resetGame() {
             if (confirm("ゲームの進行状況をリセットします。よろしいですか？")) {
                 localStorage.clear();
-                alert("ゲームの進行状況がリセットされました。最初から始めてください。");
+                alert("ゲームの進行状況がリセットされました。新たな挑戦を始めましょう。");
             }
         }
 
@@ -141,7 +254,19 @@
             window.location.href = "https://souchan917.github.io/webnazorikaishita/instructions.html";
         }
 
+        // セクションカードのアニメーション
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.section-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 200 * index);
+            });
+        });
     </script>
-
 </body>
 </html>
