@@ -15,6 +15,7 @@ const questionConfig = {
     }
 };
 
+
 module.exports = async (req, res) => {
     console.log('---リクエスト受信---');
     console.log('Method:', req.method);
