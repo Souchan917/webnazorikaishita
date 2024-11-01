@@ -346,8 +346,11 @@
                 console.log('APIリクエスト準備');
                 const requestOptions = {
                     method: "POST",
+                    mode: 'cors',  // CORSモードを明示的に指定
+                    credentials: 'omit',  // クレデンシャルを送信しない
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
                     },
                     body: JSON.stringify({
                         userMessage: question,
@@ -355,36 +358,20 @@
                     })
                 };
                 console.log('リクエスト内容:', requestOptions);
-    
+
                 const response = await fetch(vercelFunctionUrl, requestOptions);
                 console.log('APIレスポンスステータス:', response.status);
-    
+
                 if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error('APIエラーレスポンス:', {
-                        status: response.status,
-                        statusText: response.statusText,
-                        body: errorText
-                    });
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-    
+
                 const data = await response.json();
-                console.log('APIレスポンスデータ:', data);
-                
-                if (data.error) {
-                    console.error('APIエラー内容:', data.error);
-                    throw new Error(data.error);
-                }
-    
                 return data.reply;
-    
+
             } catch (error) {
-                console.error('getAIResponse エラー:', {
-                    message: error.message,
-                    stack: error.stack
-                });
-                throw error;
+                console.error('getAIResponse エラー:', error);
+                throw new Error(error.message || 'APIとの通信中にエラーが発生しました');
             }
         }
     
