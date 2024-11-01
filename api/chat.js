@@ -23,6 +23,33 @@ module.exports = async (req, res) => {
     console.log('Environment:', process.env.NODE_ENV);
     console.log('OpenAI API Key exists:', !!process.env.OPENAI_API_KEY);
 
+    // 許可するオリジンを指定
+    const allowedOrigins = [
+        'https://souchan917.github.io',
+        'http://localhost:3000',
+        'http://localhost:5000'
+    ];
+    
+    const origin = req.headers.origin;
+    console.log('Request origin:', origin);
+
+    // オリジンが許可リストに含まれているか確認
+    if (allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        res.setHeader('Access-Control-Max-Age', '86400');
+        console.log('CORSヘッダー設定完了:', origin);
+    } else {
+        console.log('不許可のオリジン:', origin);
+    }
+
+    // プリフライトリクエスト（OPTIONS）への対応
+    if (req.method === 'OPTIONS') {
+        console.log('OPTIONSリクエスト - 200を返します');
+        return res.status(200).end();
+    }
+
     try {
         // CORS headers の追加
         res.setHeader('Access-Control-Allow-Origin', '*');
