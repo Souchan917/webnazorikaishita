@@ -98,6 +98,12 @@
             box-shadow: 3px 3px 0 #9370DB;
         }
 
+        .chat-container::after {
+            content: '';
+            display: table;
+            clear: both;
+        }
+
         .input-section {
             display: grid;
             grid-gap: 8px;
@@ -188,29 +194,131 @@
         }
 
         .message {
+            position: relative;
             margin: 8px 0;
-            padding: 12px;
-            border-radius: 12px;
-            max-width: 90%;
+            padding: 8px 15px;
+            max-width: 70%;
             font-size: 14px;
             word-wrap: break-word;
+            display: inline-block;
+            clear: both;
+            margin-bottom: 15px;
+            line-height: 1.5;
         }
 
         .ai-message {
-            background: #F0F0FF;
-            border: 1px solid #DDA0DD;
+            background: #FFFFFF;
+            border: 1px solid #E9E9E9;
             margin-right: auto;
+            float: left;
+            border-radius: 15px;
+            border-bottom-left-radius: 2px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .ai-message::after {
+            content: '';
+            position: absolute;
+            left: -8px;
+            bottom: 0;
+            width: 8px;
+            height: 13px;
+            background: linear-gradient(to right bottom, transparent 50%, #FFFFFF 50%);
         }
 
         .user-message {
-            background: #E6E6FA;
-            border: 1px solid #9370DB;
+            background: #00B900;
+            color: #FFFFFF;
+            border: none;
             margin-left: auto;
-            text-align: right;
+            float: right;
+            border-radius: 15px;
+            border-bottom-right-radius: 2px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-message::after {
+            content: '';
+            position: absolute;
+            right: -8px;
+            bottom: 0;
+            width: 8px;
+            height: 13px;
+            background: linear-gradient(to left bottom, transparent 50%, #00B900 50%);
+        }
+
+        .error {
+            background: #FFF0F0;
+            border-color: #FFB6C1;
+            color: #D8000C;
+        }
+
+        /* スクロールバーのカスタマイズ */
+        .chat-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-container::-webkit-scrollbar-track {
+            background: #F1F1F1;
+        }
+
+        .chat-container::-webkit-scrollbar-thumb {
+            background: #DDA0DD;
+            border-radius: 3px;
+        }
+
+        .chat-container::-webkit-scrollbar-thumb:hover {
+            background: #9370DB;
+        }
+
+        .bgm-button {
+            position: fixed;
+            right: 10px;
+            top: 10px;
+            background: #E6E6FA;
+            border: 2px outset #9370DB;
+            color: #4B0082;
+            font-weight: bold;
+            padding: 8px;
+            height: 40px;
+            min-width: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            cursor: pointer;
+            white-space: nowrap;
+            z-index: 1000;
+            border-radius: 4px;
+        }
+
+        .bgm-button:active {
+            border-style: inset;
+        }
+
+        .bgm-icon {
+            font-size: 16px;
+        }
+
+        .bgm-status {
+            font-size: 12px;
+        }
+
+        /* スマホサイズでBGMボタンをよりコンパクトに */
+        @media (max-width: 480px) {
+            .bgm-button {
+                padding: 6px;
+                min-width: 32px;
+                height: 32px;
+            }
+            .bgm-status {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- navbar-containerの後にbgm-buttonを配置 -->
     <div class="navbar-container">
         <div class="navbar">
             <button class="nav-button" onclick="window.location.href='instructions.html'">HOME</button>
@@ -225,6 +333,11 @@
             <button class="nav-button" id="nav9">9</button>
         </div>
     </div>
+
+    <button class="bgm-button" id="bgmToggle">
+        <span class="bgm-icon">♪</span>
+        <span class="bgm-status">OFF</span>
+    </button>
 
     <div class="content-container">
         <h1>問題3: 答え当てゲーム！</h1>
@@ -380,6 +493,31 @@
                 questionInput.focus();
             }
         }
+
+            // BGM関連の処理をここに追加
+        const bgmButton = document.getElementById('bgmToggle');
+        let bgm = new Audio('path/to/your/bgm.mp3'); // BGMファイルのパスを指定
+        bgm.loop = true;
+        let isBgmPlaying = false;
+
+        bgmButton.addEventListener('click', () => {
+            if (isBgmPlaying) {
+                bgm.pause();
+                bgmButton.querySelector('.bgm-status').textContent = 'OFF';
+                isBgmPlaying = false;
+            } else {
+                bgm.play().catch(error => {
+                    console.log('BGM再生エラー:', error);
+                });
+                bgmButton.querySelector('.bgm-status').textContent = 'ON';
+                isBgmPlaying = true;
+            }
+        });
+
+        // ページ遷移時にBGMを停止
+        window.addEventListener('beforeunload', () => {
+            bgm.pause();
+        });
 
         // 初期化
         document.addEventListener('DOMContentLoaded', () => {
