@@ -159,11 +159,12 @@
             color: var(--accent);
             cursor: pointer;
             transition: all 0.3s;
-            margin-top: 2rem;
+            margin: 2rem auto; /* 上下のマージンと中央揃え */
             position: relative;
             overflow: hidden;
             font-family: monospace;
             text-transform: uppercase;
+            display: block; /* ブロック要素として表示 */
         }
 
         .start-button::before {
@@ -198,6 +199,61 @@
                 margin: 1.5rem auto;
             }
         }
+
+        .bgm-container {
+            margin: 2rem 0;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(135, 206, 235, 0.5);
+            border-radius: 10px;
+            backdrop-filter: blur(8px);
+        }
+
+        .bgm-button {
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            font-size: 1.2rem;
+            padding: 0.5rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block; /* ブロック要素として表示 */
+            margin: 1rem auto; /* 上下のマージンと中央揃え */
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bgm-button.playing {
+            background: var(--accent);
+            color: white;
+        }
+
+        .back-button {
+            font-size: 1rem;
+            padding: 0.8rem 2rem;
+            background: transparent;
+            border: 2px solid var(--chaos1);
+            color: var(--chaos1);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: monospace;
+            text-transform: uppercase;
+            margin: 4rem auto 2rem; /* 上下のマージンと中央揃え */
+            display: block; /* ブロック要素として表示 */
+        }
+        /* ボタンを配置するための新しいコンテナ */
+        .button-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: left; /* 左寄せ */
+        }
+
+        .back-button:hover {
+            background: var(--chaos1);
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -209,29 +265,44 @@
         
         <div class="description">
             <p>&lt;p&gt;この度、WEB謎を完全に理解してしまいました。&lt;/p&gt;</p>
-        
+
             <hr style="border: none; border-top: 1px solid rgba(135, 206, 235, 0.3); margin: 20px 0;">
-            
-            <p>&lt;p&gt;&lt;strong&gt;概要:&lt;/strong&gt; 私は今回、ある大胆な挑戦を試みました。それは「ブラインドコーディング」です。&lt;/p&gt;</p>
+
+            <p>&lt;p&gt;<strong>&lt;strong&gt;概要:&lt;/strong&gt;</strong> 私は今回、ある大胆な挑戦を試みました。それは「ブラインドコーディング」です。&lt;/p&gt;</p>
 
             <p>&lt;p&gt;WEBを完全に理解した私は、仲間たちと共にWEB謎を仕上げましたが、これまで一度たりともサイトを開いていません。&lt;/p&gt;</p>
-            
+
             <p>&lt;p&gt;しかし、私達は完全に理解しているので、問題なく動作するはずです。あなたの挑戦をお待ちしています！&lt;/p&gt;</p>
-            
-            
+
             <hr style="border: none; border-top: 1px solid rgba(135, 206, 235, 0.3); margin: 20px 0;">
+
+            <p>&lt;p&gt;<strong>&lt;strong&gt;制作者:&lt;/strong&gt;</strong> <strong>そうた</strong> <strong>&amp; 仲間たち</strong>&lt;/p&gt;</p>
+
+            <hr style="border: none; border-top: 1px solid rgba(135, 206, 235, 0.3); margin: 20px 0;">
+
+            <p>&lt;p&gt;<strong>&lt;strong&gt;クリア条件:&lt;/strong&gt;</strong> クリア条件は8問目に正解することです&lt;/p&gt;</p>
+
+            <hr style="border: none; border-top: 1px solid rgba(135, 206, 235, 0.3); margin: 20px 0;">
+
+            <p>&lt;p&gt;<strong>&lt;strong&gt;BGMボタン:&lt;/strong&gt;</strong> 今回音を聞く問題がありますが、それとは別にBGMもご用意しています。ぜひBGMのボタンはONでお楽しみ下さい。後ほど変えることもできます。&lt;/p&gt;</p>
+
             
-            <p>&lt;p&gt;&lt;strong&gt;制作者:&lt;/strong&gt; <strong>そうた</strong> <strong>&amp; 仲間たち</strong>&lt;/p&gt;</p>
-
         </div>
-        
-        
-        
-
+    
+        <button class="bgm-button" id="bgmToggle">
+            <span class="bgm-icon">♪</span>
+            <span class="bgm-status">OFF</span>
+        </button>
+    
         <button class="start-button" id="startButton">
             START_CHALLENGE();
         </button>
+    
+        <button class="back-button" onclick="window.location.href='index.html'">
+            BACK_TO_HOME();
+        </button>
     </div>
+</div>
 
     <script>
         // グリッチエフェクト
@@ -241,6 +312,42 @@
                 `${Math.random() * 10 - 5}px`
             );
         }, 100);
+
+        // BGM機能
+        const bgmButton = document.getElementById('bgmToggle');
+        let bgm = new Audio('./assets/audio/bgm.mp3');
+        bgm.loop = true;
+
+        bgmButton.addEventListener('click', () => {
+            const isPlaying = bgmButton.classList.contains('playing');
+            
+            if (isPlaying) {
+                bgm.pause();
+                bgmButton.classList.remove('playing');
+                bgmButton.querySelector('.bgm-status').textContent = 'OFF';
+                localStorage.setItem('bgmPlaying', 'false');
+            } else {
+                bgm.play().catch(error => {
+                    console.log('BGM再生エラー:', error);
+                });
+                bgmButton.classList.add('playing');
+                bgmButton.querySelector('.bgm-status').textContent = 'ON';
+                localStorage.setItem('bgmPlaying', 'true');
+            }
+        });
+
+        // ページ読み込み時にBGM状態を復元
+        document.addEventListener('DOMContentLoaded', () => {
+            const isBgmPlaying = localStorage.getItem('bgmPlaying') === 'true';
+            
+            if (isBgmPlaying) {
+                bgm.play().catch(error => {
+                    console.log('BGM再生エラー:', error);
+                });
+                bgmButton.classList.add('playing');
+                bgmButton.querySelector('.bgm-status').textContent = 'ON';
+            }
+        });
 
         // スタートボタンのイベント
         document.getElementById('startButton').addEventListener('click', () => {
