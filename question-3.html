@@ -266,64 +266,72 @@
         const questionInput = document.getElementById('questionInput');
         const typingIndicator = document.getElementById('typingIndicator');
         const problemSelector = document.getElementById('problemSelector');
-        
-        // デバウンス関数
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
-        }
-
+    
+        console.log('初期設定完了:', {
+            vercelFunctionUrl,
+            elements: {
+                chatContainer: !!chatContainer,
+                questionInput: !!questionInput,
+                typingIndicator: !!typingIndicator,
+                problemSelector: !!problemSelector
+            }
+        });
+    
         // イベントリスナーの設定
         document.getElementById('sendQuestion').addEventListener('click', () => handleQuestion());
         document.getElementById('resetChat').addEventListener('click', () => resetChatHistory());
-        
+    
         // Enterキーでの送信
         questionInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
+                console.log('Enterキーで送信');
                 e.preventDefault();
                 handleQuestion();
             }
         });
-
-        // 連続送信防止用フラグ
+    
         let isSubmitting = false;
-
+    
         async function handleQuestion() {
-            if (isSubmitting) return;
-
+            console.log('handleQuestion開始');
+            if (isSubmitting) {
+                console.log('既に送信中のため中断');
+                return;
+            }
+    
             const question = questionInput.value.trim();
             const selectedProblem = problemSelector.value;
-
+            console.log('入力値:', { question, selectedProblem });
+    
             if (!question) {
+                console.log('質問が空のため中断');
                 showError('質問を入力してください');
                 return;
             }
-
+    
             try {
                 isSubmitting = true;
+                console.log('送信処理開始');
+                
                 addMessage(question, 'user');
                 questionInput.disabled = true;
                 typingIndicator.style.display = 'block';
-
+    
                 const response = await getAIResponse(question, selectedProblem);
+                console.log('AI応答:', response);
                 
                 if (response.error) {
+                    console.error('エラーレスポンス:', response.error);
                     showError(response.error);
                 } else {
                     addMessage(response, 'ai');
                 }
-
+    
             } catch (error) {
+                console.error('handleQuestion エラー:', error);
                 showError('通信エラーが発生しました。もう一度お試しください。');
-                console.error('Error:', error);
             } finally {
+                console.log('送信処理完了');
                 isSubmitting = false;
                 questionInput.disabled = false;
                 typingIndicator.style.display = 'none';
@@ -331,10 +339,12 @@
                 questionInput.focus();
             }
         }
-
+    
         async function getAIResponse(question, selectedProblem) {
+            console.log('getAIResponse開始:', { question, selectedProblem });
             try {
-                const response = await fetch(vercelFunctionUrl, {
+                console.log('APIリクエスト準備');
+                const requestOptions = {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -343,55 +353,73 @@
                         userMessage: question,
                         questionId: parseInt(selectedProblem)
                     })
-                });
-
+                };
+                console.log('リクエスト内容:', requestOptions);
+    
+                const response = await fetch(vercelFunctionUrl, requestOptions);
+                console.log('APIレスポンスステータス:', response.status);
+    
                 if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('APIエラーレスポンス:', {
+                        status: response.status,
+                        statusText: response.statusText,
+                        body: errorText
+                    });
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-
+    
                 const data = await response.json();
+                console.log('APIレスポンスデータ:', data);
                 
                 if (data.error) {
+                    console.error('APIエラー内容:', data.error);
                     throw new Error(data.error);
                 }
-
+    
                 return data.reply;
-
+    
             } catch (error) {
-                throw new Error(error.message || 'APIとの通信中にエラーが発生しました');
+                console.error('getAIResponse エラー:', {
+                    message: error.message,
+                    stack: error.stack
+                });
+                throw error;
             }
         }
-
+    
         function addMessage(content, type) {
+            console.log('メッセージ追加:', { content, type });
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${type}-message`;
             messageDiv.textContent = content;
-            
-            // XSS対策
-            messageDiv.textContent = messageDiv.textContent.replace(/<[^>]*>/g, '');
-            
             chatContainer.appendChild(messageDiv);
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
-
+    
         function showError(message) {
+            console.error('エラー表示:', message);
             const errorDiv = document.createElement('div');
             errorDiv.className = 'message ai-message error';
             errorDiv.textContent = message;
             chatContainer.appendChild(errorDiv);
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
-
+    
         function resetChatHistory() {
+            console.log('チャット履歴リセット');
             if (confirm('チャット履歴をリセットしてもよろしいですか？')) {
                 chatContainer.innerHTML = '';
                 questionInput.focus();
+                console.log('チャット履歴リセット完了');
             }
         }
-
+    
         // 初期設定
-        problemSelector.value = "3"; // 問題3を初期選択
+        console.log('初期設定実行');
+        problemSelector.value = "3";
         questionInput.focus();
+        console.log('初期設定完了');
     </script>
 </body>
 </html>

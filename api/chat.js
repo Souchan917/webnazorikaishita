@@ -16,34 +16,47 @@ const questionConfig = {
 };
 
 module.exports = async (req, res) => {
+    console.log('---リクエスト受信---');
+    console.log('Method:', req.method);
+    console.log('Headers:', JSON.stringify(req.headers, null, 2));
+    console.log('Body:', JSON.stringify(req.body, null, 2));
+    console.log('Environment:', process.env.NODE_ENV);
+    console.log('OpenAI API Key exists:', !!process.env.OPENAI_API_KEY);
+
     try {
         // CORS headers の追加
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+        console.log('CORSヘッダー設定完了');
 
         // OPTIONS リクエストへの対応
         if (req.method === 'OPTIONS') {
+            console.log('OPTIONSリクエスト - 200を返します');
             return res.status(200).end();
         }
 
         // リクエストボディのパース
         if (!req.body || typeof req.body !== 'object') {
+            console.error('無効なリクエスト形式:', req.body);
             return res.status(400).json({
                 error: "無効なリクエスト形式です"
             });
         }
 
         const { userMessage, questionId } = req.body;
+        console.log('パース済みデータ:', { userMessage, questionId });
 
         // 入力値の検証
         if (!userMessage || typeof userMessage !== 'string') {
+            console.error('無効な質問文:', userMessage);
             return res.status(400).json({
                 error: "有効な質問文を入力してください"
             });
         }
 
         if (!questionId || !questionConfig[questionId]) {
+            console.error('無効な問題番号:', questionId);
             return res.status(400).json({
                 error: "無効な問題番号です"
             });
@@ -51,11 +64,14 @@ module.exports = async (req, res) => {
 
         // API Key の検証
         if (!process.env.OPENAI_API_KEY) {
+            console.error('OpenAI APIキーが設定されていません');
             throw new Error('OpenAI API キーが設定されていません');
         }
 
         const config = questionConfig[questionId];
+        console.log('選択された問題設定:', questionId);
 
+        console.log('OpenAI APIリクエスト開始');
         // OpenAI APIへのリクエスト
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
@@ -79,6 +95,7 @@ module.exports = async (req, res) => {
                 temperature: 0.7
             })
         });
+        console.log('OpenAI APIレスポンスステータス:', response.status);
 
         // APIレスポンスのエラーハンドリング
         if (!response.ok) {
@@ -91,28 +108,42 @@ module.exports = async (req, res) => {
         }
 
         const data = await response.json();
+        console.log('OpenAI APIレスポンスデータ:', JSON.stringify(data, null, 2));
         
         if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+            console.error('無効なAPIレスポンス形式:', data);
             throw new Error('無効なAPIレスポンス形式です');
         }
 
         const aiReply = data.choices[0].message.content.trim();
+        console.log('AI応答:', aiReply);
         
-        // 正解判定（大文字小文字、全角半角を考慮）
+        // 正解判定
         const normalizedAnswer = config.answer.toLowerCase().replace(/\s/g, '');
         const normalizedUserMessage = userMessage.toLowerCase().replace(/\s/g, '');
         const isCorrect = normalizedUserMessage.includes(normalizedAnswer);
+        console.log('正解判定:', { normalizedAnswer, normalizedUserMessage, isCorrect });
 
-        res.status(200).json({
+        const responseData = {
             reply: aiReply,
             isCorrect: isCorrect
-        });
+        };
+        console.log('返信データ:', responseData);
+
+        res.status(200).json(responseData);
 
     } catch (error) {
-        console.error("Error in chat.js:", error);
+        console.error("詳細なエラー情報:", {
+            message: error.message,
+            stack: error.stack,
+            name: error.name
+        });
         res.status(500).json({
             error: "サーバーエラーが発生しました。しばらく待ってから再度お試しください。",
-            details: process.env.NODE_ENV === 'development' ? error.message : undefined
+            details: process.env.NODE_ENV === 'development' ? {
+                message: error.message,
+                stack: error.stack
+            } : undefined
         });
     }
 };
