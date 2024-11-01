@@ -142,7 +142,9 @@
 <body>
     <div class="navbar-container">
         <div class="navbar">
-            <button class="nav-button" onclick="window.location.href='instructions.html'">HOME</button>
+            <button class="nav-button" onclick="window.location.href='instructions.html'">
+                <span class="home-icon">HOME</span>
+            </button>
             <button class="nav-button" id="nav1">1</button>
             <button class="nav-button" id="nav2">2</button>
             <button class="nav-button" id="nav3">3</button>
@@ -153,8 +155,12 @@
             <button class="nav-button" id="nav8">8</button>
             <button class="nav-button" id="nav9">9</button>
         </div>
+        <button class="bgm-button" id="bgmToggle">
+            <span class="bgm-icon">♪</span>
+            <span class="bgm-status">OFF</span>
+        </button>
     </div>
-
+    
     <div class="content-container">
         <div class="puzzle-number">Problem 1</div>
         <h1>隠された文字</h1>
