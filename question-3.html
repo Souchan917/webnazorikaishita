@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEB謎 - 問題3</title>
+    <style>
+        /* 既存のスタイルをここに残す */
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #E6E6FA;
+            font-family: "MS Sans Serif", "Arial", sans-serif;
+            color: #4B0082;
+        }
+
+        .navbar-container {
+            background: #DDA0DD;
+            padding: 10px;
+            border-top: 3px solid #9370DB;
+            border-bottom: 3px solid #9370DB;
+            overflow-x: auto;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .nav-button {
+            background: #E6E6FA;
+            border: 3px outset #9370DB;
+            color: #4B0082;
+            font-weight: bold;
+            font-size: 16px;
+            padding: 5px 15px;
+            cursor: pointer;
+            min-width: 40px;
+        }
+
+        .nav-button:active {
+            border-style: inset;
+        }
+
+        .nav-button.disabled {
+            background: #D8D8D8;
+            border: 3px outset #B8B8B8;
+            color: #888888;
+            cursor: not-allowed;
+        }
+
+        .content-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #4B0082;
+            font-size: 28px;
+            margin: 0 0 20px 0;
+            padding: 10px;
+            background: #F0F0FF;
+            border: 2px solid #9370DB;
+            text-align: center;
+            box-shadow: 3px 3px 0 #9370DB;
+        }
+
+        .chat-container {
+            height: 400px;
+            overflow-y: auto;
+            background: #FFFFFF;
+            border: 3px solid #9370DB;
+            box-shadow: 5px 5px 0 #9370DB;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            margin: 12px 0;
+            padding: 12px;
+            border-radius: 8px;
+            max-width: 80%;
+            box-shadow: 2px 2px 0 rgba(147, 112, 219, 0.3);
+        }
+
+        .ai-message {
+            background: #F0F0FF;
+            border: 2px solid #DDA0DD;
+            text-align: left;
+        }
+
+        .user-message {
+            background: #E6E6FA;
+            border: 2px solid #9370DB;
+            text-align: right;
+            margin-left: auto;
+        }
+
+        .input-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .problem-selector {
+            padding: 10px;
+            border: 3px inset #DDA0DD;
+            background: #FFFFFF;
+            flex: 0 0 100px; /* 幅を調整 */
+        }
+
+        .question-input {
+            padding: 10px;
+            flex: 1;
+            font-size: 1rem;
+            border: 3px inset #DDA0DD;
+            background: #FFFFFF;
+        }
+
+        .submit-button {
+            background: #9370DB;
+            border: 3px outset #8A2BE2;
+            color: #FFFFFF;
+            font-weight: bold;
+            padding: 10px 20px;
+            cursor: pointer;
+            min-width: 100px;
+        }
+
+        .submit-button:active {
+            border-style: inset;
+        }
+
+        .reset-button {
+            background: #FF4500;
+            border: 3px outset #FF6347;
+            color: #FFFFFF;
+            font-weight: bold;
+            padding: 10px 20px;
+            cursor: pointer;
+            min-width: 100px;
+        }
+
+        .reset-button:active {
+            border-style: inset;
+        }
+
+        .typing-indicator {
+            font-style: italic;
+            color: #4B0082;
+            padding: 10px;
+            text-align: center;
+            background: #F0F0FF;
+            border: 2px solid #9370DB;
+            margin: 10px 0;
+            display: none;
+        }
+
+        .final-answer-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            padding: 20px;
+            background: #F0F0FF;
+            border: 3px solid #9370DB;
+        }
+
+        .answer-input {
+            padding: 10px;
+            flex: 1;
+            font-size: 1rem;
+            border: 3px inset #DDA0DD;
+            background: #FFFFFF;
+        }
+
+        .final-submit-button {
+            background: #9370DB;
+            border: 3px outset #8A2BE2;
+            color: #FFFFFF;
+            font-weight: bold;
+            padding: 10px 20px;
+            cursor: pointer;
+            min-width: 100px;
+        }
+
+        .final-submit-button:active {
+            border-style: inset;
+        }
+
+        @media (max-width: 480px) {
+            .content-container {
+                margin: 10px;
+                padding: 10px;
+            }
+
+            .input-section, .final-answer-container {
+                flex-direction: column;
+            }
+
+            .submit-button, .final-submit-button, .reset-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar-container">
+        <div class="navbar">
+            <button class="nav-button" onclick="window.location.href='instructions.html'">HOME</button>
+            <button class="nav-button" id="nav1">1</button>
+            <button class="nav-button" id="nav2">2</button>
+            <button class="nav-button" id="nav3">3</button>
+            <button class="nav-button" id="nav4">4</button>
+            <button class="nav-button" id="nav5">5</button>
+            <button class="nav-button" id="nav6">6</button>
+            <button class="nav-button" id="nav7">7</button>
+            <button class="nav-button" id="nav8">8</button>
+            <button class="nav-button" id="nav9">9</button>
+        </div>
+    </div>
+
+    <div class="content-container">
+        <h1>問題3: 答え当てゲーム！</h1>
+        
+        <div class="chat-container" id="chatContainer"></div>
+
+        <div class="input-section">
+            <select id="problemSelector" class="problem-selector">
+                <!-- 問題番号の選択肢 -->
+                <option value="1">問題 1</option>
+                <option value="2">問題 2</option>
+                <option value="3">問題 3</option>
+                <option value="9">問題 4</option>
+                <option value="9">問題 5</option>
+                <option value="9">問題 6</option>
+                <option value="9">問題 7</option>
+                <option value="9">問題 8</option>
+                <option value="9">問題 9</option>
+
+                
+            </select>
+            <input type="text" class="question-input" id="questionInput" placeholder="質問を入力してください...">
+            <button class="submit-button" id="sendQuestion">質問する</button>
+            <button class="reset-button" id="resetChat">チャット履歴リセット</button>
+        </div>
+        
+        <div class="typing-indicator" id="typingIndicator">考え中...</div>
+
+        <div class="final-answer-container">
+            <input type="text" class="answer-input" id="finalAnswer" placeholder="最終回答を入力してください...">
+            <button class="final-submit-button" id="submitFinalAnswer">回答する</button>
+        </div>
+    </div>
+
+    <script>
+        const vercelFunctionUrl = "https://webnazorikaishita.vercel.app/api/chat";
+        // VercelのエンドポイントURLを設定
+
+        document.getElementById('sendQuestion').addEventListener('click', () => handleQuestion());
+        document.getElementById('resetChat').addEventListener('click', () => resetChatHistory());
+
+        async function handleQuestion() {
+            const question = document.getElementById('questionInput').value.trim();
+            const selectedProblem = document.getElementById('problemSelector').value;
+            if (!question) return;
+
+            addMessage(question, 'user');
+
+            // AIの応答を取得
+            document.getElementById('typingIndicator').style.display = 'block';
+            const response = await getAIResponse(question, selectedProblem);
+            document.getElementById('typingIndicator').style.display = 'none';
+
+            addMessage(response, 'ai');
+            document.getElementById('questionInput').value = '';
+        }
+
+        async function getAIResponse(question, selectedProblem) {
+            const headers = {
+                "Content-Type": "application/json"
+            };
+
+            const body = {
+                userMessage: question,
+                questionId: parseInt(selectedProblem)
+            };
+
+            try {
+                const response = await fetch(vercelFunctionUrl, {  // Vercelのエンドポイントにリクエストを送信
+                    method: "POST",
+                    headers: headers,
+                    body: JSON.stringify(body)
+                });
+                const data = await response.json();
+                return data.reply;  // Vercelエンドポイントからの応答を返す
+            } catch (error) {
+                console.error("Error:", error);
+                return "エラーが発生しました。もう一度試してください。";
+            }
+        }
+
+        function addMessage(content, type) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}-message`;
+            messageDiv.textContent = content;
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function resetChatHistory() {
+            const chatContainer = document.getElementById('chatContainer');
+            chatContainer.innerHTML = '';
+        }
+    </script>
+</body>
+</html>
