@@ -294,7 +294,7 @@
         <div class="puzzle-number">Problem 2</div>
         <h1>隠された文字</h1>
         
-        <img src="/api/placeholder/800/400" alt="問題の画像" class="problem-media" id="problemMedia">
+        <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q8_nazo.png" alt="問題の画像" class="problem-media" id="problemMedia">
 
         <div id="canvas-container"></div>
 
@@ -423,7 +423,7 @@
         function initThreeJS() {
             import('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js')
                 .then((THREE) => {
-                    // ===== 最初のシーン（単純なジャンプ）の設定 =====
+                    // ===== 最初のシーン（4つのジャンプ）の設定 =====
                     const scene1 = new THREE.Scene();
                     const container1 = document.getElementById('canvas-container');
                     const aspect1 = container1.offsetWidth / container1.offsetHeight;
@@ -435,32 +435,84 @@
 
                     scene1.background = new THREE.Color(0xf5f5f5);
 
-                    const geometry1 = new THREE.BoxGeometry(0.8, 0.8, 0.8);
-                    const material1 = new THREE.MeshPhongMaterial({ 
-                        color: 0x2196F3,
-                        shininess: 60
-                    });
-                    const cube1 = new THREE.Mesh(geometry1, material1);
-                    scene1.add(cube1);
+                    // 4つの立方体を作成
+                    const cubes1 = [];
+                    const cubeSpacing = 1.5; // 立方体間の間隔
+
+                    for(let i = 0; i < 4; i++) {
+                        const geometry = new THREE.BoxGeometry(0.8, 0.8, 0.8);
+                        const material = new THREE.MeshPhongMaterial({ 
+                            color: 0x2196F3,
+                            shininess: 60
+                        });
+                        const cube = new THREE.Mesh(geometry, material);
+                        // X座標を等間隔で配置（中心を基準に）
+                        cube.position.x = (i - 1.5) * cubeSpacing;
+                        scene1.add(cube);
+                        cubes1.push(cube);
+                    }
 
                     const floor1 = new THREE.Mesh(
-                        new THREE.PlaneGeometry(8, 8),
+                        new THREE.PlaneGeometry(12, 8),
                         new THREE.MeshPhongMaterial({ 
                             color: 0xe0e0e0,
                             side: THREE.DoubleSide
                         })
                     );
                     floor1.rotation.x = Math.PI / 2;
-                    floor1.position.y = -1;
+                    floor1.position.y = -0.2;
                     scene1.add(floor1);
 
-                    // ===== 2つ目のシーン（反復横跳び）の設定 =====
+                    // ===== 2つ目のシーン（2つの円運動）の設定 =====
+                    const container3 = document.createElement('div');
+                    container3.id = 'canvas-container-3';
+                    container3.style.width = '100%';
+                    container3.style.height = '300px';
+                    container3.style.marginTop = '20px';
+                    container1.after(container3);
+
+                    const scene3 = new THREE.Scene();
+                    const aspect3 = container3.offsetWidth / container3.offsetHeight;
+
+                    const camera3 = new THREE.PerspectiveCamera(45, aspect3, 1, 1000);
+                    const renderer3 = new THREE.WebGLRenderer({ antialias: true });
+                    renderer3.setSize(container3.offsetWidth, container3.offsetHeight);
+                    container3.appendChild(renderer3.domElement);
+
+                    scene3.background = new THREE.Color(0xf5f5f5);
+
+                    // 2つの立方体を作成
+                    const cubes3 = [];
+                    for(let i = 0; i < 2; i++) {
+                        const geometry3 = new THREE.BoxGeometry(0.8, 0.8, 0.8);
+                        const material3 = new THREE.MeshPhongMaterial({ 
+                            color: 0x2196F3,
+                            shininess: 60
+                        });
+                        const cube = new THREE.Mesh(geometry3, material3);
+                        cube.position.y = 0.2;
+                        scene3.add(cube);
+                        cubes3.push(cube);
+                    }
+
+                    const floor3 = new THREE.Mesh(
+                        new THREE.PlaneGeometry(10, 10),
+                        new THREE.MeshPhongMaterial({ 
+                            color: 0xe0e0e0,
+                            side: THREE.DoubleSide
+                        })
+                    );
+                    floor3.rotation.x = Math.PI / 2;
+                    floor3.position.y = -0.2;
+                    scene3.add(floor3);
+
+                    // ===== 3つ目のシーン（反復横跳び）の設定 =====
                     const container2 = document.createElement('div');
                     container2.id = 'canvas-container-2';
                     container2.style.width = '100%';
                     container2.style.height = '300px';
                     container2.style.marginTop = '20px';
-                    container1.after(container2);
+                    container3.after(container2);
 
                     const scene2 = new THREE.Scene();
                     const aspect2 = container2.offsetWidth / container2.offsetHeight;
@@ -488,11 +540,11 @@
                         })
                     );
                     floor2.rotation.x = Math.PI / 2;
-                    floor2.position.y = -1;
+                    floor2.position.y = -0.6;
                     scene2.add(floor2);
 
-                    // 両方のシーンにライトを追加
-                    [scene1, scene2].forEach(scene => {
+                    // 全てのシーンにライトを追加
+                    [scene1, scene2, scene3].forEach(scene => {
                         const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
                         scene.add(ambientLight);
 
@@ -502,21 +554,21 @@
                     });
 
                     // カメラの位置設定
-                    camera1.position.set(0, 2, 6);
+                    camera1.position.set(0, 2, 10); // 4つの立方体が見えるように調整
                     camera1.lookAt(0, 0, 0);
+
+                    camera3.position.set(0, 4, 8);
+                    camera3.lookAt(0, 0, 0);
 
                     camera2.position.set(0, 2.5, 8);
                     camera2.lookAt(0, 0, 0);
-
-// アニメーションの部分だけを変更します。initThreeJSの中の該当部分を以下のように書き換えてください
 
                     // アニメーションの設定
                     let time = 0;
                     const jumpHeight1 = 1;      // 上のキューブのジャンプ高さ
                     const jumpHeight2 = 0.5;    // 下のキューブのジャンプ高さ
                     const sideDistance = 2;     // 横移動の距離
-                    const jumpSpeed = 0.05;     // 上のキューブの速度
-                    const sideJumpSpeed = 0.03; // 下のキューブの基本速度
+                    const jumpSpeed = 0.05;     // 基本速度
 
                     function getSideJumpPosition(t) {
                         // 4ステップの動きを作成（0: 中央→右, 1: 右→中央, 2: 中央→左, 3: 左→中央）
@@ -543,16 +595,33 @@
                         
                         time += jumpSpeed;
                         
-                        // 1つ目のキューブ（単純なジャンプ）
-                        cube1.position.y = Math.abs(Math.sin(time)) * jumpHeight1;
+                        // 1つ目のシーン（4つのバラバラなジャンプ）
+                        cubes1.forEach((cube, index) => {
+                            // それぞれ異なる位相でジャンプ
+                            const offset = index * (Math.PI / 2); // 90度ずつずらす
+                            cube.position.y = Math.abs(Math.sin(time + offset)) * jumpHeight1;
+                        });
 
-                        // 2つ目のキューブ（反復横跳び）
-                        const sideTime = time * 1.; // 速度調整
+                        // 2つ目のシーン（2つの円運動）
+                        const radius = 2;  // 円の半径
+                        const circleSpeed = time * 0.5;  // 円運動の速度
+                        const phaseOffset = Math.PI; // 180度の位相差
+
+                        cubes3.forEach((cube, index) => {
+                            const angle = circleSpeed + (index * phaseOffset); // 2つ目は180度ずらす
+                            cube.position.x = Math.cos(angle) * radius;
+                            cube.position.z = Math.sin(angle) * radius;
+                            cube.lookAt(0, cube.position.y, 0);
+                        });
+
+                        // 3つ目のシーン（反復横跳び）
+                        const sideTime = time * 1.;
                         cube2.position.x = getSideJumpPosition(sideTime);
-                        // ジャンプは各移動に合わせる
                         cube2.position.y = Math.abs(Math.sin(sideTime * Math.PI * 1)) * jumpHeight2;
 
+                        // 全てのシーンをレンダリング
                         renderer1.render(scene1, camera1);
+                        renderer3.render(scene3, camera3);
                         renderer2.render(scene2, camera2);
                     }
 
@@ -560,6 +629,7 @@
                     window.addEventListener('resize', function() {
                         [
                             { container: container1, renderer: renderer1, camera: camera1 },
+                            { container: container3, renderer: renderer3, camera: camera3 },
                             { container: container2, renderer: renderer2, camera: camera2 }
                         ].forEach(({container, renderer, camera}) => {
                             const width = container.offsetWidth;
