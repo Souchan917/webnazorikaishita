@@ -529,12 +529,13 @@
             });
         }
 
-        // チャット履歴をlocalStorageに保存
         function saveChatHistory(content, type) {
+            console.log('Saving chat history:', content, type); // ログを追加
             const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
             chatHistory.push({ content, type });
             localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
         }
+
 
         // チャットリセット時にlocalStorageから履歴を削除
         function resetChatHistory() {
