@@ -494,20 +494,29 @@
             updateProblemSelector(); // ドロップダウンを進行状況に合わせて更新
         });
 
-        // 進行状況に応じて問題選択のドロップダウンを制限
+        // 進行状況に応じて問題選択のドロップダウンを制限し、未解放の問題を非表示にする
         function updateProblemSelector() {
             const progress = parseInt(localStorage.getItem('puzzleProgress') || '1');
             const problemSelector = document.getElementById('problemSelector');
 
-            // ドロップダウンメニューの選択肢を進行状況に合わせて制限
+            // ドロップダウンメニューの選択肢を進行状況に合わせて表示/非表示
             Array.from(problemSelector.options).forEach(option => {
                 if (parseInt(option.value) > progress) {
-                    option.disabled = true;  // 未解放の問題は選択不可
+                    option.style.display = 'none';  // 未解放の問題は非表示
                 } else {
-                    option.disabled = false; // 解放済みの問題は選択可能
+                    option.style.display = 'block'; // 解放済みの問題は表示
                 }
             });
+
+            // デフォルトで3問目を選択。ただし未解放の場合、最も高い解放済みの問題を選択
+            if (progress >= 3) {
+                problemSelector.value = "3";
+            } else {
+                problemSelector.value = progress.toString();
+            }
         }
+
+
 
 
         // チャット履歴をlocalStorageから読み込んで表示
