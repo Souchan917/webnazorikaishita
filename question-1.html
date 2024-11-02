@@ -317,7 +317,7 @@
         }
 
         document.getElementById('submitAnswer').addEventListener('click', () => {
-            const currentPuzzle = parseInt(window.location.href.split('-')[1]) || 1;
+            const currentPuzzle = 1;  // 1問目に固定
             const answer = document.getElementById('answerInput').value.trim().toLowerCase();
             const correctAnswer = puzzleAnswers[currentPuzzle];
 
