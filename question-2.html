@@ -316,14 +316,29 @@
             }
         }
 
+        function checkAnswerStatus() {
+            const currentPuzzle = 2; // 問題番号を固定（例: 1問目）
+            const savedAnswer = localStorage.getItem(`answer_${currentPuzzle}`);
+            
+            if (savedAnswer) {
+                // 正解が保存されている場合、非活性化して答えを表示
+                document.getElementById('answerInput').value = savedAnswer;
+                document.getElementById('answerInput').disabled = true;
+                document.getElementById('submitAnswer').disabled = true;
+            }
+        }
+
         document.getElementById('submitAnswer').addEventListener('click', () => {
-            const currentPuzzle = 2;  // 2問目に固定
+            const currentPuzzle = 2;  // 1問目に固定
             const answer = document.getElementById('answerInput').value.trim().toLowerCase();
             const correctAnswer = puzzleAnswers[currentPuzzle];
 
             if (answer === correctAnswer) {
                 alert('正解！次の問題へ進みます。');
                 localStorage.setItem('puzzleProgress', currentPuzzle + 1);
+                localStorage.setItem(`answer_${currentPuzzle}`, answer); // 正解を保存
+                document.getElementById('answerInput').disabled = true;  // 入力フィールドを非活性化
+                document.getElementById('submitAnswer').disabled = true; // 送信ボタンも非活性化
                 if (currentPuzzle < 9) {
                     window.location.href = `question-${currentPuzzle + 1}.html`;
                 } else {
@@ -334,8 +349,12 @@
             }
         });
 
-        updateNavigation();
-
+        // ページ読み込み時に答えの状態を確認
+        document.addEventListener('DOMContentLoaded', () => {
+            updateNavigation();
+            checkAnswerStatus(); // 答えが正解済みか確認
+        });
     </script>
+
 </body>
 </html>
