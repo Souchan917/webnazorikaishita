@@ -486,6 +486,30 @@
             }
         }
 
+        // ページ読み込み時に進行状況に応じた選択肢を制限
+        document.addEventListener('DOMContentLoaded', () => {
+            updateNavigation();
+            loadChatHistory();
+            checkAnswerStatus(); 
+            updateProblemSelector(); // ドロップダウンを進行状況に合わせて更新
+        });
+
+        // 進行状況に応じて問題選択のドロップダウンを制限
+        function updateProblemSelector() {
+            const progress = parseInt(localStorage.getItem('puzzleProgress') || '1');
+            const problemSelector = document.getElementById('problemSelector');
+
+            // ドロップダウンメニューの選択肢を進行状況に合わせて制限
+            Array.from(problemSelector.options).forEach(option => {
+                if (parseInt(option.value) > progress) {
+                    option.disabled = true;  // 未解放の問題は選択不可
+                } else {
+                    option.disabled = false; // 解放済みの問題は選択可能
+                }
+            });
+        }
+
+
         // ページ読み込み時にチャット履歴をlocalStorageから読み込んで表示
         function loadChatHistory() {
             const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
