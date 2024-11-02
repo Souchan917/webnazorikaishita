@@ -502,22 +502,33 @@
             const progress = parseInt(localStorage.getItem('puzzleProgress') || '1');
             const problemSelector = document.getElementById('problemSelector');
 
-            // ドロップダウンメニューの選択肢を進行状況に合わせて表示/非表示
+            // 全ての選択肢を再設定する前に一度クリア
             Array.from(problemSelector.options).forEach(option => {
+                // 各選択肢の表示/非表示を進行状況に合わせて設定
                 if (parseInt(option.value) > progress) {
+                    option.disabled = true;  // 未解放の問題を選択できないようにする
                     option.style.display = 'none';  // 未解放の問題は非表示
                 } else {
-                    option.style.display = 'block'; // 解放済みの問題は表示
+                    option.disabled = false;
+                    option.style.display = 'block';  // 解放済みの問題は表示
                 }
             });
 
-            // デフォルトで3問目を選択。ただし未解放の場合、最も高い解放済みの問題を選択
+            // 現在の進行状況に応じて、選択できる問題の中で一番新しいものをデフォルトに設定
             if (progress >= 3) {
                 problemSelector.value = "3";
             } else {
                 problemSelector.value = progress.toString();
             }
         }
+
+        // ページ読み込み時に進行状況に応じた選択肢を制限
+        document.addEventListener('DOMContentLoaded', () => {
+            updateNavigation();
+            loadChatHistory();
+            checkAnswerStatus();
+            updateProblemSelector(); // ドロップダウンを進行状況に合わせて更新
+        });
 
 
         // チャット履歴をlocalStorageから読み込んで表示
