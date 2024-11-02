@@ -520,16 +520,14 @@
         }
 
 
-
-
         // チャット履歴をlocalStorageから読み込んで表示
         function loadChatHistory() {
             const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+            chatContainer.innerHTML = ''; // 読み込み前に一度クリア
             chatHistory.forEach(message => {
                 addMessage(message.content, message.type);
             });
         }
-
 
         // チャット履歴をlocalStorageに保存
         function saveChatHistory(content, type) {
@@ -591,6 +589,16 @@
                 questionInput.focus();
             }
         }
+
+        // メッセージをチャット画面に追加
+        function addMessage(content, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}-message`;
+            messageDiv.textContent = content;
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
 
 
         // イベントリスナーの設定
