@@ -359,6 +359,13 @@
                 timeDisplay.textContent = '00:00';
                 puzzleAudio.currentTime = 0;
             } else {
+                // BGMを停止し、ボタン表示をOFFに更新
+                if (!bgm.paused) {
+                    bgm.pause();
+                    bgmButton.classList.remove('playing');
+                    bgmButton.querySelector('.bgm-status').textContent = 'OFF';
+                    localStorage.setItem('bgmPlaying', 'false');
+                }
                 puzzleAudio.play();
                 playButton.textContent = '❚❚';
             }
