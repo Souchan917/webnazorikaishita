@@ -213,6 +213,48 @@
                 padding: 8px 0;
             }
         }
+
+
+        
+
+        .memo-section {
+            background: #FAF5FF;
+            padding: 10px;
+            border-top: 4px solid #9370DB;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 40px;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .memo-section h2 {
+            color: #4B0082;
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(75, 0, 130, 0.2);
+        }
+
+        .memo-section p {
+            color: #333;
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .memo-image {
+            max-width: 100%;
+            height: auto;
+            border: 3px solid #DDA0DD;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .memo-image:hover {
+            transform: scale(1.05); /* 画像に軽い拡大エフェクト */
+        }
+
     </style>
 </head>
 <body>
@@ -238,8 +280,8 @@
     </div>
     
     <div class="content-container">
-        <div class="puzzle-number">Problem final</div>
-        <h1>最終問題</h1>
+        <div class="puzzle-number">Problem 2</div>
+        <h1>隠された文字</h1>
         
         <img src="/api/placeholder/800/400" alt="問題の画像" class="problem-media" id="problemMedia">
         
@@ -247,6 +289,13 @@
             <input type="text" class="answer-input" id="answerInput" placeholder="答えを入力してください">
             <button type="button" class="submit-button" id="submitAnswer">送信</button>
         </div>
+    </div>
+    <!-- 一口メモ セクション -->
+    <div class="memo-section">
+        <h2>一口メモ！！</h2>
+        <p>最終問題はなんと相棒のAIと一緒に考えたんです！シンプルな問題ではありますがすごいですよね！！！</p>
+
+        <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q1code.png" alt="一口メモの画像" class="memo-image">
     </div>
 
     <script>
@@ -289,11 +338,10 @@
             }
         });
 
-
         // 問題と答えのマッピング
         const puzzleAnswers = {
             1: "brain",
-            2: "window",
+            2: "あああ",
             3: "mirror",
             4: "shadow",
             5: "puzzle",
