@@ -249,6 +249,45 @@
         }
 
 
+
+        .memo-section {
+    background: #FAF5FF;
+    padding: 30px;
+    border-top: 4px solid #9370DB;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 40px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+    .memo-section h2 {
+        color: #4B0082;
+        font-size: 26px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        text-shadow: 1px 1px 2px rgba(75, 0, 130, 0.2);
+    }
+
+    .memo-section p {
+        color: #333;
+        font-size: 18px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    .memo-image {
+        max-width: 90%;
+        height: auto;
+        border: 3px solid #DDA0DD;
+        border-radius: 5px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease;
+    }
+
+    .memo-image:hover {
+        transform: scale(1.05); /* 画像に軽い拡大エフェクト */
+    }
+
     </style>
 </head>
 <body>
@@ -296,7 +335,14 @@
             <button type="button" class="submit-button" id="submitAnswer">送信</button>
         </div>
     </div>
-    
+    <!-- 一口メモ セクション -->
+    <div class="memo-section">
+        <h2>一口メモ！！</h2>
+        <p>CSSを使うと、色、サイズ、影、アニメーションなど、たくさんのデザインを調整できます！</p>
+
+        <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q1code.png" alt="一口メモの画像" class="memo-image">
+    </div>
+
 
     <script>
  // BGM機能
