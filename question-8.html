@@ -242,6 +242,7 @@
             margin-bottom: 20px;
         }
 
+        /* デフォルト: スマホ用に全幅 */
         .memo-image {
             max-width: 100%;
             height: auto;
@@ -250,6 +251,14 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
             transition: transform 0.3s ease;
         }
+
+        /* パソコン用に最大幅を制限 */
+        @media (min-width: 768px) {
+            .memo-image {
+                max-width: 600px; /* 必要に応じて調整 */
+            }
+        }
+
 
 
 
