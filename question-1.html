@@ -213,6 +213,42 @@
                 padding: 8px 0;
             }
         }
+
+        .image-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .problem-media {
+            max-width: 100%;
+            height: auto;
+            border: 5px solid #DDA0DD;
+            margin: 20px 0;
+        }
+
+        .overlay-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #555; /* 不透明な色に変更 */
+            font-size: 66px;
+            font-weight: 300; /* 細いフォントウェイト */
+            font-family: 'Roboto', Arial, sans-serif; /* 細めのフォントを指定 */
+            pointer-events: none; /* テキストがクリックの邪魔にならないように */
+            z-index: 10;
+            white-space: nowrap; /* テキストが複数行にならないように設定 */
+        }
+
+        /* スマホ対応 */
+        @media (max-width: 480px) {
+            .overlay-text {
+                font-size: 36px; /* スマホ画面では文字サイズを調整 */
+                top: 40%; /* 少し上に配置 */
+            }
+        }
+
+
     </style>
 </head>
 <body>
@@ -244,6 +280,17 @@
         <!-- GitHub Pagesの画像URLを使用 -->
         <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q1_nazo.png" alt="問題の画像" class="problem-media" id="problemMedia">
         
+            <!-- 邪魔なテキスト -->
+            <div class="overlay-text">
+                まずは1問目です！！<br>
+                まずは簡単な謎からスタートですよ！！<br>
+                このイラスト、かわいくて素敵ですね！！<br>
+                楽しんでくださいね！！でも油断しないで！！<br>
+                さあ、解けるかな？ワクワクしますね！！
+            </div>
+            
+
+        </div>
         <div class="answer-section">
             <input type="text" class="answer-input" id="answerInput" placeholder="答えを入力してください">
             <button type="button" class="submit-button" id="submitAnswer">送信</button>
