@@ -418,7 +418,7 @@
               <div class="visualizer-bar"></div>
               <div class="visualizer-bar"></div>
             </div>
-            <p class="status-text" id="statusText">マイクをクリックして回答を開始</p>
+            <p class="status-text" id="statusText">マイクを押して回答を開始</p>
             <button class="submit-button" id="submitButton" disabled>送信</button>
           </div>
     </div>
@@ -539,36 +539,30 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             const micButton = document.getElementById('micButton');
+            const visualizer = document.getElementById('visualizer');
             const statusText = document.getElementById('statusText');
             const submitButton = document.getElementById('submitButton');
-            const visualizer = document.getElementById('visualizer');
-            let isRecording = false;
             let recordingTimeout;
 
             micButton.addEventListener('click', function() {
-                // 録音開始
-                isRecording = true;
+                // 録音開始風アニメーション
                 micButton.classList.add('recording');
                 visualizer.classList.add('recording');
-                console.log("Recording started"); // デバッグ用に追加
                 statusText.textContent = '音声を認識中...';
-                statusText.classList.remove('error');
                 submitButton.disabled = true;
                 micButton.disabled = true;
 
-                // 5秒後に録音を停止
+                // 5秒後に停止してメッセージを更新
                 recordingTimeout = setTimeout(() => {
-                    isRecording = false;
                     micButton.classList.remove('recording');
                     visualizer.classList.remove('recording');
-                    console.log("Recording stopped"); // デバッグ用に追加
                     statusText.textContent = '認識に失敗しました。もう一度お試しください。';
                     statusText.classList.add('error');
                     micButton.disabled = false;
                 }, 5000);
             });
-
         });
+
         </script>
 
 </body>
