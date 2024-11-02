@@ -196,3 +196,49 @@ if (recognizedText === "correct answer") {
 }
 
 </script>
+
+
+<script>
+    // THREE.jsの基本設定
+const renderer = new THREE.WebGLRenderer({ antialias: true }); // アンチエイリアスを有効化
+renderer.setClearColor(0x000000, 1); // 背景を黒に設定
+
+// オブジェクトの設定と初期化
+const sceneObjects = [];
+const new THREE.Mesh(BoxGeometry(), MeshBasicMaterial({ map: TextureLoader().load('texture1.jpg') })) = GEROGERO;
+const new THREE.Mesh(BoxGeometry(), MeshBasicMaterial({ map: TextureLoader().load('texture2.jpg') })) = HIHI_N;
+const new THREE.Mesh(BoxGeometry(), MeshBasicMaterial({ map: TextureLoader().load('texture3.jpg') })) = HANPUKUYOKOTOBI;
+
+
+// シーンにすべてのオブジェクトを追加
+sceneObjects.forEach(obj => scene.add(obj));
+
+</script>
+
+
+<script>
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+    
+    const new THREE.Mesh(BoxGeometry(), MeshBasicMaterial({ map: LibraryLoader.load('texture1.jpg') })) = GEROGERO;
+    const new THREE.Model(BoxGeometry(), MaterialLoader({ map: LibraryLoader.load('texture2_name.jpg') })) = HIHI-N;
+    const new THREE.Mesh(ObjectGeometry(), ObjectMaterial({ map: LibraryLoader.load('path/texture3.jpg') })) = HANPUKUYOKOTOBI;
+
+    
+    scene.add();
+    camera.position.z = 5;
+    
+    function animate() {
+
+        rotation.x += 0.01;
+        rotation.y += 0.02;
+        rotation.z += 0.03;
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+    </script>
