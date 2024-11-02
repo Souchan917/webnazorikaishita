@@ -137,6 +137,82 @@
                 width: 80%;
             }
         }
+
+        /* 音声入力ボタンのデザイン */
+        .voice-input-button-container {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .voice-input-button {
+            background-color: #ff6347;
+            border: none;
+            color: #FFFFFF;
+            font-weight: bold;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s;
+            position: relative;
+            z-index: 10;
+        }
+
+        .voice-input-button:hover {
+            background-color: #ff4500;
+        }
+
+        .voice-input-button:active {
+            background-color: #ff6347;
+        }
+
+        .voice-input-icon {
+            font-size: 32px;
+        }
+
+        /* 波形アニメーション */
+        .wave {
+            position: absolute;
+            width: 200px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(255, 99, 71, 0.4), transparent 70%);
+            border-radius: 50%;
+            opacity: 0;
+            animation: pulse 2s infinite ease-in-out;
+            z-index: 5;
+        }
+
+        .wave:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .wave:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .wave:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+            100% {
+                transform: scale(1.8);
+                opacity: 0;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -156,14 +232,13 @@
     </div>
 
     <div class="content-container">
-        <div class="puzzle-number">Problem 1</div>
-        <h1>隠された文字</h1>
+        <div class="puzzle-number">Problem 7</div>
+        <h1>音声で解答してみよう！</h1>
         
         <img src="/api/placeholder/800/400" alt="問題の画像" class="problem-media" id="problemMedia">
         
         <div class="answer-section">
-            <input type="text" class="answer-input" id="answerInput" placeholder="答えを入力してください">
-            <button type="button" class="submit-button" id="submitAnswer">送信</button>
+            <button id="voiceInputButton" class="voice-input-button">🎤 長押しで音声入力</button>
         </div>
     </div>
 

@@ -3,173 +3,360 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WEB謎 - 問題3</title>
+    <title>WEB謎 - レトロスタイル</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
-            background: #FAFAFA;
-            color: #333;
+            background: #E6E6FA;
+            font-family: "MS Sans Serif", "Arial", sans-serif;
+            color: #4B0082;
         }
 
-        /* ナビゲーションバー */
         .navbar-container {
-            background: #6A5ACD;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background: #DDA0DD;
+            padding: 8px;
+            border-top: 2px solid #9370DB;
+            border-bottom: 2px solid #9370DB;
             position: sticky;
             top: 0;
             z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .navbar button {
-            background: #9370DB;
-            color: #FFF;
-            border: none;
-            padding: 10px;
-            font-size: 14px;
-            cursor: pointer;
-            border-radius: 5px;
+        .navbar {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-right: 8px;
+            flex-grow: 0;
         }
 
-        .bgm-toggle {
-            cursor: pointer;
+        .nav-button {
+            background: #E6E6FA;
+            border: 2px outset #9370DB;
+            color: #4B0082;
             font-weight: bold;
-            color: #FFF;
+            font-size: 14px;
+            padding: 8px 16px;
+            min-width: 44px;
+            height: 44px;
+            flex-shrink: 0;
         }
 
-        /* メインコンテンツ */
+        .nav-button:active {
+            border-style: inset;
+        }
+
+        .nav-button.disabled {
+            background: #D8D8D8;
+            border: 2px outset #B8B8B8;
+            color: #888888;
+
+        }
+
         .content-container {
-            max-width: 600px;
+            max-width: 800px;
             margin: 20px auto;
             padding: 20px;
-            background: #FFF;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background: #FFFFFF;
+            border: 3px solid #9370DB;
+            box-shadow: 5px 5px 0 #9370DB;
+            text-align: center;
         }
 
         h1 {
-            font-size: 22px;
             color: #4B0082;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .chat-container {
-            border: 1px solid #E0E0E0;
+            font-size: 32px;
+            margin: 0 0 20px 0;
             padding: 10px;
-            height: 300px;
-            overflow-y: auto;
-            margin-bottom: 10px;
-            background: #F9F9F9;
+            background: #E6E6FA;
+            border: 2px solid #9370DB;
         }
 
-        .input-group {
+        .problem-media {
+            max-width: 100%;
+            height: auto;
+            border: 5px solid #DDA0DD;
+            margin: 20px 0;
+        }
+
+        .answer-section {
+            background: #F0F0FF;
+            padding: 20px;
+            border: 3px solid #9370DB;
+            margin-top: 20px;
             display: flex;
-            gap: 8px;
-            margin-bottom: 10px;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
-        .input-group input, .input-group button {
+        .answer-input {
             padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #D3D3D3;
+            font-size: 16px;
+            border: 3px inset #DDA0DD;
+            width: 200px;
+            background: #FFFFFF;
         }
 
-        .input-group button {
-            background: #6A5ACD;
-            color: #FFF;
-            border: none;
+        .submit-button {
+            background: #9370DB;
+            border: 3px outset #8A2BE2;
+            color: #FFFFFF;
+            font-weight: bold;
+            padding: 10px 20px;
             cursor: pointer;
+        }
+
+        .submit-button:active {
+            border-style: inset;
+        }
+
+        .puzzle-number {
+            font-size: 24px;
+            color: #4B0082;
+            margin-bottom: 20px;
+            background: #F0F0FF;
+            padding: 5px 15px;
+            display: inline-block;
+            border: 2px solid #9370DB;
+        }
+
+        /* BGMボタンのスタイル */
+        .bgm-button {
+            background: #E6E6FA;
+            border: 2px outset #9370DB;
+            color: #4B0082;
+            font-weight: bold;
+            height: 44px;
+            padding: 0 16px;
+            margin: 0 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .bgm-button.playing {
+            background: #9370DB;
+            color: #FFFFFF;
+            border-color: #4B0082;
+        }
+
+        .bgm-button:active {
+            border-style: inset;
+        }
+
+        .bgm-icon {
+            font-size: 16px;
+        }
+
+        .bgm-status {
+            font-size: 14px;
+        }
+
+        @media (max-width: 480px) {
+            .content-container {
+                margin: 10px;
+                padding: 10px;
+            }
+
+            .answer-section {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .answer-input {
+                width: 80%;
+            }
+
+            .navbar-container {
+                justify-content: space-between;
+                padding: 8px 4px;
+            }
+
+            .navbar {
+                margin-right: 4px;
+            }
+
+            .bgm-button {
+                padding: 0 12px;
+                min-width: 44px;
+            }
+            
+            .bgm-status {
+                display: none;
+            }
+            
+            .bgm-icon {
+                font-size: 20px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .navbar {
+                justify-content: center;
+                max-width: 800px;
+                margin: 0 auto;
+            }
+
+            .navbar-container {
+                padding: 8px 0;
+            }
         }
     </style>
 </head>
 <body>
     <div class="navbar-container">
-        <button onclick="location.href='instructions.html'">ホーム</button>
-        <span class="bgm-toggle" id="bgmToggle">♪ BGM OFF</span>
-    </div>
-
-    <div class="content-container">
-        <h1>問題3: 答え当てゲーム！</h1>
-
-        <div class="chat-container" id="chatContainer"></div>
-
-        <div class="input-group">
-            <input type="text" id="questionInput" placeholder="質問を入力">
-            <button onclick="sendQuestion()">質問する</button>
+        <div class="navbar">
+            <button class="nav-button" onclick="window.location.href='instructions.html'">
+                <span class="home-icon">HOME</span>
+            </button>
+            <button class="nav-button" id="nav1">1</button>
+            <button class="nav-button" id="nav2">2</button>
+            <button class="nav-button" id="nav3">3</button>
+            <button class="nav-button" id="nav4">4</button>
+            <button class="nav-button" id="nav5">5</button>
+            <button class="nav-button" id="nav6">6</button>
+            <button class="nav-button" id="nav7">7</button>
+            <button class="nav-button" id="nav8">8</button>
+            <button class="nav-button" id="nav9">9</button>
         </div>
-
-        <div class="input-group">
-            <input type="text" id="finalAnswer" placeholder="最終回答を入力">
-            <button onclick="submitAnswer()">回答する</button>
+        <button class="bgm-button" id="bgmToggle">
+            <span class="bgm-icon">♪</span>
+            <span class="bgm-status">OFF</span>
+        </button>
+    </div>
+    
+    <div class="content-container">
+        <div class="puzzle-number">Problem final</div>
+        <h1>最終問題</h1>
+        
+        <img src="/api/placeholder/800/400" alt="問題の画像" class="problem-media" id="problemMedia">
+        
+        <div class="answer-section">
+            <input type="text" class="answer-input" id="answerInput" placeholder="答えを入力してください">
+            <button type="button" class="submit-button" id="submitAnswer">送信</button>
         </div>
     </div>
 
     <script>
-        const chatContainer = document.getElementById('chatContainer');
-        const questionInput = document.getElementById('questionInput');
-        let isBgmPlaying = false;
+ // BGM機能
         const bgmButton = document.getElementById('bgmToggle');
-        const bgm = new Audio('path/to/your/bgm.mp3'); // BGMファイルのパスを指定
+        let bgm = new Audio('https://souchan917.github.io/webnazorikaishita/assets/audio/Q4_BGM.mp3');
         bgm.loop = true;
 
-        bgmButton.addEventListener('click', () => {
+        // BGMの状態を復元
+        document.addEventListener('DOMContentLoaded', () => {
+            const isBgmPlaying = localStorage.getItem('bgmPlaying') === 'true';
+            
             if (isBgmPlaying) {
-                bgm.pause();
-                bgmButton.textContent = "♪ BGM OFF";
+                bgm.play().catch(error => {
+                    console.log('BGM再生エラー:', error);
+                });
+                bgmButton.classList.add('playing');
+                bgmButton.querySelector('.bgm-status').textContent = 'ON';
             } else {
-                bgm.play();
-                bgmButton.textContent = "♪ BGM ON";
+                bgmButton.querySelector('.bgm-status').textContent = 'OFF';
             }
-            isBgmPlaying = !isBgmPlaying;
         });
 
-        function sendQuestion() {
-            const question = questionInput.value.trim();
-            if (question) {
-                addMessage(question, 'user');
-                questionInput.value = '';
-                getAIResponse(question).then(response => {
-                    addMessage(response, 'ai');
+        // BGMボタンのクリックイベント
+        bgmButton.addEventListener('click', () => {
+            const isPlaying = bgmButton.classList.contains('playing');
+            
+            if (isPlaying) {
+                bgm.pause();
+                bgmButton.classList.remove('playing');
+                bgmButton.querySelector('.bgm-status').textContent = 'OFF';
+                localStorage.setItem('bgmPlaying', 'false');
+            } else {
+                bgm.play().catch(error => {
+                    console.log('BGM再生エラー:', error);
                 });
+                bgmButton.classList.add('playing');
+                bgmButton.querySelector('.bgm-status').textContent = 'ON';
+                localStorage.setItem('bgmPlaying', 'true');
+            }
+        });
+
+
+        // 問題と答えのマッピング
+        const puzzleAnswers = {
+            1: "brain",
+            2: "window",
+            3: "mirror",
+            4: "shadow",
+            5: "puzzle",
+            6: "memory",
+            7: "secret",
+            8: "hidden",
+            9: "final"
+        };
+
+        function updateNavigation() {
+            const progress = parseInt(localStorage.getItem('puzzleProgress') || '1');
+            for (let i = 1; i <= 9; i++) {
+                const button = document.getElementById('nav' + i);
+                if (i <= progress) {
+                    button.classList.remove('disabled');
+                    button.addEventListener('click', () => {
+                        window.location.href = 'question-' + i + '.html';
+                    });
+                } else {
+                    button.classList.add('disabled');
+                }
             }
         }
 
-        async function getAIResponse(question) {
-            try {
-                const response = await fetch("https://webnazorikaishita.vercel.app/api/chat", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ userMessage: question })
-                });
-                const data = await response.json();
-                return data.reply || "エラーが発生しました。";
-            } catch (error) {
-                return "通信エラーが発生しました。";
+        function checkAnswerStatus() {
+            const currentPuzzle = 9; // 問題番号を固定（例: 1問目）
+            const savedAnswer = localStorage.getItem(`answer_${currentPuzzle}`);
+            
+            if (savedAnswer) {
+                // 正解が保存されている場合、非活性化して答えを表示
+                document.getElementById('answerInput').value = savedAnswer;
+                document.getElementById('answerInput').disabled = true;
+                document.getElementById('submitAnswer').disabled = true;
             }
         }
 
-        function submitAnswer() {
-            const answer = document.getElementById('finalAnswer').value.trim();
-            if (answer) {
-                addMessage("最終回答: " + answer, 'user');
-                document.getElementById('finalAnswer').value = '';
-            }
-        }
+        document.getElementById('submitAnswer').addEventListener('click', () => {
+            const currentPuzzle = 9;  // 1問目に固定
+            const answer = document.getElementById('answerInput').value.trim().toLowerCase();
+            const correctAnswer = puzzleAnswers[currentPuzzle];
 
-        function addMessage(content, sender) {
-            const message = document.createElement('p');
-            message.textContent = content;
-            message.style.textAlign = sender === 'user' ? 'right' : 'left';
-            chatContainer.appendChild(message);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
+            if (answer === correctAnswer) {
+                alert('正解！次の問題へ進みます。');
+                localStorage.setItem('puzzleProgress', currentPuzzle + 1);
+                localStorage.setItem(`answer_${currentPuzzle}`, answer); // 正解を保存
+                document.getElementById('answerInput').disabled = true;  // 入力フィールドを非活性化
+                document.getElementById('submitAnswer').disabled = true; // 送信ボタンも非活性化
+                if (currentPuzzle < 9) {
+                    window.location.href = `question-${currentPuzzle + 1}.html`;
+                } else {
+                    window.location.href = 'congratulations.html';
+                }
+            } else {
+                alert('不正解です。もう一度考えてみましょう。');
+            }
+        });
+
+        // ページ読み込み時に答えの状態を確認
+        document.addEventListener('DOMContentLoaded', () => {
+            updateNavigation();
+            checkAnswerStatus(); // 答えが正解済みか確認
+        });
     </script>
+
 </body>
 </html>
