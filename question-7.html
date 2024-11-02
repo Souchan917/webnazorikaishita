@@ -255,125 +255,90 @@
             transform: scale(1.05); /* 画像に軽い拡大エフェクト */
         }
 
-
-
-        .voice-input-container {
-            max-width: 500px;
-            margin: 20px auto;
+        .answer-section {
+            position: relative;
             padding: 20px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             text-align: center;
+            background: #f5f5f5;
+            border-radius: 8px;
+            margin: 20px 0;
         }
 
         .mic-button {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            border: 2px solid #e0e0e0;
-            background: white;
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 0 auto 20px;
-        }
-
-        .mic-button.recording {
-            border-color: #f44336;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(244, 67, 54, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(244, 67, 54, 0); }
+            gap: 10px;
+            margin: 0 auto;
         }
 
         .mic-button:hover {
-            border-color: #2196F3;
+            background: #0056b3;
         }
 
         .mic-icon {
-            width: 32px;
-            height: 32px;
-            background: currentColor;
-            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z'%3E%3C/path%3E%3Cpath d='M19 10v2a7 7 0 0 1-14 0v-2'%3E%3C/path%3E%3Cline x1='12' y1='19' x2='12' y2='23'%3E%3C/line%3E%3Cline x1='8' y1='23' x2='16' y2='23'%3E%3C/line%3E%3C/svg%3E") no-repeat 50% 50%;
-            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z'%3E%3C/path%3E%3Cpath d='M19 10v2a7 7 0 0 1-14 0v-2'%3E%3C/path%3E%3Cline x1='12' y1='19' x2='12' y2='23'%3E%3C/line%3E%3Cline x1='8' y1='23' x2='16' y2='23'%3E%3C/line%3E%3C/svg%3E") no-repeat 50% 50%;
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
         }
 
-        .visualizer {
+        .wave-container {
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 3px;
-            height: 60px;
-            margin: 20px auto;
-            padding: 0 20px;
-            max-width: 300px;
+            margin: 20px 0;
+            opacity: 0;
+            transition: opacity 0.3s;
         }
 
-        .visualizer-bar {
-            width: 4px;
-            height: 20%;
-            background: #2196F3;
-            border-radius: 2px;
-            transition: height 0.2s ease;
+        .wave-container.active {
+            opacity: 1;
         }
 
-        .recording .visualizer-bar {
-            animation: sound-wave 1s ease-in-out infinite;
+        .wave-bar {
+            width: 3px;
+            height: 20px;
+            background: #007bff;
+            border-radius: 3px;
         }
-
-        @keyframes sound-wave {
-            0%, 100% { height: 20%; }
-            50% { height: 100%; }
-        }
-
-        .visualizer-bar:nth-child(1) { animation-delay: 0.0s; }
-        .visualizer-bar:nth-child(2) { animation-delay: 0.1s; }
-        .visualizer-bar:nth-child(3) { animation-delay: 0.2s; }
-        .visualizer-bar:nth-child(4) { animation-delay: 0.3s; }
-        .visualizer-bar:nth-child(5) { animation-delay: 0.4s; }
-        .visualizer-bar:nth-child(6) { animation-delay: 0.5s; }
-        .visualizer-bar:nth-child(7) { animation-delay: 0.6s; }
-        .visualizer-bar:nth-child(8) { animation-delay: 0.7s; }
 
         .status-text {
-            text-align: center;
+            margin-top: 10px;
             color: #666;
-            margin: 10px 0;
             font-size: 14px;
+            min-height: 20px;
         }
 
-        .status-text.error {
-            color: #f44336;
+        @keyframes waveAnimation {
+            0% { height: 10px; }
+            50% { height: 30px; }
+            100% { height: 10px; }
         }
 
         .submit-button {
-            width: 100%;
-            max-width: 300px;
-            padding: 12px;
-            background: #2196F3;
+            background: #28a745;
             color: white;
             border: none;
-            border-radius: 6px;
-            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 5px;
             font-size: 16px;
-            transition: background 0.3s ease;
-            margin: 0 auto;
+            cursor: pointer;
+            display: none;
+            margin: 20px auto 0;
         }
 
         .submit-button:hover {
-            background: #1976D2;
+            background: #218838;
         }
 
-        .submit-button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
     </style>
 </head>
 <body>
@@ -399,35 +364,54 @@
     </div>
     
     <div class="content-container">
-        <div class="puzzle-number">Q7</div>
-        <h1>最新技術</h1>
+        <div class="puzzle-number">Q2</div>
+        <h1>CSSを理解しましょう</h1>
         
-        <img src="/api/placeholder/800/400" alt="問題の画像" class="problem-media" id="problemMedia">
+        <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q2_nazo.png" alt="問題の画像" class="problem-media" id="problemMedia">
         
-        <div class="voice-input-container">
-            <button class="mic-button" id="micButton">
-              <div class="mic-icon"></div>
+        <div class="answer-section">
+            <button class="mic-button">
+                <svg class="mic-icon" viewBox="0 0 24 24">
+                    <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                    <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                </svg>
+                音声で回答する
             </button>
-            <div class="visualizer" id="visualizer">
-              <div class="visualizer-bar"></div>
-              <div class="visualizer-bar"></div>
-              <div class="visualizer-bar"></div>
-              <div class="visualizer-bar"></div>
-              <div class="visualizer-bar"></div>
-              <div class="visualizer-bar"></div>
-              <div class="visualizer-bar"></div>
-              <div class="visualizer-bar"></div>
+            
+            <div class="wave-container">
+                <!-- 20本のバーを生成 -->
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
             </div>
-            <p class="status-text" id="statusText">マイクを押して回答を開始</p>
-            <button class="submit-button" id="submitButton" disabled>送信</button>
+    
+            <div class="status-text"></div>
+            <button class="submit-button">送信</button>
         </div>
     </div>
     <!-- 一口メモ セクション -->
     <div class="memo-section">
         <h2>一口メモ！！</h2>
-        <p>CSSを使うと、色、サイズ、位置、影、アニメーションなど、たくさんのデザインを調整できます！</p>
+        <p>画像や要素を設定するときは、大きさに注意！枠からはみ出すと見切れたり、全体が表示されなくなることがあるよ。特に、overflow: hidden;がある場合は、枠に収まるようにサイズを調整しよう！！</p>
 
-        <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q1code.png" alt="一口メモの画像" class="memo-image">
+        <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q2code.png" alt="一口メモの画像" class="memo-image">
     </div>
 
     <script>
@@ -473,7 +457,7 @@
         // 問題と答えのマッピング
         const puzzleAnswers = {
             1: "brain",
-            2: "あああ",
+            2: "ういんく",
             3: "mirror",
             4: "shadow",
             5: "puzzle",
@@ -537,34 +521,8 @@
             checkAnswerStatus(); // 答えが正解済みか確認
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const micButton = document.getElementById('micButton');
-            const visualizer = document.getElementById('visualizer');
-            const statusText = document.getElementById('statusText');
-            const submitButton = document.getElementById('submitButton');
-            let recordingTimeout;
-
-            micButton.addEventListener('click', function() {
-                // 録音開始風アニメーション
-                micButton.classList.add('recording');
-                visualizer.classList.add('recording');
-                statusText.textContent = '音声を認識中...';
-                console.log("Recording class added"); // デバッグ用
-                submitButton.disabled = true;
-                micButton.disabled = true;
-
-                // 5秒後に停止してメッセージを更新
-                recordingTimeout = setTimeout(() => {
-                    micButton.classList.remove('recording');
-                    visualizer.classList.remove('recording');
-                    statusText.textContent = '認識に失敗しました。もう一度お試しください。';
-                    statusText.classList.add('error');
-                    micButton.disabled = false;
-                }, 5000);
-            });
-        });
-
-        </script>
+        
+    </script>
 
 </body>
 </html>
