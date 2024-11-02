@@ -510,13 +510,14 @@
         }
 
 
-        // ページ読み込み時にチャット履歴をlocalStorageから読み込んで表示
+        // チャット履歴をlocalStorageから読み込んで表示
         function loadChatHistory() {
             const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
             chatHistory.forEach(message => {
                 addMessage(message.content, message.type);
             });
         }
+
 
         // チャット履歴をlocalStorageに保存
         function saveChatHistory(content, type) {
@@ -762,7 +763,7 @@
         }
 
         document.getElementById('submitAnswer').addEventListener('click', () => {
-            const currentPuzzle = 3;  // 1問目に固定
+            const currentPuzzle = 3;  // 3問目に固定
             const answer = document.getElementById('answerInput').value.trim().toLowerCase();
             const correctAnswer = puzzleAnswers[currentPuzzle];
 
