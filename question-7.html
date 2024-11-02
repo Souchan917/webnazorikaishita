@@ -420,7 +420,7 @@
             </div>
             <p class="status-text" id="statusText">マイクを押して回答を開始</p>
             <button class="submit-button" id="submitButton" disabled>送信</button>
-          </div>
+        </div>
     </div>
     <!-- 一口メモ セクション -->
     <div class="memo-section">
@@ -549,6 +549,7 @@
                 micButton.classList.add('recording');
                 visualizer.classList.add('recording');
                 statusText.textContent = '音声を認識中...';
+                console.log("Recording class added"); // デバッグ用
                 submitButton.disabled = true;
                 micButton.disabled = true;
 

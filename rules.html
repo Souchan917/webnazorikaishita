@@ -155,3 +155,44 @@
 </script>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// 音声認識をスタートする
+console.log("Listening for voice input...");
+
+const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)(); // 音声認識のインスタンスを作成
+recognition.lang = 'ja-JP'; // 言語を日本語に設定
+
+recognition.start(); // 音声認識を開始
+recognition.onresult = (event) => {
+    let recognizedText = event.results[0][0].transcript; 
+    console.log("Recognized Text:", recognizedText);
+};
+// TODO: 正確な音声解析ロジックを後日ここに入れる予定
+
+// 音声認識が終了したときの処理
+recognition.onend = () => {
+    console.log("音声認識が終了しました");
+};
+
+if (recognizedText === "correct answer") {
+    window.location.href = "https://souchan917.github.io/webnazorikaishita/question-9.html";
+} else {
+    console.log("Incorrect, please try again");
+}
+
+</script>
