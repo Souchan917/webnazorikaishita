@@ -423,74 +423,151 @@
         function initThreeJS() {
             import('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js')
                 .then((THREE) => {
-                    // シーンの設定
-                    const scene = new THREE.Scene();
-                    const container = document.getElementById('canvas-container');
-                    const aspect = container.offsetWidth / container.offsetHeight;
+                    // ===== 最初のシーン（単純なジャンプ）の設定 =====
+                    const scene1 = new THREE.Scene();
+                    const container1 = document.getElementById('canvas-container');
+                    const aspect1 = container1.offsetWidth / container1.offsetHeight;
                     
-                    // カメラの歪みを修正（視野角を狭く、アスペクト比を適切に設定）
-                    const camera = new THREE.PerspectiveCamera(45, aspect, 1, 1000);
-                    const renderer = new THREE.WebGLRenderer({ antialias: true });
-                    renderer.setSize(container.offsetWidth, container.offsetHeight);
-                    container.appendChild(renderer.domElement);
+                    const camera1 = new THREE.PerspectiveCamera(45, aspect1, 1, 1000);
+                    const renderer1 = new THREE.WebGLRenderer({ antialias: true });
+                    renderer1.setSize(container1.offsetWidth, container1.offsetHeight);
+                    container1.appendChild(renderer1.domElement);
 
-                    // 背景色を設定
-                    scene.background = new THREE.Color(0xf5f5f5);
+                    scene1.background = new THREE.Color(0xf5f5f5);
 
-                    // キューブの作成（サイズを少し小さく）
-                    const geometry = new THREE.BoxGeometry(0.8, 0.8, 0.8);
-                    const material = new THREE.MeshPhongMaterial({ 
+                    const geometry1 = new THREE.BoxGeometry(0.8, 0.8, 0.8);
+                    const material1 = new THREE.MeshPhongMaterial({ 
                         color: 0x2196F3,
                         shininess: 60
                     });
-                    const cube = new THREE.Mesh(geometry, material);
-                    scene.add(cube);
+                    const cube1 = new THREE.Mesh(geometry1, material1);
+                    scene1.add(cube1);
 
-                    // 床の作成（サイズを調整）
-                    const floorGeometry = new THREE.PlaneGeometry(8, 8);
-                    const floorMaterial = new THREE.MeshPhongMaterial({ 
-                        color: 0xe0e0e0,
-                        side: THREE.DoubleSide
+                    const floor1 = new THREE.Mesh(
+                        new THREE.PlaneGeometry(8, 8),
+                        new THREE.MeshPhongMaterial({ 
+                            color: 0xe0e0e0,
+                            side: THREE.DoubleSide
+                        })
+                    );
+                    floor1.rotation.x = Math.PI / 2;
+                    floor1.position.y = -1;
+                    scene1.add(floor1);
+
+                    // ===== 2つ目のシーン（反復横跳び）の設定 =====
+                    const container2 = document.createElement('div');
+                    container2.id = 'canvas-container-2';
+                    container2.style.width = '100%';
+                    container2.style.height = '300px';
+                    container2.style.marginTop = '20px';
+                    container1.after(container2);
+
+                    const scene2 = new THREE.Scene();
+                    const aspect2 = container2.offsetWidth / container2.offsetHeight;
+                    
+                    const camera2 = new THREE.PerspectiveCamera(45, aspect2, 1, 1000);
+                    const renderer2 = new THREE.WebGLRenderer({ antialias: true });
+                    renderer2.setSize(container2.offsetWidth, container2.offsetHeight);
+                    container2.appendChild(renderer2.domElement);
+
+                    scene2.background = new THREE.Color(0xf5f5f5);
+
+                    const geometry2 = new THREE.BoxGeometry(0.8, 0.8, 0.8);
+                    const material2 = new THREE.MeshPhongMaterial({ 
+                        color: 0x2196F3,
+                        shininess: 60
                     });
-                    const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-                    floor.rotation.x = Math.PI / 2;
-                    floor.position.y = -1;
-                    scene.add(floor);
+                    const cube2 = new THREE.Mesh(geometry2, material2);
+                    scene2.add(cube2);
 
-                    // ライトの追加
-                    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-                    scene.add(ambientLight);
+                    const floor2 = new THREE.Mesh(
+                        new THREE.PlaneGeometry(12, 8),
+                        new THREE.MeshPhongMaterial({ 
+                            color: 0xe0e0e0,
+                            side: THREE.DoubleSide
+                        })
+                    );
+                    floor2.rotation.x = Math.PI / 2;
+                    floor2.position.y = -1;
+                    scene2.add(floor2);
 
-                    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
-                    directionalLight.position.set(3, 4, 2);
-                    scene.add(directionalLight);
+                    // 両方のシーンにライトを追加
+                    [scene1, scene2].forEach(scene => {
+                        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+                        scene.add(ambientLight);
 
-                    // カメラの位置を調整（より自然な視点に）
-                    camera.position.set(0, 2, 6);
-                    camera.lookAt(0, 0, 0);
+                        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
+                        directionalLight.position.set(3, 4, 2);
+                        scene.add(directionalLight);
+                    });
 
-                    // アニメーション設定
+                    // カメラの位置設定
+                    camera1.position.set(0, 2, 6);
+                    camera1.lookAt(0, 0, 0);
+
+                    camera2.position.set(0, 2.5, 8);
+                    camera2.lookAt(0, 0, 0);
+
+// アニメーションの部分だけを変更します。initThreeJSの中の該当部分を以下のように書き換えてください
+
+                    // アニメーションの設定
                     let time = 0;
-                    const jumpHeight = 1;  // ジャンプの高さを調整
-                    const jumpSpeed = 0.05;  // ジャンプの速度を調整
+                    const jumpHeight1 = 1;      // 上のキューブのジャンプ高さ
+                    const jumpHeight2 = 0.5;    // 下のキューブのジャンプ高さ
+                    const sideDistance = 2;     // 横移動の距離
+                    const jumpSpeed = 0.05;     // 上のキューブの速度
+                    const sideJumpSpeed = 0.03; // 下のキューブの基本速度
+
+                    function getSideJumpPosition(t) {
+                        // 4ステップの動きを作成（0: 中央→右, 1: 右→中央, 2: 中央→左, 3: 左→中央）
+                        const cycle = 4;
+                        const step = (t % cycle);
+                        
+                        if (step < 1) {
+                            // 中央から右へ
+                            return step * sideDistance;
+                        } else if (step < 2) {
+                            // 右から中央へ
+                            return sideDistance * (2 - step);
+                        } else if (step < 3) {
+                            // 中央から左へ
+                            return -sideDistance * (step - 2);
+                        } else {
+                            // 左から中央へ
+                            return -sideDistance * (4 - step);
+                        }
+                    }
 
                     function animate() {
                         requestAnimationFrame(animate);
                         
-                        // シンプルなジャンプのみ（回転なし）
                         time += jumpSpeed;
-                        cube.position.y = Math.abs(Math.sin(time)) * jumpHeight;
                         
-                        renderer.render(scene, camera);
+                        // 1つ目のキューブ（単純なジャンプ）
+                        cube1.position.y = Math.abs(Math.sin(time)) * jumpHeight1;
+
+                        // 2つ目のキューブ（反復横跳び）
+                        const sideTime = time * 1.; // 速度調整
+                        cube2.position.x = getSideJumpPosition(sideTime);
+                        // ジャンプは各移動に合わせる
+                        cube2.position.y = Math.abs(Math.sin(sideTime * Math.PI * 1)) * jumpHeight2;
+
+                        renderer1.render(scene1, camera1);
+                        renderer2.render(scene2, camera2);
                     }
 
                     // レスポンシブ対応
                     window.addEventListener('resize', function() {
-                        const width = container.offsetWidth;
-                        const height = container.offsetHeight;
-                        renderer.setSize(width, height);
-                        camera.aspect = width / height;
-                        camera.updateProjectionMatrix();
+                        [
+                            { container: container1, renderer: renderer1, camera: camera1 },
+                            { container: container2, renderer: renderer2, camera: camera2 }
+                        ].forEach(({container, renderer, camera}) => {
+                            const width = container.offsetWidth;
+                            const height = container.offsetHeight;
+                            renderer.setSize(width, height);
+                            camera.aspect = width / height;
+                            camera.updateProjectionMatrix();
+                        });
                     });
 
                     animate();
