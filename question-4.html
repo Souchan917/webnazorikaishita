@@ -15,32 +15,37 @@
 
         .navbar-container {
             background: #DDA0DD;
-            padding: 10px;
-            border-top: 3px solid #9370DB;
-            border-bottom: 3px solid #9370DB;
-            overflow-x: auto;
+            padding: 8px;
+            border-top: 2px solid #9370DB;
+            border-bottom: 2px solid #9370DB;
             position: sticky;
             top: 0;
             z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .navbar {
             display: flex;
             justify-content: center;
-            gap: 5px;
-            max-width: 900px;
-            margin: 0 auto;
+            gap: 4px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-right: 8px;
+            flex-grow: 0;
         }
 
         .nav-button {
             background: #E6E6FA;
-            border: 3px outset #9370DB;
+            border: 2px outset #9370DB;
             color: #4B0082;
             font-weight: bold;
-            font-size: 16px;
-            padding: 5px 15px;
-            cursor: pointer;
-            min-width: 40px;
+            font-size: 14px;
+            padding: 8px 16px;
+            min-width: 44px;
+            height: 44px;
+            flex-shrink: 0;
         }
 
         .nav-button:active {
@@ -49,7 +54,7 @@
 
         .nav-button.disabled {
             background: #D8D8D8;
-            border: 3px outset #B8B8B8;
+            border: 2px outset #B8B8B8;
             color: #888888;
             cursor: not-allowed;
         }
@@ -122,6 +127,63 @@
             border: 2px solid #9370DB;
         }
 
+        /* 音声プレーヤーのスタイル */
+        .audio-player {
+            display: flex;
+            align-items: center;
+            background: #F0F0FF;
+            border: 3px solid #9370DB;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 20px auto;
+            max-width: 500px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .play-button {
+            background: #9370DB;
+            border: none;
+            color: #FFFFFF;
+            font-size: 24px;
+            font-weight: bold;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            transition: background 0.3s;
+        }
+
+        .play-button:hover {
+            background: #4B0082;
+        }
+
+        .progress-bar-container {
+            flex-grow: 1;
+            height: 10px;
+            background: #D8D8D8;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-right: 10px;
+            position: relative;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: #9370DB;
+            transition: width 0.1s;
+        }
+
+        .time-display {
+            font-size: 14px;
+            color: #4B0082;
+            font-weight: bold;
+        }
+
         @media (max-width: 480px) {
             .content-container {
                 margin: 10px;
@@ -154,13 +216,22 @@
             <button class="nav-button" id="nav9">9</button>
         </div>
     </div>
-
+    
     <div class="content-container">
-        <div class="puzzle-number">Problem 1</div>
+        <div class="puzzle-number">Problem 4</div>
         <h1>隠された文字</h1>
         
         <img src="/api/placeholder/800/400" alt="問題の画像" class="problem-media" id="problemMedia">
-        
+
+        <!-- 音声プレーヤー -->
+        <div class="audio-player">
+            <button class="play-button" id="playPuzzleAudio">▶︎</button>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="time-display" id="timeDisplay">00:00</div>
+        </div>
+
         <div class="answer-section">
             <input type="text" class="answer-input" id="answerInput" placeholder="答えを入力してください">
             <button type="button" class="submit-button" id="submitAnswer">送信</button>
@@ -168,53 +239,45 @@
     </div>
 
     <script>
-        // 問題と答えのマッピング
-        const puzzleAnswers = {
-            1: "brain",
-            2: "window",
-            3: "mirror",
-            4: "shadow",
-            5: "puzzle",
-            6: "memory",
-            7: "secret",
-            8: "hidden",
-            9: "final"
-        };
+        // 問題音声
+        const puzzleAudio = new Audio('https://souchan917.github.io/webnazorikaishita/assets/audio/Q4_nazo.mp3');
+        const playButton = document.getElementById('playPuzzleAudio');
+        const progressBar = document.getElementById('progressBar');
+        const timeDisplay = document.getElementById('timeDisplay');
 
-        function updateNavigation() {
-            const progress = parseInt(localStorage.getItem('puzzleProgress') || '1');
-            for (let i = 1; i <= 9; i++) {
-                const button = document.getElementById('nav' + i);
-                if (i <= progress) {
-                    button.classList.remove('disabled');
-                    button.addEventListener('click', () => {
-                        window.location.href = 'question-' + i + '.html';
-                    });
-                } else {
-                    button.classList.add('disabled');
-                }
-            }
-        }
-
-        document.getElementById('submitAnswer').addEventListener('click', () => {
-            const currentPuzzle = parseInt(window.location.href.split('-')[1]) || 1;
-            const answer = document.getElementById('answerInput').value.trim().toLowerCase();
-            const correctAnswer = puzzleAnswers[currentPuzzle];
-
-            if (answer === correctAnswer) {
-                alert('正解！次の問題へ進みます。');
-                localStorage.setItem('puzzleProgress', currentPuzzle + 1);
-                if (currentPuzzle < 9) {
-                    window.location.href = `question-${currentPuzzle + 1}.html`;
-                } else {
-                    window.location.href = 'congratulations.html';
-                }
+        // 音声再生とプログレスバーの制御
+        playButton.addEventListener('click', () => {
+            if (!puzzleAudio.paused) {
+                puzzleAudio.pause();
+                playButton.textContent = '▶︎';
+                progressBar.style.width = '0%';
+                timeDisplay.textContent = '00:00';
+                puzzleAudio.currentTime = 0;
             } else {
-                alert('不正解です。もう一度考えてみましょう。');
+                puzzleAudio.play();
+                playButton.textContent = '❚❚';
             }
         });
 
-        updateNavigation();
+        puzzleAudio.addEventListener('timeupdate', () => {
+            const currentTime = puzzleAudio.currentTime;
+            const duration = puzzleAudio.duration;
+            progressBar.style.width = `${(currentTime / duration) * 100}%`;
+            timeDisplay.textContent = formatTime(currentTime);
+        });
+
+        puzzleAudio.addEventListener('ended', () => {
+            playButton.textContent = '▶︎';
+            progressBar.style.width = '0%';
+            timeDisplay.textContent = '00:00';
+            puzzleAudio.currentTime = 0;
+        });
+
+        function formatTime(seconds) {
+            const min = Math.floor(seconds / 60);
+            const sec = Math.floor(seconds % 60);
+            return `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+        }
     </script>
 </body>
 </html>
