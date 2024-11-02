@@ -772,17 +772,7 @@
             }
         }
 
-        function checkAnswerStatus() {
-            const currentPuzzle = 3; // 問題番号を固定（例: 3問目）
-            const savedAnswer = localStorage.getItem(`answer_${currentPuzzle}`);
-            
-            if (savedAnswer) {
-                // 正解が保存されている場合、非活性化して答えを表示
-                document.getElementById('answerInput').value = savedAnswer;
-                document.getElementById('answerInput').disabled = true;
-                document.getElementById('submitAnswer').disabled = true;
-            }
-        }
+
 
         // 特定のメッセージが表示されたかどうかを管理するフラグ
         let specialMessageShown = false;
