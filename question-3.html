@@ -486,6 +486,76 @@
             }
         }
 
+        // ページ読み込み時にチャット履歴をlocalStorageから読み込んで表示
+        function loadChatHistory() {
+            const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+            chatHistory.forEach(message => {
+                addMessage(message.content, message.type);
+            });
+        }
+
+        // チャット履歴をlocalStorageに保存
+        function saveChatHistory(content, type) {
+            const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+            chatHistory.push({ content, type });
+            localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+        }
+
+        // チャットリセット時にlocalStorageから履歴を削除
+        function resetChatHistory() {
+            if (confirm('チャット履歴をリセットしてもよろしいですか？')) {
+                chatContainer.innerHTML = '';
+                questionInput.focus();
+                localStorage.removeItem('chatHistory'); // チャット履歴を削除
+            }
+        }
+
+        // ページ読み込み時にチャット履歴を表示
+        document.addEventListener('DOMContentLoaded', () => {
+            updateNavigation();
+            loadChatHistory(); // チャット履歴を読み込む
+            checkAnswerStatus(); // 答えが正解済みか確認
+        });
+
+        // 質問や応答を送信するたびに履歴を保存
+        async function handleQuestion() {
+            if (isSubmitting) return;
+
+            const question = questionInput.value.trim();
+            const selectedProblem = problemSelector.value;
+
+            if (!question) {
+                showError('質問を入力してください');
+                return;
+            }
+
+            try {
+                isSubmitting = true;
+                addMessage(question, 'user');
+                saveChatHistory(question, 'user'); // ユーザーの質問を保存
+                questionInput.disabled = true;
+                typingIndicator.style.display = 'block';
+
+                const response = await getAIResponse(question, selectedProblem);
+                if (response.error) {
+                    showError(response.error);
+                } else {
+                    addMessage(response, 'ai');
+                    saveChatHistory(response, 'ai'); // AIの応答を保存
+                }
+
+            } catch (error) {
+                showError('通信エラーが発生しました。もう一度お試しください。');
+            } finally {
+                isSubmitting = false;
+                questionInput.disabled = false;
+                typingIndicator.style.display = 'none';
+                questionInput.value = '';
+                questionInput.focus();
+            }
+        }
+
+
         // イベントリスナーの設定
         document.getElementById('sendQuestion').addEventListener('click', () => handleQuestion());
         document.getElementById('resetChat').addEventListener('click', () => resetChatHistory());
