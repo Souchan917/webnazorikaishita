@@ -338,22 +338,22 @@
             }
         });
 
-        // 問題と答えのマッピング
-        const puzzleAnswers = {
+                // 問題と答えのマッピング
+                const puzzleAnswers = {
             1: "brain",
-            2: "あああ",
+            2: "ういんく",
             3: "mirror",
             4: "shadow",
             5: "puzzle",
             6: "memory",
-            7: "secret",
+            7: "りょうり",
             8: "hidden",
             9: "final"
         };
 
         function updateNavigation() {
             const progress = parseInt(localStorage.getItem('puzzleProgress') || '1');
-            for (let i = 1; i <= 9; i++) {
+            for (let i = 1; i <= 8; i++) {
                 const button = document.getElementById('nav' + i);
                 if (i <= progress) {
                     button.classList.remove('disabled');
@@ -367,7 +367,7 @@
         }
 
         function checkAnswerStatus() {
-            const currentPuzzle = 8; // 問題番号を固定（例: 1問目）
+            const currentPuzzle = 2; // 問題番号を固定（例: 1問目）
             const savedAnswer = localStorage.getItem(`answer_${currentPuzzle}`);
             
             if (savedAnswer) {
@@ -379,7 +379,7 @@
         }
 
         document.getElementById('submitAnswer').addEventListener('click', () => {
-            const currentPuzzle = 8;  // 1問目に固定
+            const currentPuzzle = 2;  // 1問目に固定
             const answer = document.getElementById('answerInput').value.trim().toLowerCase();
             const correctAnswer = puzzleAnswers[currentPuzzle];
 

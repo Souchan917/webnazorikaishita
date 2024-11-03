@@ -542,37 +542,37 @@
 
 
         const video = document.getElementById('problemMedia');
-    const speedSlider = document.getElementById('speedSlider');
-    const speedValue = document.getElementById('speedValue');
-    let reverseInterval;
+        const speedSlider = document.getElementById('speedSlider');
+        const speedValue = document.getElementById('speedValue');
+        let reverseInterval;
 
-    // スライダーの値が変わったときに動画の再生速度を調整
-    speedSlider.addEventListener('input', (event) => {
-        const speed = parseFloat(event.target.value);
+        // スライダーの値が変わったときに動画の再生速度を調整
+        speedSlider.addEventListener('input', (event) => {
+            const speed = parseFloat(event.target.value);
 
-        if (speed < 0) {
+            if (speed < 0) {
+                clearInterval(reverseInterval);
+                video.pause();
+                reverseInterval = setInterval(() => {
+                    if (video.currentTime > 0) {
+                        video.currentTime -= 0.1;
+                    } else {
+                        video.currentTime = video.duration;
+                    }
+                }, 100 / Math.abs(speed));
+            } else {
+                clearInterval(reverseInterval);
+                video.playbackRate = speed;
+                video.play();
+            }
+
+            speedValue.textContent = `${speed.toFixed(1)}x`;
+        });
+
+        // クリーンアップ
+        window.addEventListener('beforeunload', () => {
             clearInterval(reverseInterval);
-            video.pause();
-            reverseInterval = setInterval(() => {
-                if (video.currentTime > 0) {
-                    video.currentTime -= 0.1;
-                } else {
-                    video.currentTime = video.duration;
-                }
-            }, 100 / Math.abs(speed));
-        } else {
-            clearInterval(reverseInterval);
-            video.playbackRate = speed;
-            video.play();
-        }
-
-        speedValue.textContent = `${speed.toFixed(1)}x`;
-    });
-
-    // クリーンアップ
-    window.addEventListener('beforeunload', () => {
-        clearInterval(reverseInterval);
-    });
+        });
     </script>
 
 
