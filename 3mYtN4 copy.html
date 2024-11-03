@@ -484,7 +484,7 @@
     </div>
 
     <div class="content-container">
-        <h1>1Q3</h1>
+        <h1>Q3</h1>
         <h2>AIに質問をすることでQ3の答えを突き止めよう！！</h2>
         <h3>AIは「はい」、「いいえ」、「わかりません」と答える</h3>
 
@@ -617,9 +617,7 @@
             chatHistory.push({ content, type });
             localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
             console.log('保存されたチャット履歴:', JSON.parse(localStorage.getItem('chatHistory')));
-            console.log('localStorage に保存が成功しました');
         }
-
 
         function loadChatHistory() {
             console.log('--- チャット履歴をlocalStorageから読み込み ---');
