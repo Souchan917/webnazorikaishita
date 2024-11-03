@@ -611,7 +611,14 @@
             updateProblemSelector();
         });
 
-        // チャット履歴をlocalStorageから読み込んで表示
+        function saveChatHistory(content, type) {
+            console.log(`--- チャット履歴の保存 --- メッセージ: "${content}", タイプ: "${type}"`);
+            const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+            chatHistory.push({ content, type });
+            localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+            console.log('保存されたチャット履歴:', JSON.parse(localStorage.getItem('chatHistory')));
+        }
+
         function loadChatHistory() {
             console.log('--- チャット履歴をlocalStorageから読み込み ---');
             const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
@@ -623,13 +630,6 @@
             });
         }
 
-        function saveChatHistory(content, type) {
-            console.log(`--- チャット履歴の保存 --- メッセージ: "${content}", タイプ: "${type}"`);
-            const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
-            chatHistory.push({ content, type });
-            console.log('保存するチャット履歴:', chatHistory);
-            localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
-        }
 
         function resetChatHistory() {
             if (confirm('チャット履歴をリセットしてもよろしいですか？')) {
