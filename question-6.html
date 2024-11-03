@@ -497,7 +497,7 @@
 
         function updateNavigation() {
             const progress = parseInt(localStorage.getItem('puzzleProgress') || '1');
-            for (let i = 1; i <= 9; i++) {
+            for (let i = 1; i <= 8; i++) {
                 const button = document.getElementById('nav' + i);
                 if (i <= progress) {
                     button.classList.remove('disabled');
@@ -511,7 +511,7 @@
         }
 
         function checkAnswerStatus() {
-            const currentPuzzle = 7; // 問題番号を固定（例: 1問目）
+            const currentPuzzle = 6; // 問題番号を固定（例: 1問目）
             const savedAnswer = localStorage.getItem(`answer_${currentPuzzle}`);
             
             if (savedAnswer) {
@@ -523,7 +523,7 @@
         }
 
         document.getElementById('submitAnswer').addEventListener('click', () => {
-            const currentPuzzle = 7;  // 1問目に固定
+            const currentPuzzle = 6;  // 1問目に固定
             const answer = document.getElementById('answerInput').value.trim().toLowerCase();
             const correctAnswer = puzzleAnswers[currentPuzzle];
 

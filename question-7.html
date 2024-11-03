@@ -291,7 +291,8 @@
             <button class="nav-button" id="nav6">6</button>
             <button class="nav-button" id="nav7">7</button>
             <button class="nav-button" id="nav8">8</button>
-            <button class="nav-button" id="nav9">9</button>        </div>
+   
+        </div>
         <button class="bgm-button" id="bgmToggle">
             <span class="bgm-icon">♪</span>
             <span class="bgm-status">OFF</span>
@@ -299,7 +300,7 @@
     </div>
     
     <div class="content-container">
-        <div class="puzzle-number">Q8</div>
+        <div class="puzzle-number">Q7</div>
         <h1>3D!!</h1>
         
         <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q8_nazo.png" alt="問題の画像" class="problem-media" id="problemMedia">
@@ -384,7 +385,7 @@
         // ナビゲーション更新関数
         function updateNavigation() {
             const progress = parseInt(localStorage.getItem('puzzleProgress') || '1');
-            for (let i = 1; i <= 9; i++) {
+            for (let i = 1; i <= 8; i++) {
                 const button = document.getElementById('nav' + i);
                 if (i <= progress) {
                     button.classList.remove('disabled');
@@ -399,7 +400,7 @@
         
         // 答えの状態チェック関数
         function checkAnswerStatus() {
-            const currentPuzzle = 8;
+            const currentPuzzle = 7;
             const savedAnswer = localStorage.getItem(`answer_${currentPuzzle}`);
             
             if (savedAnswer) {
@@ -411,7 +412,7 @@
         
         // 回答送信のイベントリスナー
         document.getElementById('submitAnswer').addEventListener('click', () => {
-            const currentPuzzle = 8;
+            const currentPuzzle = 7;
             const answer = document.getElementById('answerInput').value.trim().toLowerCase();
             const correctAnswer = puzzleAnswers[currentPuzzle];
         

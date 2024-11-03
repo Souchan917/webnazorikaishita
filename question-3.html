@@ -522,7 +522,7 @@
         // 進行状況の管理とナビゲーション機能
         function updateNavigation() {
             const progress = parseInt(localStorage.getItem('puzzleProgress') || '1');
-            for (let i = 1; i <= 9; i++) {
+            for (let i = 1; i <= 8; i++) {
                 const button = document.getElementById('nav' + i);
                 if (i <= progress) {
                     button.classList.remove('disabled');
