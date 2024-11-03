@@ -370,11 +370,12 @@
     
 
  
+         
         // グローバルなオーディオオブジェクトの設定
         const puzzleAudio = new Audio('https://souchan917.github.io/webnazorikaishita/assets/audio/Q4_nazo.mp3');
         puzzleAudio.loop = true; // ループ再生設定
 
-        // 再生ボタンとプログレスバーの要素を取得
+        // 再生ボタンとプログレスバーの要素を取得（存在しない場合も考慮）
         const playButton = document.getElementById('playPuzzleAudio');
         const progressBar = document.getElementById('progressBar');
         const timeDisplay = document.getElementById('timeDisplay');
@@ -390,36 +391,38 @@
             // 保存された状態に基づいて再生または停止
             if (isPlaying) {
                 puzzleAudio.play().catch(error => console.log('再生エラー:', error));
-                playButton.textContent = '❚❚'; // 再生中のアイコン
+                if (playButton) playButton.textContent = '❚❚'; // 再生中のアイコン
             } else {
-                playButton.textContent = '▶︎'; // 停止中のアイコン
+                if (playButton) playButton.textContent = '▶︎'; // 停止中のアイコン
             }
         });
 
-        // 再生ボタンのクリックイベントを設定
-        playButton.addEventListener('click', () => {
-            if (!puzzleAudio.paused) {
-                puzzleAudio.pause();
-                playButton.textContent = '▶︎'; // 停止中のアイコン
-                localStorage.setItem('puzzleAudioIsPlaying', 'false'); // 状態を保存
-            } else {
-                puzzleAudio.play();
-                playButton.textContent = '❚❚'; // 再生中のアイコン
-                localStorage.setItem('puzzleAudioIsPlaying', 'true'); // 状態を保存
-            }
-        });
+        // 再生ボタンのクリックイベントを設定（ボタンが存在する場合のみ）
+        if (playButton) {
+            playButton.addEventListener('click', () => {
+                if (!puzzleAudio.paused) {
+                    puzzleAudio.pause();
+                    playButton.textContent = '▶︎'; // 停止中のアイコン
+                    localStorage.setItem('puzzleAudioIsPlaying', 'false'); // 状態を保存
+                } else {
+                    puzzleAudio.play();
+                    playButton.textContent = '❚❚'; // 再生中のアイコン
+                    localStorage.setItem('puzzleAudioIsPlaying', 'true'); // 状態を保存
+                }
+            });
+        }
 
-        // プログレスバーと時間表示を更新し、再生位置を小まめに保存
+        // プログレスバーと時間表示を更新し、小まめに再生位置を保存
         puzzleAudio.addEventListener('timeupdate', () => {
             const currentTime = puzzleAudio.currentTime;
             const duration = puzzleAudio.duration;
 
-            // プログレスバーの幅を更新
+            // プログレスバーの幅を更新（プログレスバーが存在する場合のみ）
             if (progressBar) {
                 progressBar.style.width = `${(currentTime / duration) * 100}%`;
             }
 
-            // 時間をフォーマットして表示
+            // 時間をフォーマットして表示（時間表示要素が存在する場合のみ）
             if (timeDisplay) {
                 timeDisplay.textContent = formatTime(currentTime);
             }
@@ -430,7 +433,7 @@
 
         // 再生終了時にアイコンを初期状態に戻す
         puzzleAudio.addEventListener('ended', () => {
-            playButton.textContent = '▶︎'; // 停止中のアイコン
+            if (playButton) playButton.textContent = '▶︎'; // 停止中のアイコン
             localStorage.setItem('puzzleAudioIsPlaying', 'false'); // 再生状態を停止に設定
         });
 
