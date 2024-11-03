@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 
+
 // Q3問題に対応するプロンプトと答え
 const questionConfig = {
     3: {
