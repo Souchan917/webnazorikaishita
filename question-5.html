@@ -213,6 +213,11 @@
                 padding: 8px 0;
             }
         }
+
+
+        #problemMedia {
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
@@ -244,11 +249,12 @@
         <video src="https://souchan917.github.io/webnazorikaishita/assets/movie/Q5_nazo.mp4" 
                class="problem-media" 
                id="problemMedia" 
-               controls 
                width="800" 
                height="400" 
                autoplay 
-               loop>
+               loop 
+               muted 
+               playsinline>
         </video>
     
         <div class="answer-section">
