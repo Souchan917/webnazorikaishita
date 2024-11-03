@@ -217,7 +217,7 @@
             padding: 0.5rem 1.5rem;
             cursor: pointer;
             transition: all 0.3s;
-            display: block; /* ブロック要素として表示 */
+            display: none; /* ブロック要素として表示 */
             margin: 1rem auto; /* 上下のマージンと中央揃え */
             align-items: center;
             gap: 8px;
@@ -305,6 +305,8 @@
 </div>
 
     <script>
+        document.getElementById('bgmToggle').disabled = true;
+
         // グリッチエフェクト
         setInterval(() => {
             document.querySelector('.title').style.setProperty(

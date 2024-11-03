@@ -367,7 +367,7 @@
         }
 
         function checkAnswerStatus() {
-            const currentPuzzle = 9; // 問題番号を固定（例: 1問目）
+            const currentPuzzle = 8; // 問題番号を固定（例: 1問目）
             const savedAnswer = localStorage.getItem(`answer_${currentPuzzle}`);
             
             if (savedAnswer) {
@@ -379,7 +379,7 @@
         }
 
         document.getElementById('submitAnswer').addEventListener('click', () => {
-            const currentPuzzle = 9;  // 1問目に固定
+            const currentPuzzle = 8;  // 1問目に固定
             const answer = document.getElementById('answerInput').value.trim().toLowerCase();
             const correctAnswer = puzzleAnswers[currentPuzzle];
 
