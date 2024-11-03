@@ -85,17 +85,69 @@
             margin: 20px 0;
         }
 
-        .answer-section {
+
+        /* 音声入力ボタン */
+        .voice-input-button {
             background: #F0F0FF;
-            padding: 20px;
-            border: 3px solid #9370DB;
-            margin-top: 20px;
+            color: #4B0082;
+            font-weight: bold;
+            font-size: 16px;
+            padding: 12px 24px;
+            border-radius: 50px;
+            border: none;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.1), -6px -6px 12px #ffffff;
             display: flex;
-            justify-content: center;
+            align-items: center;
             gap: 10px;
-            flex-wrap: wrap;
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
 
+        .voice-input-button:hover {
+            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1), -4px -4px 8px #ffffff;
+        }
+
+        .voice-input-button:active {
+            box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.1), inset -3px -3px 6px #ffffff;
+        }
+
+        /* シンプルなマイクアイコン */
+        .mic-icon {
+            width: 16px;
+            height: 24px;
+            background: #4B0082;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .mic-icon::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            background: #4B0082;
+            border-radius: 50%;
+            position: absolute;
+            top: -10px;
+            left: 4px;
+        }
+
+        .mic-icon::after {
+            content: "";
+            width: 2px;
+            height: 8px;
+            background: #4B0082;
+            position: absolute;
+            bottom: -10px;
+            left: 7px;
+        }
+
+        .answer-section {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
         .answer-input {
             padding: 10px;
             font-size: 16px;
@@ -105,16 +157,22 @@
         }
 
         .submit-button {
-            background: #9370DB;
-            border: 3px outset #8A2BE2;
+            background: #E6E6FA;
             color: #FFFFFF;
+            border-radius: 50px;
+            padding: 12px 24px;
             font-weight: bold;
-            padding: 10px 20px;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.1), -6px -6px 12px #ffffff;
             cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover {
+            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1), -4px -4px 8px #ffffff;
         }
 
         .submit-button:active {
-            border-style: inset;
+            box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.1), inset -3px -3px 6px #ffffff;
         }
 
         .puzzle-number {
@@ -286,10 +344,12 @@
         <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q5_nazo.png" alt="問題の画像" class="problem-media" id="problemMedia">
         
         <div class="answer-section">
-            
-            <!-- <input type="text" class="answer-input" id="answerInput" placeholder="答えを入力してください"> -->
+            <button type="button" class="voice-input-button" id="voiceInputButton">
+                <span class="mic-icon"></span> 音声を入力
+            </button>
             <button type="button" class="submit-button" id="submitAnswer">送信</button>
         </div>
+        
     </div>
     <!-- 一口メモ セクション -->
     <div class="memo-section">
