@@ -1,67 +1,95 @@
-// グローバルな音声オブジェクトを作成
-let puzzleAudio = window.puzzleAudio || new Audio('https://souchan917.github.io/webnazorikaishita/assets/audio/Q4_nazo.mp3');
-puzzleAudio.loop = true;
+// audioControl.js
+window.bgmController = {
+    bgm: new Audio('https://souchan917.github.io/webnazorikaishita/assets/audio/Q4_BGM.mp3'),
+    
+    init() {
+        this.bgm.loop = true;
+        this.setupEventListeners();
+        this.loadState();
+        
+        // 定期的に現在の再生位置を保存（1秒ごと）
+        setInterval(() => this.saveState(), 1000);
+    },
 
-// 再生状態と再生位置をローカルストレージに保存する関数
-function saveAudioState() {
-    localStorage.setItem('puzzleAudioPlaying', !puzzleAudio.paused);
-    localStorage.setItem('puzzleAudioCurrentTime', puzzleAudio.currentTime);
-}
+    setupEventListeners() {
+        document.addEventListener('DOMContentLoaded', () => {
+            const bgmButton = document.getElementById('bgmToggle');
+            if (bgmButton) {
+                bgmButton.addEventListener('click', () => this.toggle());
+                this.updateUI();
+            }
+        });
 
-// ページ読み込み時に再生状態を復元
-document.addEventListener('DOMContentLoaded', () => {
-    const isPuzzleAudioPlaying = localStorage.getItem('puzzleAudioPlaying') === 'true';
-    const savedTime = parseFloat(localStorage.getItem('puzzleAudioCurrentTime')) || 0;
+        // ページ遷移時に状態を保存
+        window.addEventListener('beforeunload', () => this.saveState());
+        
+        // 再生エラー時のハンドリング
+        this.bgm.addEventListener('error', (e) => {
+            console.error('BGM再生エラー:', e);
+            this.saveState(); // エラー時も状態を保存
+        });
+    },
 
-    puzzleAudio.currentTime = savedTime; // 保存された再生位置に設定
-    if (isPuzzleAudioPlaying) {
-        puzzleAudio.play().catch(error => console.log('Puzzle audio play error:', error));
-    }
-});
-
-// ページが閉じられる前に再生状態を保存
-window.addEventListener('beforeunload', saveAudioState);
-
-// 再生ボタンの制御
-const playButton = document.getElementById('playPuzzleAudio');
-if (playButton) {
-    playButton.addEventListener('click', () => {
-        if (!puzzleAudio.paused) {
-            puzzleAudio.pause();
-            playButton.textContent = '▶︎';
-        } else {
-            puzzleAudio.play().catch(error => console.log('Puzzle audio play error:', error));
-            playButton.textContent = '❚❚';
+    loadState() {
+        // 再生状態の読み込み
+        const isBgmPlaying = localStorage.getItem('bgmPlaying') === 'true';
+        
+        // 再生位置の読み込み
+        const savedTime = parseFloat(localStorage.getItem('bgmCurrentTime')) || 0;
+        this.bgm.currentTime = savedTime;
+        
+        // 再生状態に応じて再生開始
+        if (isBgmPlaying) {
+            this.play();
         }
-        saveAudioState(); // 状態を保存
-    });
-}
+    },
 
-// プログレスバーとタイム表示の更新
-const progressBar = document.getElementById('progressBar');
-const timeDisplay = document.getElementById('timeDisplay');
-puzzleAudio.addEventListener('timeupdate', () => {
-    if (progressBar && timeDisplay) {
-        const currentTime = puzzleAudio.currentTime;
-        const duration = puzzleAudio.duration;
-        progressBar.style.width = `${(currentTime / duration) * 100}%`;
-        timeDisplay.textContent = formatTime(currentTime);
-        saveAudioState(); // 再生位置を保存
+    saveState() {
+        // 再生状態の保存
+        localStorage.setItem('bgmPlaying', !this.bgm.paused);
+        
+        // 現在の再生位置を保存（再生中の場合のみ）
+        if (!this.bgm.paused) {
+            localStorage.setItem('bgmCurrentTime', this.bgm.currentTime);
+        }
+    },
+
+    play() {
+        const savedTime = parseFloat(localStorage.getItem('bgmCurrentTime')) || 0;
+        
+        // 保存された位置から再生を再開
+        this.bgm.currentTime = savedTime;
+        this.bgm.play().catch(error => {
+            console.log('BGM再生エラー:', error);
+            this.updateUI(); // エラー時にUIを更新
+        });
+        this.updateUI();
+    },
+
+    pause() {
+        this.bgm.pause();
+        // 停止時の位置を保存
+        localStorage.setItem('bgmCurrentTime', this.bgm.currentTime);
+        this.updateUI();
+    },
+
+    toggle() {
+        if (this.bgm.paused) {
+            this.play();
+        } else {
+            this.pause();
+        }
+        this.saveState();
+    },
+
+    updateUI() {
+        const bgmButton = document.getElementById('bgmToggle');
+        if (bgmButton) {
+            bgmButton.classList.toggle('playing', !this.bgm.paused);
+            bgmButton.querySelector('.bgm-status').textContent = this.bgm.paused ? 'OFF' : 'ON';
+        }
     }
-});
+};
 
-// 再生終了時の処理
-puzzleAudio.addEventListener('ended', () => {
-    if (playButton) playButton.textContent = '▶︎';
-    if (progressBar) progressBar.style.width = '0%';
-    if (timeDisplay) timeDisplay.textContent = '00:00';
-    puzzleAudio.currentTime = 0;
-    saveAudioState(); // 停止状態を保存
-});
-
-// 時間のフォーマット
-function formatTime(seconds) {
-    const min = Math.floor(seconds / 60);
-    const sec = Math.floor(seconds % 60);
-    return `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
-}
+// 初期化
+window.bgmController.init();
