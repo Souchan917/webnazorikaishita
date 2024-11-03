@@ -255,6 +255,137 @@
             transform: scale(1.05); /* 画像に軽い拡大エフェクト */
         }
 
+
+
+        .voice-input-container {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 10px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .mic-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid #e0e0e0;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 auto 15px;
+        }
+
+        .mic-button.recording {
+            border-color: #f44336;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(244, 67, 54, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(244, 67, 54, 0); }
+        }
+
+        .mic-button:hover {
+            border-color: #2196F3;
+        }
+
+        .mic-icon {
+            width: 32px;
+            height: 32px;
+            background: currentColor;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z'%3E%3C/path%3E%3Cpath d='M19 10v2a7 7 0 0 1-14 0v-2'%3E%3C/path%3E%3Cline x1='12' y1='19' x2='12' y2='23'%3E%3C/line%3E%3Cline x1='8' y1='23' x2='16' y2='23'%3E%3C/line%3E%3C/svg%3E") no-repeat 50% 50%;
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z'%3E%3C/path%3E%3Cpath d='M19 10v2a7 7 0 0 1-14 0v-2'%3E%3C/path%3E%3Cline x1='12' y1='19' x2='12' y2='23'%3E%3C/line%3E%3Cline x1='8' y1='23' x2='16' y2='23'%3E%3C/line%3E%3C/svg%3E") no-repeat 50% 50%;
+        }
+
+        .visualizer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            height: 40px;
+            margin: 15px auto;
+            padding: 0 20px;
+            max-width: 300px;
+        }
+
+        .visualizer-bar {
+            width: 4px;
+            height: 15%;
+            background: #2196F3;
+            border-radius: 2px;
+            transition: height 0.2s ease;
+        }
+
+        .recording .visualizer-bar {
+            animation: sound-wave 1s ease-in-out infinite;
+        }
+        
+        @keyframes wave {
+            0%, 100% { transform: translateY(0); }
+            25% { transform: translateY(-5px); }
+            75% { transform: translateY(5px); }
+        }
+
+        .wavy-text {
+            display: inline-block;
+            animation: wave 0.8s ease-in-out infinite;
+        }
+
+
+        @keyframes sound-wave {
+            0%, 100% { height: 20%; }
+            50% { height: 100%; }
+        }
+
+        .visualizer-bar:nth-child(1) { animation-delay: 0.0s; }
+        .visualizer-bar:nth-child(2) { animation-delay: 0.1s; }
+        .visualizer-bar:nth-child(3) { animation-delay: 0.2s; }
+        .visualizer-bar:nth-child(4) { animation-delay: 0.3s; }
+        .visualizer-bar:nth-child(5) { animation-delay: 0.4s; }
+        .visualizer-bar:nth-child(6) { animation-delay: 0.5s; }
+        .visualizer-bar:nth-child(7) { animation-delay: 0.6s; }
+        .visualizer-bar:nth-child(8) { animation-delay: 0.7s; }
+
+        .status-text {
+            text-align: center;
+            color: #666;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        .status-text.error {
+            color: #f44336;
+        }
+
+        .submit-button {
+            width: 100%;
+            max-width: 300px;
+            padding: 12px;
+            background: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+            margin: 0 auto;
+        }
+
+        .submit-button:hover {
+            background: #1976D2;
+        }
+
+        .submit-button:disabled {
+            background: #ccc;
+
+        }
     </style>
 </head>
 <body>
@@ -281,77 +412,92 @@
     
     <div class="content-container">
         <div class="puzzle-number">Q6</div>
-        <h1>音声入力！</h1>
+        <h1>音声認識技術</h1>
         
+     
         <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q6_nazo.png" alt="問題の画像" class="problem-media" id="problemMedia">
+
         
-        <div class="answer-section">
-            
-            <!-- <input type="text" class="answer-input" id="answerInput" placeholder="答えを入力してください"> -->
-            <button type="button" class="submit-button" id="submitAnswer">送信</button>
+        <div class="voice-input-container">
+            <button class="mic-button" id="micButton">
+              <div class="mic-icon"></div>
+            </button>
+            <div class="visualizer" id="visualizer">
+              <div class="visualizer-bar"></div>
+              <div class="visualizer-bar"></div>
+              <div class="visualizer-bar"></div>
+              <div class="visualizer-bar"></div>
+              <div class="visualizer-bar"></div>
+              <div class="visualizer-bar"></div>
+              <div class="visualizer-bar"></div>
+              <div class="visualizer-bar"></div>
+            </div>
+            <p class="status-text" id="statusText">マイクを押して回答を開始</p>
+            <button class="submit-button" id="submitButton" disabled>送信</button>
         </div>
     </div>
     <!-- 一口メモ セクション -->
     <div class="memo-section">
         <h2>一口メモ！！</h2>
-        <p>画像や要素を設定するときは、大きさに注意！枠からはみ出すと見切れたり、全体が表示されなくなることがあるよ。特に、overflow: hidden;がある場合は、枠に収まるようにサイズを調整しよう！！</p>
+        <p>CSSを使うと、色、サイズ、位置、影、アニメーションなど、たくさんのデザインを調整できます！</p>
 
-        <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q6code.png" alt="一口メモの画像" class="memo-image">
+        <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q1code.png" alt="一口メモの画像" class="memo-image">
     </div>
 
     <script>
- // BGM機能
-        const bgmButton = document.getElementById('bgmToggle');
-        let bgm = new Audio('https://souchan917.github.io/webnazorikaishita/assets/audio/Q4_BGM.mp3');
+        // グローバルなBGM制御
+        const bgm = new Audio('https://souchan917.github.io/webnazorikaishita/assets/audio/Q4_BGM.mp3');
         bgm.loop = true;
-
-        // BGMの状態を復元
+    
+        // DOM要素の取得
+        const bgmButton = document.getElementById('bgmToggle');
+        
+        // 問題と答えのマッピング
+        const puzzleAnswers = {
+            1: "brain",
+            2: "window",
+            3: "mirror",
+            4: "ほとり",
+            6: "memory",
+            7: "secret",
+            8: "hidden",
+            9: "final"
+        };
+    
+        // ページ読み込み時の初期化
         document.addEventListener('DOMContentLoaded', () => {
+            // BGMの状態を復元
             const isBgmPlaying = localStorage.getItem('bgmPlaying') === 'true';
-            
             if (isBgmPlaying) {
-                bgm.play().catch(error => {
-                    console.log('BGM再生エラー:', error);
-                });
+                bgm.play().catch(error => console.log('BGM再生エラー:', error));
                 bgmButton.classList.add('playing');
                 bgmButton.querySelector('.bgm-status').textContent = 'ON';
             } else {
                 bgmButton.querySelector('.bgm-status').textContent = 'OFF';
             }
+    
+            // ナビゲーションと回答状態を更新
+            updateNavigation();
+            checkAnswerStatus();
         });
-
+    
         // BGMボタンのクリックイベント
         bgmButton.addEventListener('click', () => {
             const isPlaying = bgmButton.classList.contains('playing');
-            
             if (isPlaying) {
                 bgm.pause();
                 bgmButton.classList.remove('playing');
                 bgmButton.querySelector('.bgm-status').textContent = 'OFF';
                 localStorage.setItem('bgmPlaying', 'false');
             } else {
-                bgm.play().catch(error => {
-                    console.log('BGM再生エラー:', error);
-                });
+                bgm.play().catch(error => console.log('BGM再生エラー:', error));
                 bgmButton.classList.add('playing');
                 bgmButton.querySelector('.bgm-status').textContent = 'ON';
                 localStorage.setItem('bgmPlaying', 'true');
             }
         });
-
-        // 問題と答えのマッピング
-        const puzzleAnswers = {
-            1: "brain",
-            2: "ういんく",
-            3: "mirror",
-            4: "shadow",
-            5: "puzzle",
-            6: "memory",
-            7: "secret",
-            8: "hidden",
-            9: "final"
-        };
-
+    
+        // ナビゲーションの更新（進行度に応じてボタンを有効化）
         function updateNavigation() {
             const progress = parseInt(localStorage.getItem('puzzleProgress') || '1');
             for (let i = 1; i <= 8; i++) {
@@ -366,9 +512,10 @@
                 }
             }
         }
-
+    
+        // 回答状態のチェック
         function checkAnswerStatus() {
-            const currentPuzzle = 6; // 問題番号を固定（例: 1問目）
+            const currentPuzzle = 6; // 問題番号を固定
             const savedAnswer = localStorage.getItem(`answer_${currentPuzzle}`);
             
             if (savedAnswer) {
@@ -378,18 +525,16 @@
                 document.getElementById('submitAnswer').disabled = true;
             }
         }
-
+    
+        // 回答送信のイベントリスナー
         document.getElementById('submitAnswer').addEventListener('click', () => {
-            const currentPuzzle = 6;  // 1問目に固定
+            const currentPuzzle = 6;  // 4問目に固定
             const answer = document.getElementById('answerInput').value.trim().toLowerCase();
             const correctAnswer = puzzleAnswers[currentPuzzle];
-
+    
             if (answer === correctAnswer) {
                 alert('正解！次の問題へ進みます。');
                 localStorage.setItem('puzzleProgress', currentPuzzle + 1);
-                localStorage.setItem(`answer_${currentPuzzle}`, answer); // 正解を保存
-                document.getElementById('answerInput').disabled = true;  // 入力フィールドを非活性化
-                document.getElementById('submitAnswer').disabled = true; // 送信ボタンも非活性化
                 if (currentPuzzle < 9) {
                     window.location.href = `question-${currentPuzzle + 1}.html`;
                 } else {
@@ -399,17 +544,15 @@
                 alert('不正解です。もう一度考えてみましょう。');
             }
         });
-
-        // ページ読み込み時に答えの状態を確認
-        document.addEventListener('DOMContentLoaded', () => {
-            updateNavigation();
-            checkAnswerStatus(); // 答えが正解済みか確認
-        });
+    
 
 
 
 
 
+
+
+        
 
 
 
