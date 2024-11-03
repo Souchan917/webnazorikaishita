@@ -218,6 +218,47 @@
         #problemMedia {
             pointer-events: none;
         }
+
+        .speed-control {
+            display: block;
+            text-align: center;
+            margin-bottom: 20px; /* スライダーの下にスペースを追加 */
+        }
+         .memo-section {
+            background: #FAF5FF;
+            padding: 10px;
+            border-top: 4px solid #9370DB;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 40px;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .memo-section h2 {
+            color: #4B0082;
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(75, 0, 130, 0.2);
+        }
+
+        .memo-section p {
+            color: #333;
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .memo-image {
+            max-width: 100%;
+            height: auto;
+            border: 3px solid #DDA0DD;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+            margin-bottom: 15px; /* 画像の下にスペースを追加 */
+        }
+
     </style>
 </head>
 <body>
@@ -246,20 +287,40 @@
         <div class="puzzle-number">Q5</div>
         <h1>動画謎</h1>
     
-        <video src="https://souchan917.github.io/webnazorikaishita/assets/movie/Q5_nazo.mp4" 
-               class="problem-media" 
-               id="problemMedia" 
-               width="800" 
-               height="400" 
-               autoplay 
-               loop 
-               muted 
-               playsinline>
-        </video>
+        <!-- 動画 -->
+        <div class="video-container">
+            <video src="https://souchan917.github.io/webnazorikaishita/assets/movie/Q5_nazo.mp4" 
+                   class="problem-media" 
+                   id="problemMedia" 
+                   width="800" 
+                   height="400" 
+                   autoplay 
+                   loop 
+                   muted 
+                   playsinline>
+            </video>
+    
+            <!-- 再生速度調整スライダー -->
+
+        </div>
     
         <div class="answer-section">
             <input type="text" class="answer-input" id="answerInput" placeholder="答えを入力してください">
             <button type="button" class="submit-button" id="submitAnswer">送信</button>
+        </div>
+    </div>
+    <!-- 一口メモ セクション -->
+    <div class="memo-section">
+        <h2>一口メモ！！</h2>
+        <p>画像や要素を設定するときは、大きさに注意！枠からはみ出すと見切れたり、全体が表示されなくなることがあるよ。</p>
+        
+        <!-- メモ画像 -->
+        <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q5code.png" alt="一口メモの画像" class="memo-image">
+
+        <!-- 再生速度調整スライダー -->
+        <div class="speed-control">
+            <input type="range" id="speedSlider" min="-1" max="2" step="0.1" value="1" class="speed-slider">
+            <span id="speedValue" class="speed-display">1.0x</span>
         </div>
     </div>
     
@@ -459,6 +520,59 @@
             const sec = Math.floor(seconds % 60);
             return `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        const video = document.getElementById('problemMedia');
+    const speedSlider = document.getElementById('speedSlider');
+    const speedValue = document.getElementById('speedValue');
+    let reverseInterval;
+
+    // スライダーの値が変わったときに動画の再生速度を調整
+    speedSlider.addEventListener('input', (event) => {
+        const speed = parseFloat(event.target.value);
+
+        if (speed < 0) {
+            clearInterval(reverseInterval);
+            video.pause();
+            reverseInterval = setInterval(() => {
+                if (video.currentTime > 0) {
+                    video.currentTime -= 0.1;
+                } else {
+                    video.currentTime = video.duration;
+                }
+            }, 100 / Math.abs(speed));
+        } else {
+            clearInterval(reverseInterval);
+            video.playbackRate = speed;
+            video.play();
+        }
+
+        speedValue.textContent = `${speed.toFixed(1)}x`;
+    });
+
+    // クリーンアップ
+    window.addEventListener('beforeunload', () => {
+        clearInterval(reverseInterval);
+    });
     </script>
 
 
