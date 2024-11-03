@@ -242,6 +242,7 @@
             margin-bottom: 20px;
         }
 
+        /* デフォルト: スマホ用に全幅 */
         .memo-image {
             max-width: 100%;
             height: auto;
@@ -249,142 +250,30 @@
             border-radius: 5px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
             transition: transform 0.3s ease;
+            display: block;
+            margin: 20px auto; /* 画像の間に余白をつける場合 */
         }
 
-        .memo-image:hover {
-            transform: scale(1.05); /* 画像に軽い拡大エフェクト */
-        }
-
-
-
-        .voice-input-container {
-            max-width: 500px;
-            margin: 20px auto;
-            padding: 10px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        .mic-button {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: 2px solid #e0e0e0;
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 0 auto 15px;
-        }
-
-        .mic-button.recording {
-            border-color: #f44336;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(244, 67, 54, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(244, 67, 54, 0); }
-        }
-
-        .mic-button:hover {
-            border-color: #2196F3;
-        }
-
-        .mic-icon {
-            width: 32px;
-            height: 32px;
-            background: currentColor;
-            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z'%3E%3C/path%3E%3Cpath d='M19 10v2a7 7 0 0 1-14 0v-2'%3E%3C/path%3E%3Cline x1='12' y1='19' x2='12' y2='23'%3E%3C/line%3E%3Cline x1='8' y1='23' x2='16' y2='23'%3E%3C/line%3E%3C/svg%3E") no-repeat 50% 50%;
-            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z'%3E%3C/path%3E%3Cpath d='M19 10v2a7 7 0 0 1-14 0v-2'%3E%3C/path%3E%3Cline x1='12' y1='19' x2='12' y2='23'%3E%3C/line%3E%3Cline x1='8' y1='23' x2='16' y2='23'%3E%3C/line%3E%3C/svg%3E") no-repeat 50% 50%;
-        }
-
-        .visualizer {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 3px;
-            height: 40px;
-            margin: 15px auto;
-            padding: 0 20px;
-            max-width: 300px;
-        }
-
-        .visualizer-bar {
-            width: 4px;
-            height: 15%;
-            background: #2196F3;
-            border-radius: 2px;
-            transition: height 0.2s ease;
-        }
-
-        .recording .visualizer-bar {
-            animation: sound-wave 1s ease-in-out infinite;
-        }
-        
-        @keyframes wave {
-            0%, 100% { transform: translateY(0); }
-            25% { transform: translateY(-5px); }
-            75% { transform: translateY(5px); }
-        }
-
-        .wavy-text {
-            display: inline-block;
-            animation: wave 0.8s ease-in-out infinite;
+        /* パソコン用に最大幅を制限 */
+        @media (min-width: 768px) {
+            .memo-image {
+                max-width: 600px; /* 必要に応じて調整 */
+            }
         }
 
 
-        @keyframes sound-wave {
-            0%, 100% { height: 20%; }
-            50% { height: 100%; }
-        }
 
-        .visualizer-bar:nth-child(1) { animation-delay: 0.0s; }
-        .visualizer-bar:nth-child(2) { animation-delay: 0.1s; }
-        .visualizer-bar:nth-child(3) { animation-delay: 0.2s; }
-        .visualizer-bar:nth-child(4) { animation-delay: 0.3s; }
-        .visualizer-bar:nth-child(5) { animation-delay: 0.4s; }
-        .visualizer-bar:nth-child(6) { animation-delay: 0.5s; }
-        .visualizer-bar:nth-child(7) { animation-delay: 0.6s; }
-        .visualizer-bar:nth-child(8) { animation-delay: 0.7s; }
 
-        .status-text {
-            text-align: center;
-            color: #666;
-            margin: 10px 0;
-            font-size: 14px;
-        }
-
-        .status-text.error {
-            color: #f44336;
-        }
-
-        .submit-button {
+        #canvas-container {
             width: 100%;
-            max-width: 300px;
-            padding: 12px;
-            background: #2196F3;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background 0.3s ease;
-            margin: 0 auto;
+            height: 300px;
+            margin: 20px 0;
         }
 
-        .submit-button:hover {
-            background: #1976D2;
-        }
-
-        .submit-button:disabled {
-            background: #ccc;
-
+        canvas {
+            display: block;
+            width: 100% !important;
+            height: 100% !important;
         }
     </style>
 </head>
@@ -411,47 +300,39 @@
     </div>
     
     <div class="content-container">
-        <div class="puzzle-number">Q7</div>
-        <h1>音声認識技術</h1>
+        <div class="puzzle-number">Q8</div>
+        <h1>3D!!</h1>
         
-        <img src="/api/placeholder/800/400" alt="問題の画像" class="problem-media" id="problemMedia">
-        
-        <div class="voice-input-container">
-            <button class="mic-button" id="micButton">
-              <div class="mic-icon"></div>
-            </button>
-            <div class="visualizer" id="visualizer">
-              <div class="visualizer-bar"></div>
-              <div class="visualizer-bar"></div>
-              <div class="visualizer-bar"></div>
-              <div class="visualizer-bar"></div>
-              <div class="visualizer-bar"></div>
-              <div class="visualizer-bar"></div>
-              <div class="visualizer-bar"></div>
-              <div class="visualizer-bar"></div>
-            </div>
-            <p class="status-text" id="statusText">マイクを押して回答を開始</p>
-            <button class="submit-button" id="submitButton" disabled>送信</button>
+        <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q8_nazo.png" alt="問題の画像" class="problem-media" id="problemMedia">
+
+        <div id="canvas-container"></div>
+
+        <div class="answer-section">
+            <input type="text" class="answer-input" id="answerInput" placeholder="答えを入力してください">
+            <button type="button" class="submit-button" id="submitAnswer">送信</button>
         </div>
     </div>
     <!-- 一口メモ セクション -->
     <div class="memo-section">
         <h2>一口メモ！！</h2>
-        <p>CSSを使うと、色、サイズ、位置、影、アニメーションなど、たくさんのデザインを調整できます！</p>
+        <p>Three.jsは、3Dグラフィックスを手軽にウェブに組み込めるすごいツールです！立体的なオブジェクトやアニメーションを作るのに最適で、これだけでWebページがぐっと楽しくなります。</p>
+        <p>今回は3種類の生き物を作ってみました！！なかなか難しかったけど達成感があります！！</p>
+        <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q8code.png" alt="一口メモの画像" class="memo-image">
 
-        <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q1code.png" alt="一口メモの画像" class="memo-image">
+        <p>ちなみにすごい人はこんなの作れちゃうみたいです！</p>
+        <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q8code2.png" alt="メモの画像" class="memo-image">
     </div>
 
     <script>
- // BGM機能
-        const bgmButton = document.getElementById('bgmToggle');
-        let bgm = new Audio('https://souchan917.github.io/webnazorikaishita/assets/audio/Q4_BGM.mp3');
-        bgm.loop = true;
-
-        // BGMの状態を復元
+        // BGM機能と既存の機能
         document.addEventListener('DOMContentLoaded', () => {
+            // 既存のBGM機能
+            const bgmButton = document.getElementById('bgmToggle');
+            let bgm = new Audio('https://souchan917.github.io/webnazorikaishita/assets/audio/Q4_BGM.mp3');
+            bgm.loop = true;
+        
+            // BGMの状態を復元
             const isBgmPlaying = localStorage.getItem('bgmPlaying') === 'true';
-            
             if (isBgmPlaying) {
                 bgm.play().catch(error => {
                     console.log('BGM再生エラー:', error);
@@ -461,40 +342,47 @@
             } else {
                 bgmButton.querySelector('.bgm-status').textContent = 'OFF';
             }
+        
+            // BGMボタンのクリックイベント
+            bgmButton.addEventListener('click', () => {
+                const isPlaying = bgmButton.classList.contains('playing');
+                if (isPlaying) {
+                    bgm.pause();
+                    bgmButton.classList.remove('playing');
+                    bgmButton.querySelector('.bgm-status').textContent = 'OFF';
+                    localStorage.setItem('bgmPlaying', 'false');
+                } else {
+                    bgm.play().catch(error => {
+                        console.log('BGM再生エラー:', error);
+                    });
+                    bgmButton.classList.add('playing');
+                    bgmButton.querySelector('.bgm-status').textContent = 'ON';
+                    localStorage.setItem('bgmPlaying', 'true');
+                }
+            });
+        
+            // 問題と答えのマッピング
+            const puzzleAnswers = {
+                1: "brain",
+                2: "あああ",
+                3: "mirror",
+                4: "shadow",
+                5: "puzzle",
+                6: "memory",
+                7: "secret",
+                8: "りょうり",
+                9: "final"
+            };
+        
+            // ナビゲーション更新
+            updateNavigation();
+            checkAnswerStatus();
+        
+            // THREE.jsの初期化と実行
+            initThreeJS();
         });
-
-        // BGMボタンのクリックイベント
-        bgmButton.addEventListener('click', () => {
-            const isPlaying = bgmButton.classList.contains('playing');
-            
-            if (isPlaying) {
-                bgm.pause();
-                bgmButton.classList.remove('playing');
-                bgmButton.querySelector('.bgm-status').textContent = 'OFF';
-                localStorage.setItem('bgmPlaying', 'false');
-            } else {
-                bgm.play().catch(error => {
-                    console.log('BGM再生エラー:', error);
-                });
-                bgmButton.classList.add('playing');
-                bgmButton.querySelector('.bgm-status').textContent = 'ON';
-                localStorage.setItem('bgmPlaying', 'true');
-            }
-        });
-
-        // 問題と答えのマッピング
-        const puzzleAnswers = {
-            1: "brain",
-            2: "あああ",
-            3: "mirror",
-            4: "shadow",
-            5: "puzzle",
-            6: "memory",
-            7: "secret",
-            8: "hidden",
-            9: "final"
-        };
-
+        
+        // ナビゲーション更新関数
         function updateNavigation() {
             const progress = parseInt(localStorage.getItem('puzzleProgress') || '1');
             for (let i = 1; i <= 9; i++) {
@@ -509,30 +397,31 @@
                 }
             }
         }
-
+        
+        // 答えの状態チェック関数
         function checkAnswerStatus() {
-            const currentPuzzle = 7; // 問題番号を固定（例: 1問目）
+            const currentPuzzle = 8;
             const savedAnswer = localStorage.getItem(`answer_${currentPuzzle}`);
             
             if (savedAnswer) {
-                // 正解が保存されている場合、非活性化して答えを表示
                 document.getElementById('answerInput').value = savedAnswer;
                 document.getElementById('answerInput').disabled = true;
                 document.getElementById('submitAnswer').disabled = true;
             }
         }
-
+        
+        // 回答送信のイベントリスナー
         document.getElementById('submitAnswer').addEventListener('click', () => {
-            const currentPuzzle = 7;  // 1問目に固定
+            const currentPuzzle = 8;
             const answer = document.getElementById('answerInput').value.trim().toLowerCase();
             const correctAnswer = puzzleAnswers[currentPuzzle];
-
+        
             if (answer === correctAnswer) {
                 alert('正解！次の問題へ進みます。');
                 localStorage.setItem('puzzleProgress', currentPuzzle + 1);
-                localStorage.setItem(`answer_${currentPuzzle}`, answer); // 正解を保存
-                document.getElementById('answerInput').disabled = true;  // 入力フィールドを非活性化
-                document.getElementById('submitAnswer').disabled = true; // 送信ボタンも非活性化
+                localStorage.setItem(`answer_${currentPuzzle}`, answer);
+                document.getElementById('answerInput').disabled = true;
+                document.getElementById('submitAnswer').disabled = true;
                 if (currentPuzzle < 9) {
                     window.location.href = `question-${currentPuzzle + 1}.html`;
                 } else {
@@ -542,32 +431,234 @@
                 alert('不正解です。もう一度考えてみましょう。');
             }
         });
+        
+        function initThreeJS() {
+            import('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js')
+                .then((THREE) => {
+                    // ===== 最初のシーン（4つのジャンプ）の設定 =====
+                    const scene1 = new THREE.Scene();
+                    const container1 = document.getElementById('canvas-container');
+                    const aspect1 = container1.offsetWidth / container1.offsetHeight;
+                    
+                    const camera1 = new THREE.PerspectiveCamera(45, aspect1, 1, 1000);
+                    const renderer1 = new THREE.WebGLRenderer({ antialias: true });
+                    renderer1.setSize(container1.offsetWidth, container1.offsetHeight);
+                    container1.appendChild(renderer1.domElement);
 
-        // ページ読み込み時に答えの状態を確認
-        document.addEventListener('DOMContentLoaded', () => {
-            updateNavigation();
-            checkAnswerStatus(); // 答えが正解済みか確認
-        });
+                    scene1.background = new THREE.Color(0xf5f5f5);
 
-        micButton.addEventListener('click', function() {
-            micButton.classList.add('recording');
-            visualizer.classList.add('recording');
-            statusText.textContent = '音声を認識中...';
-            console.log("Recording class added to micButton:", micButton.classList.contains('recording')); // 確認用
-            console.log("Recording class added to visualizer:", visualizer.classList.contains('recording')); // 確認用
-            submitButton.disabled = true;
-            micButton.disabled = true;
+                    // 4つの立方体を作成
+                    const cubes1 = [];
+                    const cubeSpacing = 1.5; // 立方体間の間隔
 
-            recordingTimeout = setTimeout(() => {
-                micButton.classList.remove('recording');
-                visualizer.classList.remove('recording');
-                statusText.textContent = '認識に失敗しました。もう一度お試しください。';
-                statusText.classList.add('error');
-                micButton.disabled = false;
-            }, 5000);
-        });
+                    for(let i = 0; i < 4; i++) {
+                        const geometry = new THREE.BoxGeometry(0.8, 0.8, 0.8);
+                        const material = new THREE.MeshPhongMaterial({ 
+                            color: 0x2196F3,
+                            shininess: 60
+                        });
+                        const cube = new THREE.Mesh(geometry, material);
+                        // X座標を等間隔で配置（中心を基準に）
+                        cube.position.x = (i - 1.5) * cubeSpacing;
+                        scene1.add(cube);
+                        cubes1.push(cube);
+                    }
 
-    </script>
+                    const floor1 = new THREE.Mesh(
+                        new THREE.PlaneGeometry(12, 8),
+                        new THREE.MeshPhongMaterial({ 
+                            color: 0xe0e0e0,
+                            side: THREE.DoubleSide
+                        })
+                    );
+                    floor1.rotation.x = Math.PI / 2;
+                    floor1.position.y = -0.2;
+                    scene1.add(floor1);
+
+                    // ===== 2つ目のシーン（2つの円運動）の設定 =====
+                    const container3 = document.createElement('div');
+                    container3.id = 'canvas-container-3';
+                    container3.style.width = '100%';
+                    container3.style.height = '300px';
+                    container3.style.marginTop = '20px';
+                    container1.after(container3);
+
+                    const scene3 = new THREE.Scene();
+                    const aspect3 = container3.offsetWidth / container3.offsetHeight;
+
+                    const camera3 = new THREE.PerspectiveCamera(45, aspect3, 1, 1000);
+                    const renderer3 = new THREE.WebGLRenderer({ antialias: true });
+                    renderer3.setSize(container3.offsetWidth, container3.offsetHeight);
+                    container3.appendChild(renderer3.domElement);
+
+                    scene3.background = new THREE.Color(0xf5f5f5);
+
+                    // 2つの立方体を作成
+                    const cubes3 = [];
+                    for(let i = 0; i < 2; i++) {
+                        const geometry3 = new THREE.BoxGeometry(0.8, 0.8, 0.8);
+                        const material3 = new THREE.MeshPhongMaterial({ 
+                            color: 0x2196F3,
+                            shininess: 60
+                        });
+                        const cube = new THREE.Mesh(geometry3, material3);
+                        cube.position.y = 0.2;
+                        scene3.add(cube);
+                        cubes3.push(cube);
+                    }
+
+                    const floor3 = new THREE.Mesh(
+                        new THREE.PlaneGeometry(10, 10),
+                        new THREE.MeshPhongMaterial({ 
+                            color: 0xe0e0e0,
+                            side: THREE.DoubleSide
+                        })
+                    );
+                    floor3.rotation.x = Math.PI / 2;
+                    floor3.position.y = -0.2;
+                    scene3.add(floor3);
+
+                    // ===== 3つ目のシーン（反復横跳び）の設定 =====
+                    const container2 = document.createElement('div');
+                    container2.id = 'canvas-container-2';
+                    container2.style.width = '100%';
+                    container2.style.height = '300px';
+                    container2.style.marginTop = '20px';
+                    container3.after(container2);
+
+                    const scene2 = new THREE.Scene();
+                    const aspect2 = container2.offsetWidth / container2.offsetHeight;
+                    
+                    const camera2 = new THREE.PerspectiveCamera(45, aspect2, 1, 1000);
+                    const renderer2 = new THREE.WebGLRenderer({ antialias: true });
+                    renderer2.setSize(container2.offsetWidth, container2.offsetHeight);
+                    container2.appendChild(renderer2.domElement);
+
+                    scene2.background = new THREE.Color(0xf5f5f5);
+
+                    const geometry2 = new THREE.BoxGeometry(0.8, 0.8, 0.8);
+                    const material2 = new THREE.MeshPhongMaterial({ 
+                        color: 0x2196F3,
+                        shininess: 60
+                    });
+                    const cube2 = new THREE.Mesh(geometry2, material2);
+                    scene2.add(cube2);
+
+                    const floor2 = new THREE.Mesh(
+                        new THREE.PlaneGeometry(12, 8),
+                        new THREE.MeshPhongMaterial({ 
+                            color: 0xe0e0e0,
+                            side: THREE.DoubleSide
+                        })
+                    );
+                    floor2.rotation.x = Math.PI / 2;
+                    floor2.position.y = -0.6;
+                    scene2.add(floor2);
+
+                    // 全てのシーンにライトを追加
+                    [scene1, scene2, scene3].forEach(scene => {
+                        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+                        scene.add(ambientLight);
+
+                        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
+                        directionalLight.position.set(3, 4, 2);
+                        scene.add(directionalLight);
+                    });
+
+                    // カメラの位置設定
+                    camera1.position.set(0, 2, 10); // 4つの立方体が見えるように調整
+                    camera1.lookAt(0, 0, 0);
+
+                    camera3.position.set(0, 4, 8);
+                    camera3.lookAt(0, 0, 0);
+
+                    camera2.position.set(0, 2.5, 8);
+                    camera2.lookAt(0, 0, 0);
+
+                    // アニメーションの設定
+                    let time = 0;
+                    const jumpHeight1 = 1;      // 上のキューブのジャンプ高さ
+                    const jumpHeight2 = 0.5;    // 下のキューブのジャンプ高さ
+                    const sideDistance = 2;     // 横移動の距離
+                    const jumpSpeed = 0.05;     // 基本速度
+
+                    function getSideJumpPosition(t) {
+                        // 4ステップの動きを作成（0: 中央→右, 1: 右→中央, 2: 中央→左, 3: 左→中央）
+                        const cycle = 4;
+                        const step = (t % cycle);
+                        
+                        if (step < 1) {
+                            // 中央から右へ
+                            return step * sideDistance;
+                        } else if (step < 2) {
+                            // 右から中央へ
+                            return sideDistance * (2 - step);
+                        } else if (step < 3) {
+                            // 中央から左へ
+                            return -sideDistance * (step - 2);
+                        } else {
+                            // 左から中央へ
+                            return -sideDistance * (4 - step);
+                        }
+                    }
+
+                    function animate() {
+                        requestAnimationFrame(animate);
+                        
+                        time += jumpSpeed;
+                        
+                        // 1つ目のシーン（4つのバラバラなジャンプ）
+                        cubes1.forEach((cube, index) => {
+                            // それぞれ異なる位相でジャンプ
+                            const offset = index * (Math.PI / 2); // 90度ずつずらす
+                            cube.position.y = Math.abs(Math.sin(time + offset)) * jumpHeight1;
+                        });
+
+                        // 2つ目のシーン（2つの円運動）
+                        const radius = 2;  // 円の半径
+                        const circleSpeed = time * 0.5;  // 円運動の速度
+                        const phaseOffset = Math.PI; // 180度の位相差
+
+                        cubes3.forEach((cube, index) => {
+                            const angle = circleSpeed + (index * phaseOffset); // 2つ目は180度ずらす
+                            cube.position.x = Math.cos(angle) * radius;
+                            cube.position.z = Math.sin(angle) * radius;
+                            cube.lookAt(0, cube.position.y, 0);
+                        });
+
+                        // 3つ目のシーン（反復横跳び）
+                        const sideTime = time * 1.;
+                        cube2.position.x = getSideJumpPosition(sideTime);
+                        cube2.position.y = Math.abs(Math.sin(sideTime * Math.PI * 1)) * jumpHeight2;
+
+                        // 全てのシーンをレンダリング
+                        renderer1.render(scene1, camera1);
+                        renderer3.render(scene3, camera3);
+                        renderer2.render(scene2, camera2);
+                    }
+
+                    // レスポンシブ対応
+                    window.addEventListener('resize', function() {
+                        [
+                            { container: container1, renderer: renderer1, camera: camera1 },
+                            { container: container3, renderer: renderer3, camera: camera3 },
+                            { container: container2, renderer: renderer2, camera: camera2 }
+                        ].forEach(({container, renderer, camera}) => {
+                            const width = container.offsetWidth;
+                            const height = container.offsetHeight;
+                            renderer.setSize(width, height);
+                            camera.aspect = width / height;
+                            camera.updateProjectionMatrix();
+                        });
+                    });
+
+                    animate();
+                })
+                .catch(error => {
+                    console.error('THREE.jsの読み込みエラー:', error);
+                });
+        }
+        </script>
 
 </body>
 </html>
