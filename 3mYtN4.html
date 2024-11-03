@@ -564,11 +564,10 @@
             }
         }
 
-        // 進行状況に応じて問題選択のドロップダウンを制限
         function updateProblemSelector() {
             const progress = parseInt(localStorage.getItem('puzzleProgress') || '1');
             
-            // 進行状況が8未満の場合、選択を「Q3」に固定
+            // ドロップダウンを非活性化、または活性化
             if (progress < 8) {
                 problemSelector.value = "3";
                 problemSelector.disabled = true;  // Q3に固定、ドロップダウンを非活性化
@@ -579,9 +578,10 @@
                     option.style.display = 'block';
                 });
                 problemSelector.disabled = false; // ドロップダウンの活性化
-                problemSelector.value = progress.toString(); // 最新の進行状況をデフォルトに設定
+                problemSelector.value = "3"; // 解放後もQ3が選択されるように設定
             }
         }
+
 
         // ページ読み込み時に進行状況に応じた選択肢を制限
         document.addEventListener('DOMContentLoaded', () => {
