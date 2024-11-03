@@ -445,7 +445,7 @@
     </div>
 
     <script>
- // BGM機能
+// BGM機能
         const bgmButton = document.getElementById('bgmToggle');
         let bgm = new Audio('https://souchan917.github.io/webnazorikaishita/assets/audio/Q4_BGM.mp3');
         bgm.loop = true;
@@ -484,14 +484,14 @@
             }
         });
 
-// 問題と答えのマッピング
+        // 問題と答えのマッピング
         const puzzleAnswers = {
             1: "brain",
             2: "ういんく",
             3: "mirror",
             4: "shadow",
             5: "puzzle",
-            6: "ほわいと",
+            6: "memory",
             7: "secret",
             8: "hidden",
             9: "final"
@@ -550,26 +550,6 @@
             updateNavigation();
             checkAnswerStatus(); // 答えが正解済みか確認
         });
-
-
-        micButton.addEventListener('click', function() {
-            micButton.classList.add('recording');
-            visualizer.classList.add('recording');
-            statusText.textContent = '音声を認識中...';
-            console.log("Recording class added to micButton:", micButton.classList.contains('recording')); // 確認用
-            console.log("Recording class added to visualizer:", visualizer.classList.contains('recording')); // 確認用
-            submitButton.disabled = true;
-            micButton.disabled = true;
-
-            recordingTimeout = setTimeout(() => {
-                micButton.classList.remove('recording');
-                visualizer.classList.remove('recording');
-                statusText.textContent = '認識に失敗しました。もう一度お試しください。';
-                statusText.classList.add('error');
-                micButton.disabled = false;
-            }, 5000);
-        });
-
     </script>
 
 </body>
