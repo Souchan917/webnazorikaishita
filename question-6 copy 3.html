@@ -215,16 +215,9 @@
         }
 
 
-        #problemMedia {
-            pointer-events: none;
-        }
+        
 
-        .speed-control {
-            display: block;
-            text-align: center;
-            margin-bottom: 20px; /* スライダーの下にスペースを追加 */
-        }
-         .memo-section {
+        .memo-section {
             background: #FAF5FF;
             padding: 10px;
             border-top: 4px solid #9370DB;
@@ -256,7 +249,10 @@
             border-radius: 5px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
             transition: transform 0.3s ease;
-            margin-bottom: 15px; /* 画像の下にスペースを追加 */
+        }
+
+        .memo-image:hover {
+            transform: scale(1.05); /* 画像に軽い拡大エフェクト */
         }
 
     </style>
@@ -285,46 +281,23 @@
     
     <div class="content-container">
         <div class="puzzle-number">Q6</div>
-        <h1>動画謎</h1>
-    
-        <!-- 動画 -->
-        <div class="video-container">
-            <video src="https://souchan917.github.io/webnazorikaishita/assets/movie/Q5_nazo.mp4" 
-                   class="problem-media" 
-                   id="problemMedia" 
-                   width="800" 
-                   height="400" 
-                   autoplay 
-                   loop 
-                   muted 
-                   playsinline>
-            </video>
-    
-            <!-- 再生速度調整スライダー -->
-
-        </div>
-    
+        <h1>音声入力！</h1>
+        
+        <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q6_nazo.png" alt="問題の画像" class="problem-media" id="problemMedia">
+        
         <div class="answer-section">
-            <input type="text" class="answer-input" id="answerInput" placeholder="答えを入力してください">
+            
+            <!-- <input type="text" class="answer-input" id="answerInput" placeholder="答えを入力してください"> -->
             <button type="button" class="submit-button" id="submitAnswer">送信</button>
         </div>
     </div>
     <!-- 一口メモ セクション -->
     <div class="memo-section">
         <h2>一口メモ！！</h2>
-        <p>動画はこんな感じで設定しています！速度設定できるんだけど再生速度はか1倍速が基本かな！</p>
-        <p>それと、問題の動画が早すぎるって人のために速度調整スライダーも用意しといたよ！</p>
-        <!-- メモ画像 -->
-        <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q6code.png" alt="一口メモの画像" class="memo-image">
+        <p>画像や要素を設定するときは、大きさに注意！枠からはみ出すと見切れたり、全体が表示されなくなることがあるよ。特に、overflow: hidden;がある場合は、枠に収まるようにサイズを調整しよう！！</p>
 
-        <!-- 再生速度調整スライダー -->
-        <div class="speed-control">
-            <input type="range" id="speedSlider" min="-1" max="2" step="0.1" value="1" class="speed-slider">
-            <span id="speedValue" class="speed-display">1.0x</span>
-        </div>
+        <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q6code.png" alt="一口メモの画像" class="memo-image">
     </div>
-    
-    
 
     <script>
  // BGM機能
@@ -366,14 +339,13 @@
             }
         });
 
-
         // 問題と答えのマッピング
         const puzzleAnswers = {
             1: "brain",
-            2: "window",
+            2: "ういんく",
             3: "mirror",
             4: "shadow",
-            5: "わがさ",
+            5: "puzzle",
             6: "memory",
             7: "secret",
             8: "hidden",
@@ -441,13 +413,6 @@
 
 
 
-
-
-
-    
-
- 
-         
         // グローバルなオーディオオブジェクトの設定
         const puzzleAudio = new Audio('https://souchan917.github.io/webnazorikaishita/assets/audio/Q4_nazo.mp3');
         puzzleAudio.loop = true; // ループ再生設定
@@ -520,61 +485,7 @@
             const sec = Math.floor(seconds % 60);
             return `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        const video = document.getElementById('problemMedia');
-    const speedSlider = document.getElementById('speedSlider');
-    const speedValue = document.getElementById('speedValue');
-    let reverseInterval;
-
-    // スライダーの値が変わったときに動画の再生速度を調整
-    speedSlider.addEventListener('input', (event) => {
-        const speed = parseFloat(event.target.value);
-
-        if (speed < 0) {
-            clearInterval(reverseInterval);
-            video.pause();
-            reverseInterval = setInterval(() => {
-                if (video.currentTime > 0) {
-                    video.currentTime -= 0.1;
-                } else {
-                    video.currentTime = video.duration;
-                }
-            }, 100 / Math.abs(speed));
-        } else {
-            clearInterval(reverseInterval);
-            video.playbackRate = speed;
-            video.play();
-        }
-
-        speedValue.textContent = `${speed.toFixed(1)}x`;
-    });
-
-    // クリーンアップ
-    window.addEventListener('beforeunload', () => {
-        clearInterval(reverseInterval);
-    });
     </script>
-
 
 </body>
 </html>
