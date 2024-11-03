@@ -484,7 +484,7 @@
     </div>
 
     <div class="content-container">
-        <h1>2Q3</h1>
+        <h1>3Q3</h1>
         <h2>AIに質問をすることでQ3の答えを突き止めよう！！</h2>
         <h3>AIは「はい」、「いいえ」、「わかりません」と答える</h3>
 
@@ -532,6 +532,8 @@
         const typingIndicator = document.getElementById('typingIndicator');
         const problemSelector = document.getElementById('problemSelector');
 
+        console.log("Script loaded successfully.");
+        
         // グローバルにURLマッピングを定義
         const urlMapping = {
             1: '1qXyZ3.html',
@@ -544,145 +546,136 @@
             8: '8yC3sN.html',
             9: '9finalPage.html'
         };
+        
+        console.log("URL mapping:", urlMapping);
 
         // ナビゲーションの更新
         function updateNavigation() {
             const progress = parseInt(localStorage.getItem('puzzleProgress') || '1');
+            console.log("Updating navigation. Current progress:", progress);
+            
             for (let i = 1; i <= 8; i++) {
                 const button = document.getElementById('nav' + i);
-                if (button) {  // ボタンが存在する場合のみ操作
+                if (button) {
+                    console.log(`Found button for nav${i}`);
                     if (i <= progress) {
                         button.classList.remove('disabled');
                         button.addEventListener('click', () => {
-                            // URLマッピングを使って移動先のURLを設定
+                            console.log(`Navigating to URL: ${urlMapping[i]}`);
                             window.location.href = urlMapping[i];
                         });
                     } else {
                         button.classList.add('disabled');
                     }
+                } else {
+                    console.log(`Button for nav${i} not found`);
                 }
             }
         }
 
         function updateProblemSelector() {
             const progress = parseInt(localStorage.getItem('puzzleProgress') || '1');
+            console.log("Updating problem selector. Current progress:", progress);
             
-            // ドロップダウンを非活性化、または活性化
             if (progress < 8) {
                 problemSelector.value = "3";
-                problemSelector.disabled = true;  // Q3に固定、ドロップダウンを非活性化
+                problemSelector.disabled = true;
+                console.log("Problem selector locked to Q3.");
             } else {
-                // 進行状況が8以上の場合、選択肢を解放
                 Array.from(problemSelector.options).forEach(option => {
                     option.disabled = false;
                     option.style.display = 'block';
                 });
-                problemSelector.disabled = false; // ドロップダウンの活性化
-                problemSelector.value = "3"; // 解放後もQ3が選択されるように設定
+                problemSelector.disabled = false;
+                problemSelector.value = "3";
+                console.log("Problem selector unlocked.");
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // ページ読み込み時に進行状況に応じた選択肢を制限
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('--- ページ読み込み ---');
+            console.log('--- Page loaded ---');
             updateNavigation();
-            loadChatHistory(); // 追加：チャット履歴を読み込む
+            loadChatHistory();
             checkAnswerStatus();
             updateProblemSelector();
         });
 
         function saveChatHistory(content, type) {
-            console.log(`--- saveChatHistory 呼び出し --- メッセージ: "${content}", タイプ: "${type}"`);
+            console.log(`Saving chat history: ${content}, Type: ${type}`);
             const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
             chatHistory.push({ content, type });
             localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
-            console.log('保存後の chatHistory:', JSON.parse(localStorage.getItem('chatHistory')));
+            console.log('Chat history after saving:', JSON.parse(localStorage.getItem('chatHistory')));
         }
 
-
-
         function loadChatHistory() {
-            console.log('--- チャット履歴をlocalStorageから読み込み ---');
+            console.log('Loading chat history from localStorage');
             const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
-            console.log('読み込まれたチャット履歴:', chatHistory);
+            console.log('Loaded chat history:', chatHistory);
 
-            chatContainer.innerHTML = ''; // 読み込み前に一度クリア
+            chatContainer.innerHTML = '';
             chatHistory.forEach(message => {
                 addMessage(message.content, message.type);
             });
         }
 
-
         function resetChatHistory() {
-            if (confirm('チャット履歴をリセットしてもよろしいですか？')) {
-                console.log('--- チャット履歴リセット ---');
+            if (confirm('Are you sure you want to reset chat history?')) {
+                console.log('Resetting chat history');
                 chatContainer.innerHTML = '';
                 questionInput.focus();
-                localStorage.removeItem('chatHistory'); // チャット履歴を削除
+                localStorage.removeItem('chatHistory');
             }
         }
 
         async function handleQuestion() {
             if (isSubmitting) return;
+            console.log("Handling question submission.");
 
             const question = questionInput.value.trim();
             const selectedProblem = problemSelector.value;
 
+            console.log("Question entered:", question);
+            console.log("Selected problem:", selectedProblem);
+
             if (!question) {
-                showError('質問を入力してください');
+                showError('Please enter a question.');
                 return;
             }
 
             try {
-                console.log('--- 質問送信開始 --- 質問:', question, '選択された問題:', selectedProblem);
+                console.log("Starting question submission process.");
                 isSubmitting = true;
                 addMessage(question, 'user');
-                saveChatHistory(question, 'user'); // ユーザーの質問を保存
+                saveChatHistory(question, 'user');
                 questionInput.disabled = true;
                 typingIndicator.style.display = 'block';
 
                 const response = await getAIResponse(question, selectedProblem);
+                console.log("Received response:", response);
+
                 if (response.error) {
                     showError(response.error);
                 } else {
                     addMessage(response, 'ai');
-                    saveChatHistory(response, 'ai'); // AIの応答を保存
+                    saveChatHistory(response, 'ai');
                 }
 
             } catch (error) {
-                showError('通信エラーが発生しました。もう一度お試しください。');
+                showError('Communication error. Please try again.');
+                console.error("Error during question submission:", error);
             } finally {
                 isSubmitting = false;
                 questionInput.disabled = false;
                 typingIndicator.style.display = 'none';
                 questionInput.value = '';
                 questionInput.focus();
-                console.log('--- 質問送信終了 ---');
+                console.log("Question submission process ended.");
             }
         }
 
         function addMessage(content, type) {
-            console.log(`--- メッセージ追加 --- 内容: "${content}", タイプ: "${type}"`);
+            console.log(`Adding message: ${content}, Type: ${type}`);
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${type}-message`;
             messageDiv.textContent = content;
@@ -691,7 +684,7 @@
         }
 
         function showError(message) {
-            console.log('--- エラー表示 --- メッセージ:', message);
+            console.log("Showing error message:", message);
             const errorDiv = document.createElement('div');
             errorDiv.className = 'message ai-message error';
             errorDiv.textContent = message;
@@ -700,7 +693,7 @@
         }
 
         async function getAIResponse(question, selectedProblem) {
-            console.log(`--- AI応答取得開始 --- 質問: "${question}", 問題ID: "${selectedProblem}"`);
+            console.log("Fetching AI response. Question:", question, "Selected problem:", selectedProblem);
             try {
                 const requestOptions = {
                     method: "POST",
@@ -716,27 +709,29 @@
                     })
                 };
 
+                console.log("Request options:", requestOptions);
+
                 const response = await fetch(vercelFunctionUrl, requestOptions);
-                console.log('APIリクエスト送信', requestOptions);
+                console.log("API request sent:", requestOptions);
+
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
                 const data = await response.json();
-                console.log('APIからの応答データ:', data);
+                console.log("API response data:", data);
                 return data.reply;
 
             } catch (error) {
-                console.error('API通信エラー:', error.message);
-                throw new Error(error.message || 'APIとの通信中にエラーが発生しました');
+                console.error("API communication error:", error.message);
+                throw new Error(error.message || 'Error occurred while communicating with the API');
             }
         }
 
-        // イベントリスナーの設定
+        // Event listeners
         document.getElementById('sendQuestion').addEventListener('click', () => handleQuestion());
         document.getElementById('resetChat').addEventListener('click', () => resetChatHistory());
 
-        // Enterキーでの送信
         questionInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
@@ -745,9 +740,6 @@
         });
 
         let isSubmitting = false;
-
-
-
 
 
 
