@@ -2,25 +2,32 @@
 export class PuzzleNavigation {
     constructor() {
         this.totalQuestions = 9;
-        // もし進捗が保存されていない場合は、現在のページ番号を基準にする
         this.currentProgress = this.getProgress();
         this.initializeNavigation();
+        
+        // 現在のページが「通過ページ」だった場合、進行状況を1つ進める
+        this.updateProgressForPassThroughPage();
     }
 
     // 現在の進行状況を取得
     getProgress() {
         const savedProgress = localStorage.getItem('puzzleProgress');
-        // 現在のページ番号を取得（URLから）
         const currentPage = parseInt(window.location.pathname.match(/question-(\d+)\.html/)?.[1] || '1');
         
-        // 保存された進捗がない場合は現在のページ番号を返す
         if (!savedProgress) {
             localStorage.setItem('puzzleProgress', currentPage.toString());
             return currentPage;
         }
         
-        // 保存された進捗と現在のページ番号の大きい方を返す
         return Math.max(parseInt(savedProgress), currentPage);
+    }
+
+    // 通過ページの場合に進行状況を更新
+    updateProgressForPassThroughPage() {
+        const passThroughPage = 6; // 例：通過用のページ番号
+        if (window.location.pathname.includes(`question-${passThroughPage}.html`)) {
+            this.updateProgress(passThroughPage + 1); // 次の問題への進行状況に更新
+        }
     }
 
     // 進行状況を更新
@@ -34,7 +41,6 @@ export class PuzzleNavigation {
 
     // ナビゲーションの初期化
     initializeNavigation() {
-        // ナビゲーションボタンの生成と配置
         const nav = document.createElement('nav');
         nav.className = 'question-nav';
         
@@ -55,44 +61,6 @@ export class PuzzleNavigation {
             nav.appendChild(button);
         }
         
-        // ページの先頭に追加
         document.body.insertBefore(nav, document.body.firstChild);
     }
 }
-
-// 問題の正解判定と遷移管理
-class PuzzleQuestion {
-    constructor(correctAnswer, nextQuestionNumber) {
-        this.correctAnswer = correctAnswer;
-        this.nextQuestionNumber = nextQuestionNumber;
-        this.navigation = new PuzzleNavigation();
-        this.initializeForm();
-    }
-
-    // フォームの初期化と送信処理の設定
-    initializeForm() {
-        const form = document.getElementById('answerForm');
-        if (form) {
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                this.checkAnswer();
-            });
-        }
-    }
-
-    // 解答のチェックと処理
-    checkAnswer() {
-        const answerInput = document.getElementById('answerInput');
-        const userAnswer = answerInput.value.trim();
-        
-        if (userAnswer.toLowerCase() === this.correctAnswer.toLowerCase()) {
-            this.navigation.updateProgress(this.nextQuestionNumber);
-            window.location.href = `question-${this.nextQuestionNumber}.html`;
-        } else {
-            alert('不正解です。もう一度考えてみましょう。');
-            answerInput.value = '';
-        }
-    }
-}
-
-export { PuzzleNavigation, PuzzleQuestion };

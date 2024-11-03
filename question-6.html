@@ -327,6 +327,22 @@
     
 
     <script>
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // ナビゲーション進行度が6未満なら、6に設定
+            const currentProgress = parseInt(localStorage.getItem('puzzleProgress') || '1');
+            
+            if (currentProgress < 6) {
+                localStorage.setItem('puzzleProgress', '6');
+            }
+
+            updateNavigation(); // ナビゲーションバーの更新
+            checkAnswerStatus(); // 答えが正解済みか確認
+        });
+
+
+        
  // BGM機能
         const bgmButton = document.getElementById('bgmToggle');
         let bgm = new Audio('https://souchan917.github.io/webnazorikaishita/assets/audio/Q4_BGM.mp3');
