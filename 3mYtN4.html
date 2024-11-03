@@ -484,7 +484,7 @@
     </div>
 
     <div class="content-container">
-        <h1>3Q3</h1>
+        <h1>4Q3</h1>
         <h2>AIに質問をすることでQ3の答えを突き止めよう！！</h2>
         <h3>AIは「はい」、「いいえ」、「わかりません」と答える</h3>
 
@@ -595,11 +595,12 @@
         document.addEventListener('DOMContentLoaded', () => {
             console.log('--- Page loaded ---');
             updateNavigation();
-            loadChatHistory();
+            loadChatHistory(); // チャット履歴を読み込む
             checkAnswerStatus();
             updateProblemSelector();
         });
 
+        // チャット履歴を保存する関数
         function saveChatHistory(content, type) {
             console.log(`Saving chat history: ${content}, Type: ${type}`);
             const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
@@ -608,6 +609,7 @@
             console.log('Chat history after saving:', JSON.parse(localStorage.getItem('chatHistory')));
         }
 
+        // チャット履歴を読み込む関数
         function loadChatHistory() {
             console.log('Loading chat history from localStorage');
             const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
@@ -619,6 +621,7 @@
             });
         }
 
+        // チャット履歴をリセットする関数
         function resetChatHistory() {
             if (confirm('Are you sure you want to reset chat history?')) {
                 console.log('Resetting chat history');
@@ -628,6 +631,7 @@
             }
         }
 
+        // 質問を処理する関数
         async function handleQuestion() {
             if (isSubmitting) return;
             console.log("Handling question submission.");
@@ -646,19 +650,20 @@
             try {
                 console.log("Starting question submission process.");
                 isSubmitting = true;
-                addMessage(question, 'user');
-                saveChatHistory(question, 'user');
+                addMessage(question, 'user');  // ユーザーの質問を表示
+                saveChatHistory(question, 'user');  // ユーザーの質問を保存
+
                 questionInput.disabled = true;
                 typingIndicator.style.display = 'block';
 
-                const response = await getAIResponse(question, selectedProblem);
+                const response = await getAIResponse(question, selectedProblem);  // AIからの応答を取得
                 console.log("Received response:", response);
 
                 if (response.error) {
                     showError(response.error);
                 } else {
-                    addMessage(response, 'ai');
-                    saveChatHistory(response, 'ai');
+                    addMessage(response, 'ai');  // AIの応答を表示
+                    saveChatHistory(response, 'ai');  // AIの応答を保存
                 }
 
             } catch (error) {
@@ -674,6 +679,7 @@
             }
         }
 
+        // チャットメッセージを追加する関数
         function addMessage(content, type) {
             console.log(`Adding message: ${content}, Type: ${type}`);
             const messageDiv = document.createElement('div');
@@ -683,6 +689,7 @@
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
+        // エラーメッセージを表示する関数
         function showError(message) {
             console.log("Showing error message:", message);
             const errorDiv = document.createElement('div');
@@ -692,6 +699,7 @@
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
+        // AIからの応答を取得する関数
         async function getAIResponse(question, selectedProblem) {
             console.log("Fetching AI response. Question:", question, "Selected problem:", selectedProblem);
             try {
@@ -728,7 +736,7 @@
             }
         }
 
-        // Event listeners
+        // イベントリスナー
         document.getElementById('sendQuestion').addEventListener('click', () => handleQuestion());
         document.getElementById('resetChat').addEventListener('click', () => resetChatHistory());
 
@@ -740,7 +748,6 @@
         });
 
         let isSubmitting = false;
-
 
 
 
