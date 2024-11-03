@@ -931,9 +931,17 @@
             if (timeDisplay) {
                 timeDisplay.textContent = formatTime(currentTime);
             }
+        });
 
-            // 再生位置を localStorage に保存
-            localStorage.setItem('puzzleAudioCurrentTime', currentTime);
+        // ページを離れる直前に再生位置を保存
+        window.addEventListener('beforeunload', () => {
+            // 再生位置と状態を保存する前にリセットする
+            localStorage.removeItem('puzzleAudioCurrentTime');
+            localStorage.removeItem('puzzleAudioIsPlaying');
+
+            // 現在の再生位置と状態を保存
+            localStorage.setItem('puzzleAudioCurrentTime', puzzleAudio.currentTime);
+            localStorage.setItem('puzzleAudioIsPlaying', !puzzleAudio.paused);
         });
 
         // 再生終了時にアイコンを初期状態に戻す
@@ -949,11 +957,6 @@
             return `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
         }
 
-        // ページを離れる直前に再生状態を保存
-        window.addEventListener('beforeunload', () => {
-            localStorage.setItem('puzzleAudioCurrentTime', puzzleAudio.currentTime);
-            localStorage.setItem('puzzleAudioIsPlaying', !puzzleAudio.paused);
-        });
     </script>
 
 </body>

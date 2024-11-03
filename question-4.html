@@ -426,7 +426,18 @@
             }
         });
     
-            // 問題音声の設定とループ再生
+       
+      
+
+
+
+
+
+
+
+        
+   
+        // グローバルなオーディオオブジェクトの設定
         const puzzleAudio = new Audio('https://souchan917.github.io/webnazorikaishita/assets/audio/Q4_nazo.mp3');
         puzzleAudio.loop = true; // ループ再生設定
 
@@ -465,7 +476,7 @@
             }
         });
 
-        // プログレスバーと時間表示を更新
+        // プログレスバーと時間表示を更新し、小まめに再生位置を保存
         puzzleAudio.addEventListener('timeupdate', () => {
             const currentTime = puzzleAudio.currentTime;
             const duration = puzzleAudio.duration;
@@ -480,7 +491,7 @@
                 timeDisplay.textContent = formatTime(currentTime);
             }
 
-            // 再生位置を localStorage に保存
+            // 再生位置を保存
             localStorage.setItem('puzzleAudioCurrentTime', currentTime);
         });
 
@@ -497,11 +508,7 @@
             return `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
         }
 
-        // ページを離れる直前に再生状態を保存
-        window.addEventListener('beforeunload', () => {
-            localStorage.setItem('puzzleAudioCurrentTime', puzzleAudio.currentTime);
-            localStorage.setItem('puzzleAudioIsPlaying', !puzzleAudio.paused);
-        });
+
     </script>
     
 </body>
