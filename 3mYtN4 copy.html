@@ -602,149 +602,156 @@
 
 
 
-        // ページ読み込み時に進行状況に応じた選択肢を制限
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('--- ページ読み込み ---');
-            updateNavigation();
-            loadChatHistory(); // 追加：チャット履歴を読み込む
-            checkAnswerStatus();
-            updateProblemSelector();
-        });
+        // チャット履歴を管理するためのユーティリティクラス
+        class ChatHistoryManager {
+            constructor() {
+                this.storageKey = 'chatHistory';
+                this.maxHistoryLength = 100; // 履歴の最大保存数
+            }
 
-        function saveChatHistory(content, type) {
-            console.log(`--- チャット履歴の保存 --- メッセージ: "${content}", タイプ: "${type}"`);
-            const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
-            chatHistory.push({ content, type });
-            localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
-            console.log('保存されたチャット履歴:', JSON.parse(localStorage.getItem('chatHistory')));
+            // チャット履歴を保存
+            saveMessage(content, type) {
+                try {
+                    console.log(`[ChatHistoryManager] Saving message - Content: "${content}", Type: "${type}"`);
+                    
+                    // 現在の履歴を取得
+                    let chatHistory = this.getChatHistory();
+                    
+                    // 新しいメッセージオブジェクトを作成
+                    const newMessage = {
+                        id: Date.now(),
+                        content: content,
+                        type: type,
+                        timestamp: new Date().toISOString()
+                    };
+
+                    // 履歴に追加
+                    chatHistory.push(newMessage);
+
+                    // 最大保存数を超えた場合、古いメッセージを削除
+                    if (chatHistory.length > this.maxHistoryLength) {
+                        chatHistory = chatHistory.slice(-this.maxHistoryLength);
+                    }
+
+                    // LocalStorageに保存
+                    localStorage.setItem(this.storageKey, JSON.stringify(chatHistory));
+                    
+                    console.log('[ChatHistoryManager] Save successful. Current history:', chatHistory);
+                    return true;
+                } catch (error) {
+                    console.error('[ChatHistoryManager] Error saving message:', error);
+                    this.handleStorageError(error);
+                    return false;
+                }
+            }
+
+            // チャット履歴を取得
+            getChatHistory() {
+                try {
+                    const history = localStorage.getItem(this.storageKey);
+                    return history ? JSON.parse(history) : [];
+                } catch (error) {
+                    console.error('[ChatHistoryManager] Error retrieving chat history:', error);
+                    this.handleStorageError(error);
+                    return [];
+                }
+            }
+
+            // チャット履歴をクリア
+            clearHistory() {
+                try {
+                    localStorage.removeItem(this.storageKey);
+                    console.log('[ChatHistoryManager] Chat history cleared successfully');
+                    return true;
+                } catch (error) {
+                    console.error('[ChatHistoryManager] Error clearing chat history:', error);
+                    this.handleStorageError(error);
+                    return false;
+                }
+            }
+
+            // ストレージ容量をチェック
+            checkStorageCapacity() {
+                try {
+                    const totalSpace = 5 * 1024 * 1024; // 5MB (LocalStorageの一般的な制限)
+                    let usedSpace = 0;
+                    
+                    for (let key in localStorage) {
+                        if (localStorage.hasOwnProperty(key)) {
+                            usedSpace += localStorage[key].length * 2; // UTF-16 文字列のため2倍
+                        }
+                    }
+
+                    const remainingSpace = totalSpace - usedSpace;
+                    console.log(`[ChatHistoryManager] Storage usage: ${(usedSpace / 1024).toFixed(2)}KB / ${(totalSpace / 1024).toFixed(2)}KB`);
+                    
+                    return remainingSpace > 0;
+                } catch (error) {
+                    console.error('[ChatHistoryManager] Error checking storage capacity:', error);
+                    return false;
+                }
+            }
+
+            // エラーハンドリング
+            handleStorageError(error) {
+                // QuotaExceededError の場合
+                if (error.name === 'QuotaExceededError' || error.code === 22) {
+                    console.warn('[ChatHistoryManager] Storage quota exceeded. Attempting to free space...');
+                    this.clearOldMessages();
+                }
+            }
+
+            // 古いメッセージを削除して容量を確保
+            clearOldMessages() {
+                try {
+                    let chatHistory = this.getChatHistory();
+                    if (chatHistory.length > 10) { // 最新の10件は残す
+                        chatHistory = chatHistory.slice(-10);
+                        localStorage.setItem(this.storageKey, JSON.stringify(chatHistory));
+                        console.log('[ChatHistoryManager] Cleared old messages to free up space');
+                    }
+                } catch (error) {
+                    console.error('[ChatHistoryManager] Error clearing old messages:', error);
+                }
+            }
         }
 
-        function loadChatHistory() {
-            console.log('--- チャット履歴をlocalStorageから読み込み ---');
-            const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
-            console.log('読み込まれたチャット履歴:', chatHistory);
+        // 使用例
+        const chatManager = new ChatHistoryManager();
 
-            chatContainer.innerHTML = ''; // 読み込み前に一度クリア
-            chatHistory.forEach(message => {
-                addMessage(message.content, message.type);
+        // メッセージを保存する関数
+        function saveChatHistory(content, type) {
+            if (!content || !type) {
+                console.error('[saveChatHistory] Invalid input - Content or type is missing');
+                return false;
+            }
+
+            // ストレージ容量をチェック
+            if (!chatManager.checkStorageCapacity()) {
+                console.warn('[saveChatHistory] Low storage space warning');
+            }
+
+            // メッセージを保存
+            const saved = chatManager.saveMessage(content, type);
+            
+            if (saved) {
+                // 保存成功時のイベントをディスパッチ（必要に応じて）
+                window.dispatchEvent(new CustomEvent('chatHistoryUpdated', {
+                    detail: { content, type }
+                }));
+            }
+
+            return saved;
+        }
+
+        // 使用例
+        function initializeChatSystem() {
+            // イベントリスナーの設定
+            window.addEventListener('chatHistoryUpdated', (event) => {
+                console.log('[Chat System] Chat history updated:', event.detail);
+                // UIの更新などの処理をここに追加
             });
         }
-
-
-        function resetChatHistory() {
-            if (confirm('チャット履歴をリセットしてもよろしいですか？')) {
-                console.log('--- チャット履歴リセット ---');
-                chatContainer.innerHTML = '';
-                questionInput.focus();
-                localStorage.removeItem('chatHistory'); // チャット履歴を削除
-            }
-        }
-
-        async function handleQuestion() {
-            if (isSubmitting) return;
-
-            const question = questionInput.value.trim();
-            const selectedProblem = problemSelector.value;
-
-            if (!question) {
-                showError('質問を入力してください');
-                return;
-            }
-
-            try {
-                console.log('--- 質問送信開始 --- 質問:', question, '選択された問題:', selectedProblem);
-                isSubmitting = true;
-                addMessage(question, 'user');
-                saveChatHistory(question, 'user'); // ユーザーの質問を保存
-                questionInput.disabled = true;
-                typingIndicator.style.display = 'block';
-
-                const response = await getAIResponse(question, selectedProblem);
-                if (response.error) {
-                    showError(response.error);
-                } else {
-                    addMessage(response, 'ai');
-                    saveChatHistory(response, 'ai'); // AIの応答を保存
-                }
-
-            } catch (error) {
-                showError('通信エラーが発生しました。もう一度お試しください。');
-            } finally {
-                isSubmitting = false;
-                questionInput.disabled = false;
-                typingIndicator.style.display = 'none';
-                questionInput.value = '';
-                questionInput.focus();
-                console.log('--- 質問送信終了 ---');
-            }
-        }
-
-        function addMessage(content, type) {
-            console.log(`--- メッセージ追加 --- 内容: "${content}", タイプ: "${type}"`);
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${type}-message`;
-            messageDiv.textContent = content;
-            chatContainer.appendChild(messageDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-
-        function showError(message) {
-            console.log('--- エラー表示 --- メッセージ:', message);
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'message ai-message error';
-            errorDiv.textContent = message;
-            chatContainer.appendChild(errorDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-
-        async function getAIResponse(question, selectedProblem) {
-            console.log(`--- AI応答取得開始 --- 質問: "${question}", 問題ID: "${selectedProblem}"`);
-            try {
-                const requestOptions = {
-                    method: "POST",
-                    mode: 'cors',
-                    credentials: 'omit',
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json"
-                    },
-                    body: JSON.stringify({
-                        userMessage: question,
-                        questionId: parseInt(selectedProblem)
-                    })
-                };
-
-                const response = await fetch(vercelFunctionUrl, requestOptions);
-                console.log('APIリクエスト送信', requestOptions);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                console.log('APIからの応答データ:', data);
-                return data.reply;
-
-            } catch (error) {
-                console.error('API通信エラー:', error.message);
-                throw new Error(error.message || 'APIとの通信中にエラーが発生しました');
-            }
-        }
-
-        // イベントリスナーの設定
-        document.getElementById('sendQuestion').addEventListener('click', () => handleQuestion());
-        document.getElementById('resetChat').addEventListener('click', () => resetChatHistory());
-
-        // Enterキーでの送信
-        questionInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                handleQuestion();
-            }
-        });
-
-        let isSubmitting = false;
-
-
 
 
 
