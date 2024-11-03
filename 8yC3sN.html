@@ -72,7 +72,7 @@
         h1 {
             color: #4B0082;
             font-size: 32px;
-            margin: 0 0 20px 0;
+            margin: 0 0 120px 0;
             padding: 10px;
             background: #E6E6FA;
             border: 2px solid #9370DB;
@@ -89,7 +89,7 @@
             background: #F0F0FF;
             padding: 20px;
             border: 3px solid #9370DB;
-            margin-top: 20px;
+            margin-top: 120px;
             display: flex;
             justify-content: center;
             gap: 10px;
@@ -225,6 +225,9 @@
             margin-top: 40px;
             text-align: center;
             border-radius: 8px;
+            flex-direction: column; /* 子要素を縦に並べる */
+            align-items: center; /* 中央揃え */
+            display: flex;
         }
 
         .memo-section h2 {
@@ -239,7 +242,7 @@
             color: #333;
             font-size: 18px;
             line-height: 1.6;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .memo-image {
@@ -249,6 +252,7 @@
             border-radius: 5px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
             transition: transform 0.3s ease;
+           
         }
 
 
@@ -277,10 +281,10 @@
     </div>
     
     <div class="content-container">
-        <div class="puzzle-number">Q2</div>
-        <h1>CSSを理解しましょう</h1>
+        <div class="puzzle-number">FINAL</div>
+        <h1>AIの考えた謎</h1>
         
-        <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q2_nazo.png" alt="問題の画像" class="problem-media" id="problemMedia">
+        <img src="assets/images/QFINAL_nazo.png" alt="QFINALLLLL_nazo.pngは存在していません" class="problem-media" id="problemMedia">
         
         <div class="answer-section">
             <input type="text" class="answer-input" id="answerInput" placeholder="ひらがなで答えを入力してください">
@@ -290,9 +294,17 @@
     <!-- 一口メモ セクション -->
     <div class="memo-section">
         <h2>一口メモ！！</h2>
-        <p>画像や要素を設定するときは、大きさに注意！枠からはみ出すと見切れたり、全体が表示されなくなることがあるよ。特に、overflow: hidden;がある場合は、枠に収まるようにサイズを調整しよう！！</p>
+        <p>最終問題はなんとAIが考えたんです！しかもQFINAL_nazo.pngはAIの画像生成によるものです！！</p>
+        <p>シンプルな問題ではありますがすごいですよね！！！</p>
+        <p>もう気が付いていると思いますが今回の謎解きは「AI」と共に作成しています！！</p>
+        <p>合計で１万回くらいやり取りをして謎解きの構成やWEBの実装をしています。こんな感じですかね</p>
+        <p>また、ただ一緒に考えるのではなく謎解きのギミックとして登場してもらう新しい試みです！</p>
+        <p>今回「ブラインドコーディング」をしているので期待と不安で落ち着きませんが公開するのが楽しみです！！</p>
 
-        <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q2code.png" alt="一口メモの画像" class="memo-image">
+        <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q8code.png" alt="一口メモの画像" class="memo-image">
+
+
+
     </div>
 
     <script>
@@ -347,58 +359,82 @@
             8: "さいと"
         };
 
+        // グローバルにURLマッピングを定義
+        const urlMapping = {
+            1: '1qXyZ3.html',
+            2: '2puzzleA2F1.html',
+            3: '3mYtN4.html',
+            4: '4lB9wR.html',
+            5: '5uPa1s.html',
+            6: '6banana.html',
+            7: '7dF8vX.html',
+            8: '8yC3sN.html',
+            9: '9finalPage.html'
+        };
+
+        // ナビゲーションの更新
         function updateNavigation() {
             const progress = parseInt(localStorage.getItem('puzzleProgress') || '1');
             for (let i = 1; i <= 8; i++) {
                 const button = document.getElementById('nav' + i);
-                if (i <= progress) {
-                    button.classList.remove('disabled');
-                    button.addEventListener('click', () => {
-                        window.location.href = 'question-' + i + '.html';
-                    });
-                } else {
-                    button.classList.add('disabled');
+                if (button) {  // ボタンが存在する場合のみ操作
+                    if (i <= progress) {
+                        button.classList.remove('disabled');
+                        button.addEventListener('click', () => {
+                            // URLマッピングを使って移動先のURLを設定
+                            window.location.href = urlMapping[i];
+                        });
+                    } else {
+                        button.classList.add('disabled');
+                    }
                 }
             }
         }
 
+        // 答えの状態を確認
         function checkAnswerStatus() {
-            const currentPuzzle = 2; // 問題番号を固定（例: 1問目）
+            const currentPuzzle = parseInt(window.location.pathname.match(/(\d+)/)?.[0] || '1'); // 現在のページ番号を取得
             const savedAnswer = localStorage.getItem(`answer_${currentPuzzle}`);
             
             if (savedAnswer) {
-                // 正解が保存されている場合、非活性化して答えを表示
-                document.getElementById('answerInput').value = savedAnswer;
-                document.getElementById('answerInput').disabled = true;
-                document.getElementById('submitAnswer').disabled = true;
+                const answerInput = document.getElementById('answerInput');
+                const submitButton = document.getElementById('submitAnswer');
+                if (answerInput && submitButton) { // 要素が存在するかチェック
+                    answerInput.value = savedAnswer;
+                    answerInput.disabled = true;
+                    submitButton.disabled = true;
+                }
             }
         }
 
-        document.getElementById('submitAnswer').addEventListener('click', () => {
-            const currentPuzzle = 2;  // 1問目に固定
-            const answer = document.getElementById('answerInput').value.trim().toLowerCase();
+        // 答えの送信と次のページへの遷移
+        document.getElementById('submitAnswer')?.addEventListener('click', () => {
+            const currentPuzzle = parseInt(window.location.pathname.match(/(\d+)/)?.[0] || '1'); // 現在のページ番号を取得
+            const answerInput = document.getElementById('answerInput');
+            const answer = answerInput?.value.trim().toLowerCase();
             const correctAnswer = puzzleAnswers[currentPuzzle];
 
             if (answer === correctAnswer) {
                 alert('正解！次の問題へ進みます。');
                 localStorage.setItem('puzzleProgress', currentPuzzle + 1);
-                localStorage.setItem(`answer_${currentPuzzle}`, answer); // 正解を保存
-                document.getElementById('answerInput').disabled = true;  // 入力フィールドを非活性化
-                document.getElementById('submitAnswer').disabled = true; // 送信ボタンも非活性化
-                if (currentPuzzle < 9) {
-                    window.location.href = `question-${currentPuzzle + 1}.html`;
-                } else {
-                    window.location.href = 'congratulations.html';
-                }
+                localStorage.setItem(`answer_${currentPuzzle}`, answer);
+                
+                if (answerInput) answerInput.disabled = true;  // 入力フィールドを非活性化
+                const submitButton = document.getElementById('submitAnswer');
+                if (submitButton) submitButton.disabled = true; // 送信ボタンも非活性化
+                
+                // 次のページへ移動
+                const nextPage = currentPuzzle < 9 ? urlMapping[currentPuzzle + 1] : urlMapping[9];
+                window.location.href = nextPage;
             } else {
                 alert('不正解です。もう一度考えてみましょう。');
             }
         });
 
-        // ページ読み込み時に答えの状態を確認
+        // ページ読み込み時にナビゲーションと回答確認を実行
         document.addEventListener('DOMContentLoaded', () => {
             updateNavigation();
-            checkAnswerStatus(); // 答えが正解済みか確認
+            checkAnswerStatus();
         });
 
 

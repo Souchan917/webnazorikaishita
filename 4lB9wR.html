@@ -379,57 +379,83 @@
             }
         });
     
-        // ナビゲーションの更新（進行度に応じてボタンを有効化）
+        // グローバルにURLマッピングを定義
+        const urlMapping = {
+            1: '1qXyZ3.html',
+            2: '2puzzleA2F1.html',
+            3: '3mYtN4.html',
+            4: '4lB9wR.html',
+            5: '5uPa1s.html',
+            6: '6banana.html',
+            7: '7dF8vX.html',
+            8: '8yC3sN.html',
+            9: '9finalPage.html'
+        };
+
+        // ナビゲーションの更新
         function updateNavigation() {
             const progress = parseInt(localStorage.getItem('puzzleProgress') || '1');
             for (let i = 1; i <= 8; i++) {
                 const button = document.getElementById('nav' + i);
-                if (i <= progress) {
-                    button.classList.remove('disabled');
-                    button.addEventListener('click', () => {
-                        window.location.href = 'question-' + i + '.html';
-                    });
-                } else {
-                    button.classList.add('disabled');
+                if (button) {  // ボタンが存在する場合のみ操作
+                    if (i <= progress) {
+                        button.classList.remove('disabled');
+                        button.addEventListener('click', () => {
+                            // URLマッピングを使って移動先のURLを設定
+                            window.location.href = urlMapping[i];
+                        });
+                    } else {
+                        button.classList.add('disabled');
+                    }
                 }
             }
         }
-    
-        // 回答状態のチェック
+
+        // 答えの状態を確認
         function checkAnswerStatus() {
-            const currentPuzzle = 4; // 問題番号を固定
+            const currentPuzzle = parseInt(window.location.pathname.match(/(\d+)/)?.[0] || '1'); // 現在のページ番号を取得
             const savedAnswer = localStorage.getItem(`answer_${currentPuzzle}`);
             
             if (savedAnswer) {
-                // 正解が保存されている場合、非活性化して答えを表示
-                document.getElementById('answerInput').value = savedAnswer;
-                document.getElementById('answerInput').disabled = true;
-                document.getElementById('submitAnswer').disabled = true;
+                const answerInput = document.getElementById('answerInput');
+                const submitButton = document.getElementById('submitAnswer');
+                if (answerInput && submitButton) { // 要素が存在するかチェック
+                    answerInput.value = savedAnswer;
+                    answerInput.disabled = true;
+                    submitButton.disabled = true;
+                }
             }
         }
-    
-        // 回答送信のイベントリスナー
-        document.getElementById('submitAnswer').addEventListener('click', () => {
-            const currentPuzzle = 4;  // 4問目に固定
-            const answer = document.getElementById('answerInput').value.trim().toLowerCase();
+
+        // 答えの送信と次のページへの遷移
+        document.getElementById('submitAnswer')?.addEventListener('click', () => {
+            const currentPuzzle = parseInt(window.location.pathname.match(/(\d+)/)?.[0] || '1'); // 現在のページ番号を取得
+            const answerInput = document.getElementById('answerInput');
+            const answer = answerInput?.value.trim().toLowerCase();
             const correctAnswer = puzzleAnswers[currentPuzzle];
-    
+
             if (answer === correctAnswer) {
                 alert('正解！次の問題へ進みます。');
                 localStorage.setItem('puzzleProgress', currentPuzzle + 1);
-                if (currentPuzzle < 9) {
-                    window.location.href = `question-${currentPuzzle + 1}.html`;
-                } else {
-                    window.location.href = 'congratulations.html';
-                }
+                localStorage.setItem(`answer_${currentPuzzle}`, answer);
+                
+                if (answerInput) answerInput.disabled = true;  // 入力フィールドを非活性化
+                const submitButton = document.getElementById('submitAnswer');
+                if (submitButton) submitButton.disabled = true; // 送信ボタンも非活性化
+                
+                // 次のページへ移動
+                const nextPage = currentPuzzle < 9 ? urlMapping[currentPuzzle + 1] : urlMapping[9];
+                window.location.href = nextPage;
             } else {
                 alert('不正解です。もう一度考えてみましょう。');
             }
         });
-    
-       
-      
 
+        // ページ読み込み時にナビゲーションと回答確認を実行
+        document.addEventListener('DOMContentLoaded', () => {
+            updateNavigation();
+            checkAnswerStatus();
+        });
 
 
 

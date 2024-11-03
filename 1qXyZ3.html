@@ -214,17 +214,43 @@
             }
         }
 
-
-        #problemMedia {
-            pointer-events: none;
+        .image-container {
+            position: relative;
+            display: inline-block;
         }
 
-        .speed-control {
-            display: block;
-            text-align: center;
-            margin-bottom: 20px; /* スライダーの下にスペースを追加 */
+        .problem-media {
+            max-width: 100%;
+            height: auto;
+            border: 5px solid #DDA0DD;
+            margin: 20px 0;
         }
-         .memo-section {
+
+        .overlay-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #333; /* 不透明な色に変更 */
+            font-size: 46px;
+            font-weight: 300; /* 細いフォントウェイト */
+            font-family: 'Roboto', Arial, sans-serif; /* 細めのフォントを指定 */
+            pointer-events: none; /* テキストがクリックの邪魔にならないように */
+            z-index: 10;
+            white-space: nowrap; /* テキストが複数行にならないように設定 */
+        }
+
+        /* スマホ対応 */
+        @media (max-width: 480px) {
+            .overlay-text {
+                font-size: 25px; /* スマホ画面では文字サイズを調整 */
+                top: 50%; /* 少し上に配置 */
+            }
+        }
+
+
+
+        .memo-section {
             background: #FAF5FF;
             padding: 10px;
             border-top: 4px solid #9370DB;
@@ -256,8 +282,10 @@
             border-radius: 5px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
             transition: transform 0.3s ease;
-            margin-bottom: 15px; /* 画像の下にスペースを追加 */
+            margin-bottom: 40px;
         }
+
+
 
     </style>
 </head>
@@ -284,26 +312,23 @@
     </div>
     
     <div class="content-container">
-        <div class="puzzle-number">Q6</div>
-        <h1>動画謎</h1>
-    
-        <!-- 動画 -->
-        <div class="video-container">
-            <video src="https://souchan917.github.io/webnazorikaishita/assets/movie/Q5_nazo.mp4" 
-                   class="problem-media" 
-                   id="problemMedia" 
-                   width="800" 
-                   height="400" 
-                   autoplay 
-                   loop 
-                   muted 
-                   playsinline>
-            </video>
-    
-            <!-- 再生速度調整スライダー -->
+        <div class="puzzle-number">Q1</div>
+        <h1>ようこそ！！</h1>
+        
+        <!-- GitHub Pagesの画像URLを使用 -->
+        <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q1_nazo.png" alt="問題の画像" class="problem-media" id="problemMedia">
+        
+            <!-- 邪魔なテキスト -->
+            <div class="overlay-text">
+                まずは1問目です！！<br>
+                まずは簡単な謎からスタートですよ！！<br>
+                このイラストかわいくて素敵ですね！！<br>
+                楽しんでくださいね！！でも油断しないで！！<br>
+                さあ、解けるかな？ワクワクしますね！！
+            </div>
+            
 
         </div>
-    
         <div class="answer-section">
             <input type="text" class="answer-input" id="answerInput" placeholder="ひらがなで答えを入力してください">
             <button type="button" class="submit-button" id="submitAnswer">送信</button>
@@ -312,37 +337,14 @@
     <!-- 一口メモ セクション -->
     <div class="memo-section">
         <h2>一口メモ！！</h2>
-        <p>動画はこんな感じで設定しています！速度設定できるんだけど再生速度はか1倍速が基本かな！</p>
-        <p>それと、問題の動画が早すぎるって人のために速度調整スライダーも用意しといたよ！</p>
-        <!-- メモ画像 -->
-        <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q6code.png" alt="一口メモの画像" class="memo-image">
+        <h3>WEBをマスターした私がこの謎解きに使用しているプログラムを見せつつ皆さんに解説するコーナーです</h3>
+        <p>CSSを使うと、色、位置、影、アニメーションなど、たくさんのデザインを調整できます！</p>
 
-        <!-- 再生速度調整スライダー -->
-        <div class="speed-control">
-            <input type="range" id="speedSlider" min="-1" max="2" step="0.1" value="1" class="speed-slider">
-            <span id="speedValue" class="speed-display">1.0x</span>
-        </div>
+        <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q1code.png" alt="一口メモの画像" class="memo-image">
     </div>
-    
-    
+
 
     <script>
-
-
-        document.addEventListener('DOMContentLoaded', () => {
-            // ナビゲーション進行度が6未満なら、6に設定
-            const currentProgress = parseInt(localStorage.getItem('puzzleProgress') || '1');
-            
-            if (currentProgress < 6) {
-                localStorage.setItem('puzzleProgress', '6');
-            }
-
-            updateNavigation(); // ナビゲーションバーの更新
-            checkAnswerStatus(); // 答えが正解済みか確認
-        });
-
-
-
  // BGM機能
         const bgmButton = document.getElementById('bgmToggle');
         let bgm = new Audio('https://souchan917.github.io/webnazorikaishita/assets/audio/Q4_BGM.mp3');
@@ -385,69 +387,93 @@
 
         // 問題と答えのマッピング
         const puzzleAnswers = {
-            1: "brain",
+            1: "はじまり",
             2: "window",
             3: "mirror",
             4: "shadow",
-            5: "わがさ",
-            6: "わがさ",
+            5: "puzzle",
+            6: "memory",
             7: "secret",
             8: "hidden",
             9: "final"
         };
 
+        // グローバルにURLマッピングを定義
+        const urlMapping = {
+            1: '1qXyZ3.html',
+            2: '2puzzleA2F1.html',
+            3: '3mYtN4.html',
+            4: '4lB9wR.html',
+            5: '5uPa1s.html',
+            6: '6banana.html',
+            7: '7dF8vX.html',
+            8: '8yC3sN.html',
+            9: '9finalPage.html'
+        };
+
+        // ナビゲーションの更新
         function updateNavigation() {
             const progress = parseInt(localStorage.getItem('puzzleProgress') || '1');
             for (let i = 1; i <= 8; i++) {
                 const button = document.getElementById('nav' + i);
-                if (i <= progress) {
-                    button.classList.remove('disabled');
-                    button.addEventListener('click', () => {
-                        window.location.href = 'question-' + i + '.html';
-                    });
-                } else {
-                    button.classList.add('disabled');
+                if (button) {  // ボタンが存在する場合のみ操作
+                    if (i <= progress) {
+                        button.classList.remove('disabled');
+                        button.addEventListener('click', () => {
+                            // URLマッピングを使って移動先のURLを設定
+                            window.location.href = urlMapping[i];
+                        });
+                    } else {
+                        button.classList.add('disabled');
+                    }
                 }
             }
         }
 
+        // 答えの状態を確認
         function checkAnswerStatus() {
-            const currentPuzzle = 6; // 問題番号を固定（例: 1問目）
+            const currentPuzzle = parseInt(window.location.pathname.match(/(\d+)/)?.[0] || '1'); // 現在のページ番号を取得
             const savedAnswer = localStorage.getItem(`answer_${currentPuzzle}`);
             
             if (savedAnswer) {
-                // 正解が保存されている場合、非活性化して答えを表示
-                document.getElementById('answerInput').value = savedAnswer;
-                document.getElementById('answerInput').disabled = true;
-                document.getElementById('submitAnswer').disabled = true;
+                const answerInput = document.getElementById('answerInput');
+                const submitButton = document.getElementById('submitAnswer');
+                if (answerInput && submitButton) { // 要素が存在するかチェック
+                    answerInput.value = savedAnswer;
+                    answerInput.disabled = true;
+                    submitButton.disabled = true;
+                }
             }
         }
 
-        document.getElementById('submitAnswer').addEventListener('click', () => {
-            const currentPuzzle = 6;  // 1問目に固定
-            const answer = document.getElementById('answerInput').value.trim().toLowerCase();
+        // 答えの送信と次のページへの遷移
+        document.getElementById('submitAnswer')?.addEventListener('click', () => {
+            const currentPuzzle = parseInt(window.location.pathname.match(/(\d+)/)?.[0] || '1'); // 現在のページ番号を取得
+            const answerInput = document.getElementById('answerInput');
+            const answer = answerInput?.value.trim().toLowerCase();
             const correctAnswer = puzzleAnswers[currentPuzzle];
 
             if (answer === correctAnswer) {
                 alert('正解！次の問題へ進みます。');
                 localStorage.setItem('puzzleProgress', currentPuzzle + 1);
-                localStorage.setItem(`answer_${currentPuzzle}`, answer); // 正解を保存
-                document.getElementById('answerInput').disabled = true;  // 入力フィールドを非活性化
-                document.getElementById('submitAnswer').disabled = true; // 送信ボタンも非活性化
-                if (currentPuzzle < 9) {
-                    window.location.href = `question-${currentPuzzle + 1}.html`;
-                } else {
-                    window.location.href = 'congratulations.html';
-                }
+                localStorage.setItem(`answer_${currentPuzzle}`, answer);
+                
+                if (answerInput) answerInput.disabled = true;  // 入力フィールドを非活性化
+                const submitButton = document.getElementById('submitAnswer');
+                if (submitButton) submitButton.disabled = true; // 送信ボタンも非活性化
+                
+                // 次のページへ移動
+                const nextPage = currentPuzzle < 9 ? urlMapping[currentPuzzle + 1] : urlMapping[9];
+                window.location.href = nextPage;
             } else {
                 alert('不正解です。もう一度考えてみましょう。');
             }
         });
 
-        // ページ読み込み時に答えの状態を確認
+        // ページ読み込み時にナビゲーションと回答確認を実行
         document.addEventListener('DOMContentLoaded', () => {
             updateNavigation();
-            checkAnswerStatus(); // 答えが正解済みか確認
+            checkAnswerStatus();
         });
 
 
@@ -458,12 +484,6 @@
 
 
 
-
-
-    
-
- 
-         
         // グローバルなオーディオオブジェクトの設定
         const puzzleAudio = new Audio('https://souchan917.github.io/webnazorikaishita/assets/audio/Q4_nazo.mp3');
         puzzleAudio.loop = true; // ループ再生設定
@@ -536,61 +556,7 @@
             const sec = Math.floor(seconds % 60);
             return `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        const video = document.getElementById('problemMedia');
-        const speedSlider = document.getElementById('speedSlider');
-        const speedValue = document.getElementById('speedValue');
-        let reverseInterval;
-
-        // スライダーの値が変わったときに動画の再生速度を調整
-        speedSlider.addEventListener('input', (event) => {
-            const speed = parseFloat(event.target.value);
-
-            if (speed < 0) {
-                clearInterval(reverseInterval);
-                video.pause();
-                reverseInterval = setInterval(() => {
-                    if (video.currentTime > 0) {
-                        video.currentTime -= 0.1;
-                    } else {
-                        video.currentTime = video.duration;
-                    }
-                }, 100 / Math.abs(speed));
-            } else {
-                clearInterval(reverseInterval);
-                video.playbackRate = speed;
-                video.play();
-            }
-
-            speedValue.textContent = `${speed.toFixed(1)}x`;
-        });
-
-        // クリーンアップ
-        window.addEventListener('beforeunload', () => {
-            clearInterval(reverseInterval);
-        });
     </script>
-
 
 </body>
 </html>
