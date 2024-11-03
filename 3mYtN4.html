@@ -447,6 +447,17 @@
         }
 
 
+
+
+        #problemSelector:disabled {
+            background-color: transparent; /* 背景を透明に */
+            color: black; /* 文字色を黒に設定 */
+            border: none; /* 枠線を消す */
+            pointer-events: none; /* ドロップダウンの機能を無効にする */
+            appearance: none; /* 矢印アイコンを非表示にする（ブラウザによって異なる場合あり） */
+        }
+
+
     </style>
 </head>
 <body>
@@ -475,7 +486,7 @@
     <div class="content-container">
         <h1>Q3</h1>
         <h2>AIに質問をすることでQ3の答えを突き止めよう！！</h2>
-        <h3>AIは「はい」か「いいえ」か「わかりません」と答える</h3>
+        <h3>AIは「はい」、「いいえ」、「わかりません」と答える</h3>
 
         <div class="chat-container" id="chatContainer"></div>
         <div class="input-section">
