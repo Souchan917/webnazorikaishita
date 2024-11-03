@@ -612,11 +612,11 @@
         });
 
         function saveChatHistory(content, type) {
-            console.log(`--- チャット履歴の保存 --- メッセージ: "${content}", タイプ: "${type}"`);
+            console.log(`--- saveChatHistory 呼び出し --- メッセージ: "${content}", タイプ: "${type}"`);
             const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
             chatHistory.push({ content, type });
             localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
-            console.log('保存された chatHistory:', JSON.parse(localStorage.getItem('chatHistory')));
+            console.log('保存後の chatHistory:', JSON.parse(localStorage.getItem('chatHistory')));
         }
 
 
