@@ -124,7 +124,7 @@ module.exports = async (req, res) => {
                 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
             },
             body: JSON.stringify({
-                model: "gpt-4.0-turbo",
+                model: "gpt-4o",
                 messages: [
                     {
                         role: "system",
