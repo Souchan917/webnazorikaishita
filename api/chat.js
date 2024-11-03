@@ -80,10 +80,7 @@ const questionConfig = {
         answer: "さいと"
     },
     
-    1: {
-        prompt: 
-    }
-    
+
 };
 
 

@@ -583,40 +583,17 @@
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         // ページ読み込み時に進行状況に応じた選択肢を制限
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('--- ページ読み込み ---');
             updateNavigation();
             loadChatHistory(); // 追加：チャット履歴を読み込む
-            checkAnswerStatus();
+            checkAnswerStatus(); 
             updateProblemSelector();
         });
 
         // チャット履歴をlocalStorageから読み込んで表示
         function loadChatHistory() {
-            console.log('--- チャット履歴をlocalStorageから読み込み ---');
             const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
-            console.log('読み込まれたチャット履歴:', chatHistory);
-
             chatContainer.innerHTML = ''; // 読み込み前に一度クリア
             chatHistory.forEach(message => {
                 addMessage(message.content, message.type);
@@ -624,22 +601,21 @@
         }
 
         function saveChatHistory(content, type) {
-            console.log(`--- チャット履歴の保存 --- メッセージ: "${content}", タイプ: "${type}"`);
             const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
             chatHistory.push({ content, type });
-            console.log('保存するチャット履歴:', chatHistory);
             localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
         }
 
+        // チャットリセット時にlocalStorageから履歴を削除
         function resetChatHistory() {
             if (confirm('チャット履歴をリセットしてもよろしいですか？')) {
-                console.log('--- チャット履歴リセット ---');
                 chatContainer.innerHTML = '';
                 questionInput.focus();
                 localStorage.removeItem('chatHistory'); // チャット履歴を削除
             }
         }
 
+        // 質問や応答を送信するたびに履歴を保存
         async function handleQuestion() {
             if (isSubmitting) return;
 
@@ -652,7 +628,6 @@
             }
 
             try {
-                console.log('--- 質問送信開始 --- 質問:', question, '選択された問題:', selectedProblem);
                 isSubmitting = true;
                 addMessage(question, 'user');
                 saveChatHistory(question, 'user'); // ユーザーの質問を保存
@@ -675,12 +650,11 @@
                 typingIndicator.style.display = 'none';
                 questionInput.value = '';
                 questionInput.focus();
-                console.log('--- 質問送信終了 ---');
             }
         }
 
+        // メッセージをチャット画面に追加
         function addMessage(content, type) {
-            console.log(`--- メッセージ追加 --- 内容: "${content}", タイプ: "${type}"`);
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${type}-message`;
             messageDiv.textContent = content;
@@ -688,8 +662,8 @@
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
+        // エラーメッセージ表示
         function showError(message) {
-            console.log('--- エラー表示 --- メッセージ:', message);
             const errorDiv = document.createElement('div');
             errorDiv.className = 'message ai-message error';
             errorDiv.textContent = message;
@@ -697,8 +671,8 @@
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
+        // Vercel APIに問い合わせて応答を取得
         async function getAIResponse(question, selectedProblem) {
-            console.log(`--- AI応答取得開始 --- 質問: "${question}", 問題ID: "${selectedProblem}"`);
             try {
                 const requestOptions = {
                     method: "POST",
@@ -715,17 +689,14 @@
                 };
 
                 const response = await fetch(vercelFunctionUrl, requestOptions);
-                console.log('APIリクエスト送信', requestOptions);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
                 const data = await response.json();
-                console.log('APIからの応答データ:', data);
                 return data.reply;
 
             } catch (error) {
-                console.error('API通信エラー:', error.message);
                 throw new Error(error.message || 'APIとの通信中にエラーが発生しました');
             }
         }
@@ -743,17 +714,6 @@
         });
 
         let isSubmitting = false;
-
-
-
-
-
-
-
-
-
-
-
 
 
 
