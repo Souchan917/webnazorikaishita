@@ -290,7 +290,7 @@
             <button class="nav-button" id="nav5">5</button>
             <button class="nav-button" id="nav6">6</button>
             <button class="nav-button" id="nav7">7</button>
-            <button class="nav-button" id="nav8">8</button>
+            <button class="nav-button" id="nav8">FINAL</button>
    
         </div>
         <button class="bgm-button" id="bgmToggle">
@@ -324,6 +324,18 @@
     </div>
 
     <script>
+        // グローバルな位置にpuzzleAnswersオブジェクトを定義する
+        const puzzleAnswers = {
+            1: "はじまり",
+            2: "ういんく",
+            3: "あああ",
+            4: "ほとり",
+            5: "わがさ",
+            6: "ほわいと",
+            7: "りょうり",
+            8: "さいと"
+        };
+
         // BGM機能と既存の機能
         document.addEventListener('DOMContentLoaded', () => {
             // 既存のBGM機能
@@ -361,18 +373,7 @@
                 }
             });
         
-            // 問題と答えのマッピング
-            const puzzleAnswers = {
-                1: "brain",
-                2: "あああ",
-                3: "mirror",
-                4: "shadow",
-                5: "puzzle",
-                6: "memory",
-                7: "りょうり",
-                8: "りょうり",
-                9: "final"
-            };
+
         
             // ナビゲーション更新
             updateNavigation();
@@ -412,25 +413,34 @@
         
         // 回答送信のイベントリスナー
         document.getElementById('submitAnswer').addEventListener('click', () => {
+            console.log('送信ボタンがクリックされました');  // 1. 送信ボタンがクリックされたか確認
+
             const currentPuzzle = 7;
             const answer = document.getElementById('answerInput').value.trim().toLowerCase();
+            console.log('入力された答え:', answer);  // 2. 入力された答えを確認
+
             const correctAnswer = puzzleAnswers[currentPuzzle];
-        
+            console.log('正しい答え:', correctAnswer);  // 3. 正しい答えが取得できているか確認
+
             if (answer === correctAnswer) {
+                console.log('正解');  // 4. 正解の場合
                 alert('正解！次の問題へ進みます。');
                 localStorage.setItem('puzzleProgress', currentPuzzle + 1);
                 localStorage.setItem(`answer_${currentPuzzle}`, answer);
                 document.getElementById('answerInput').disabled = true;
                 document.getElementById('submitAnswer').disabled = true;
+                
                 if (currentPuzzle < 9) {
                     window.location.href = `question-${currentPuzzle + 1}.html`;
                 } else {
                     window.location.href = 'congratulations.html';
                 }
             } else {
+                console.log('不正解');  // 5. 不正解の場合
                 alert('不正解です。もう一度考えてみましょう。');
             }
         });
+
         
         function initThreeJS() {
             import('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js')
@@ -656,7 +666,7 @@
                 })
                 .catch(error => {
                     console.error('THREE.jsの読み込みエラー:', error);
-                });
+            });
         }
 
 
