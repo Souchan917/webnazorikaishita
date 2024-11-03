@@ -225,6 +225,9 @@
             margin-top: 40px;
             text-align: center;
             border-radius: 8px;
+            flex-direction: column; /* 子要素を縦に並べる */
+            align-items: center; /* 中央揃え */
+            display: flex;
         }
 
         .memo-section h2 {
@@ -249,10 +252,7 @@
             border-radius: 5px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
             transition: transform 0.3s ease;
-        }
-
-        .memo-image:hover {
-            transform: scale(1.05); /* 画像に軽い拡大エフェクト */
+           
         }
 
 
@@ -284,7 +284,7 @@
         <div class="puzzle-number">FINAL</div>
         <h1>AIの考えた謎</h1>
         
-        <img src="assets/images/QFINALLLLLLLLLLLLLLLLLLLLLLLLLLLLL_nazo.png" alt="画像が存在していません" class="problem-media" id="problemMedia">
+        <img src="assets/images/QFINAL_nazo.png" alt="QFINALLLLL_nazo.pngは存在していません" class="problem-media" id="problemMedia">
         
         <div class="answer-section">
             <input type="text" class="answer-input" id="answerInput" placeholder="ひらがなで答えを入力してください">
@@ -296,8 +296,14 @@
         <h2>一口メモ！！</h2>
         <p>最終問題はなんと一番仲の良いAIと一緒に考えたんです！しかもQFINAL_nazo.pngはAIの画像生成によるものです！！</p>
         <p>シンプルな問題ではありますがすごいですよね！！！</p>
+        <p>もう気が付いていると思いますが今回の謎解きは「AI」と共に作成しています！！</p>
+        <p>合計で１万回くらいやり取りをして謎解きの構成やWEBの実装をしています。こんな感じですかね</p>
 
         <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q8code.png" alt="一口メモの画像" class="memo-image">
+
+        <p>また、ただ一緒に考えるのではなく謎解きのギミックとしても登場という新しい試みです！</p>
+        <p>今回「ブラインドコーディング」をしているので期待と不安で落ち着きませんが公開するのが楽しみです！！</p>
+
         <img src="https://souchan917.github.io/webnazorikaishita/assets/images/Q8code2.png" alt="一口メモの画像" class="memo-image">
     </div>
 
