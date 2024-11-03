@@ -552,7 +552,7 @@
             }
         }
 
-        // 進行状況に応じて問題選択のドロップダウンを制限し、未解放の問題を非表示にする
+        // 進行状況に応じて問題選択のドロップダウンを制限
         function updateProblemSelector() {
             const progress = parseInt(localStorage.getItem('puzzleProgress') || '1');
             
@@ -574,9 +574,9 @@
         // ページ読み込み時に進行状況に応じた選択肢を制限
         document.addEventListener('DOMContentLoaded', () => {
             updateNavigation();
-            loadChatHistory();
+            loadChatHistory(); // 追加：チャット履歴を読み込む
             checkAnswerStatus(); 
-            updateProblemSelector(); // ドロップダウンを進行状況に合わせて更新
+            updateProblemSelector();
         });
 
         // チャット履歴をlocalStorageから読み込んで表示
@@ -702,6 +702,7 @@
         });
 
         let isSubmitting = false;
+
 
 
         async function handleQuestion() {
