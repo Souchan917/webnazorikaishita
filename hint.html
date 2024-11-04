@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ヒントサイト</title>
+    <style>
+        /* ベーススタイル */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0e5ec;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+        
+        h1 {
+            font-size: 2em;
+            color: #4a4a4a;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            background-color: #e0e5ec;
+            box-shadow: 9px 9px 16px #bebebe, -9px -9px 16px #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            width: 90%;
+            max-width: 600px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .section h2 {
+            font-size: 1.5em;
+            color: #555;
+        }
+
+        /* ニューモーフィズムスタイルのボタン */
+        button {
+            background-color: #e0e5ec;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 4px 4px 8px #bebebe, -4px -4px 8px #ffffff;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: #4a4a4a;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s ease;
+            margin: 10px;
+        }
+
+        button:active {
+            box-shadow: inset 4px 4px 8px #bebebe, inset -4px -4px 8px #ffffff;
+        }
+
+        .hint, .answer {
+            background-color: #f0f3f6;
+            border-radius: 10px;
+            box-shadow: inset 3px 3px 6px #d1d9e6, inset -3px -3px 6px #ffffff;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 1em;
+            display: none; /* 初期状態では非表示 */
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>ヒントサイト</h1>
+
+    <!-- 8つの問題セクションを自動生成 -->
+    <div id="content"></div>
+
+    <script>
+        // 問題数と仮の内容
+        const problems = [
+            { question: "問題1", hint: "これはヒント1です", answer: "これは答え1です" },
+            { question: "問題2", hint: "これはヒント2です", answer: "これは答え2です" },
+            { question: "問題3", hint: "これはヒント3です", answer: "これは答え3です" },
+            { question: "問題4", hint: "これはヒント4です", answer: "これは答え4です" },
+            { question: "問題5", hint: "これはヒント5です", answer: "これは答え5です" },
+            { question: "問題6", hint: "これはヒント6です", answer: "これは答え6です" },
+            { question: "問題7", hint: "これはヒント7です", answer: "これは答え7です" },
+            { question: "問題8", hint: "これはヒント8です", answer: "これは答え8です" }
+        ];
+
+        // 各セクションを生成
+        const contentDiv = document.getElementById("content");
+        problems.forEach((problem, index) => {
+            const section = document.createElement("div");
+            section.classList.add("section");
+            section.innerHTML = `
+                <h2>${problem.question}</h2>
+                <button onclick="showHint(${index})">ヒントを表示</button>
+                <div class="hint" id="hint-${index}">${problem.hint}</div>
+                <button onclick="showAnswer(${index})">答えを表示</button>
+                <div class="answer" id="answer-${index}">${problem.answer}</div>
+            `;
+            contentDiv.appendChild(section);
+        });
+
+        // ヒント表示関数
+        function showHint(index) {
+            document.getElementById(`hint-${index}`).style.display = "block";
+        }
+
+        // 答え表示関数
+        function showAnswer(index) {
+            document.getElementById(`answer-${index}`).style.display = "block";
+        }
+    </script>
+
+</body>
+</html>
