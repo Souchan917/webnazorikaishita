@@ -170,7 +170,7 @@ module.exports = async (req, res) => {
 
 
 
-                model: "gpt-3.5-turbo-instruct",
+                model: "gpt-4o",
 
 
 
