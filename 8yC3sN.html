@@ -425,9 +425,7 @@
                 localStorage.setItem('puzzleProgress', currentPuzzle + 1);
                 localStorage.setItem(`answer_${currentPuzzle}`, answer);
                 
-                if (answerInput) answerInput.disabled = true;  // 入力フィールドを非活性化
-                const submitButton = document.getElementById('submitAnswer');
-                if (submitButton) submitButton.disabled = true; // 送信ボタンも非活性化
+
                 
                 // 次のページへ移動
                 const nextPage = currentPuzzle < 9 ? urlMapping[currentPuzzle + 1] : urlMapping[9];
