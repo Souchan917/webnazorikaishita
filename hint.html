@@ -8,13 +8,13 @@
         /* ベーススタイル */
         body {
             font-family: Arial, sans-serif;
-            background-color: #e0e5ec;
-            color: #333;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 20px;
             margin: 0;
+            padding-bottom: 600px; /* 下部に50pxの余白を追加 */
+            background-color: #f0f0f5;
         }
         
         h1 {
@@ -23,6 +23,7 @@
             margin-bottom: 20px;
         }
 
+        /* セクションスタイル */
         .section {
             background-color: #e0e5ec;
             box-shadow: 9px 9px 16px #bebebe, -9px -9px 16px #ffffff;
@@ -32,6 +33,15 @@
             max-width: 600px;
             margin-bottom: 20px;
             text-align: center;
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+            overflow: hidden;
+            max-height: 80px; /* 初期状態では小さく設定 */
+        }
+
+        .section.expanded {
+            max-height: 1000px; /* 展開時の高さを十分に確保 */
+            padding: 20px;
+            overflow: visible; /* 展開時はボタンが押せるようにする */
         }
 
         .section h2 {
@@ -40,7 +50,7 @@
         }
 
         /* ニューモーフィズムスタイルのボタン */
-        button {
+        .main-button, .hint-button, .answer-button {
             background-color: #e0e5ec;
             border: none;
             border-radius: 8px;
@@ -54,7 +64,7 @@
             margin: 10px;
         }
 
-        button:active {
+        .main-button:active, .hint-button:active, .answer-button:active {
             box-shadow: inset 4px 4px 8px #bebebe, inset -4px -4px 8px #ffffff;
         }
 
@@ -67,6 +77,32 @@
             font-size: 1em;
             display: none; /* 初期状態では非表示 */
             color: #333;
+            text-align: left;
+        }
+
+        /* ヒントボタンのスタイル */
+        .hint-button {
+            background-color: #d1d9e6;
+            color: #333;
+        }
+
+        .answer-button {
+            background-color: #c1d4e6;
+            color: #333;
+        }
+
+        /* ヒントボタンを並べるコンテナ */
+        .hints-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .hints-container .hint-button {
+            flex: 1 1 30%;
+            min-width: 100px;
         }
     </style>
 </head>
@@ -77,94 +113,8 @@
     <!-- 8つの問題セクションを自動生成 -->
     <div id="content"></div>
 
-    <script>
-        // 問題数と仮の内容
-        const problems = [
-            { question: "問題1", hint: ["これはヒント1です"], answer: "これは答え1です" },
-            { question: "問題2", hint: ["これはヒント2です"], answer: "これは答え2です" },
-            { 
-                question: "問題3", 
-                hint: [
-                    "ヒント1", "ヒント2", "ヒント3", "ヒント4", "ヒント5", 
-                    "ヒント6", "ヒント7", "ヒント8", "ヒント9", "ヒント10"
-                ], 
-                answer: "これは答え3です" 
-            },
-            { question: "問題4", hint: ["これはヒント4です"], answer: "これは答え4です" },
-            { question: "問題5", hint: ["これはヒント5です"], answer: "これは答え5です" },
-            { question: "問題6", hint: ["これはヒント6です"], answer: "これは答え6です" },
-            { question: "問題7", hint: ["これはヒント7です"], answer: "これは答え7です" },
-            { 
-                question: "問題8", 
-                hint: [
-                    "ヒント1", "ヒント2", "ヒント3", "ヒント4", "ヒント5", 
-                    "ヒント6", "ヒント7", "ヒント8", "ヒント9", "ヒント10"
-                ], 
-                answer: "これは答え8です" 
-            }
-        ];
 
-        const contentDiv = document.getElementById("content");
-
-        problems.forEach((problem, index) => {
-            const section = document.createElement("div");
-            section.classList.add("section");
-            
-            // ヒントの表示要素を複数段階に対応
-            let hintHtml = '';
-            if (problem.hint.length > 1) {
-                hintHtml = `<button onclick="showNextHint(${index})">次のヒントを表示</button><div id="hints-${index}"></div>`;
-            } else {
-                hintHtml = `<button onclick="toggleHint(${index})">ヒントを表示/非表示</button><div class="hint" id="hint-${index}">${problem.hint[0]}</div>`;
-            }
-
-            section.innerHTML = `
-                <h2>${problem.question}</h2>
-                ${hintHtml}
-                <button onclick="toggleAnswer(${index})">答えを表示/非表示</button>
-                <div class="answer" id="answer-${index}">${problem.answer}</div>
-            `;
-            contentDiv.appendChild(section);
-        });
-
-        // 段階的ヒント表示のためのインデックスを管理
-        const currentHintIndex = {};
-
-        // 段階的ヒント表示/非表示
-        function showNextHint(index) {
-            if (!currentHintIndex[index]) currentHintIndex[index] = 0;
-            const hintElement = document.getElementById(`hints-${index}`);
-            if (currentHintIndex[index] < problems[index].hint.length) {
-                const newHint = document.createElement("div");
-                newHint.classList.add("hint");
-                newHint.innerText = problems[index].hint[currentHintIndex[index]];
-                hintElement.appendChild(newHint);
-                currentHintIndex[index]++;
-            } else {
-                hintElement.innerHTML = ''; // すべてのヒントが表示されたらリセット
-                currentHintIndex[index] = 0;
-            }
-        }
-
-        // 単一ヒント表示/非表示のトグル
-        function toggleHint(index) {
-            const hintElement = document.getElementById(`hint-${index}`);
-            hintElement.style.display = hintElement.style.display === "block" ? "none" : "block";
-        }
-
-        // 答え表示/非表示のトグル
-        function toggleAnswer(index) {
-            const answerElement = document.getElementById(`answer-${index}`);
-            answerElement.style.display = answerElement.style.display === "block" ? "none" : "block";
-        }
-    </script>
-
-</body>
-</html>
-
-
-
-<!-- 
+    <!-- 
 const problems = [
 { question: "問題1", hint: "画像に文字が重なり見えにくくなっていますが、画像の中央には「はたこじまり」と書かれています。また、「たぬき」「こけし」のイラストが存在しています。", answer: "「はたこじまり」から「た」「こ」を消して「はじまり」が答えです" },
 { question: "問題2", hint: "画像が半分に切れていますが、推測で解くことができそうです。中央にある記号は「方位記号」です", answer: "ういんく" },
@@ -175,3 +125,143 @@ const problems = [
 { question: "問題7", hint: "これはヒント7です", answer: "これは答え7です" },
 { question: "問題8", hint: "これはヒント8です", answer: "これは答え8です" }
 ]; -->
+
+    <script>
+        // 問題数と仮の内容
+        const problems = [
+            { question: "問題1", hint: ["画像に文字が重なり見えにくくなっていますが、画像の中央には「はたこじまり」と書かれています。また、「たぬき」「こけし」のイラストが存在しています。"], answer: "はじまり" },
+            { question: "問題2", hint: ["これはヒント2です"], answer: "ういんく" },
+            { 
+                question: "問題3", 
+                hint: [
+                    "ヒント1: 問題3のヒント1です。",
+                    "ヒント2: 問題3のヒント2です。",
+                    "ヒント3: 問題3のヒント3です。",
+                    "ヒント4: 問題3のヒント4です。",
+                    "ヒント5: 問題3のヒント5です。",
+                    "ヒント6: 問題3のヒント6です。",
+                    "ヒント7: 問題3のヒント7です。",
+                    "ヒント8: 問題3のヒント8です。",
+                    "ヒント9: 問題3のヒント9です。",
+                    "ヒント10: 問題3のヒント10です。"
+                ], 
+                answer: "からす" 
+            },
+            { question: "問題4", hint: ["これはヒント4です"], answer: "ほとり" },
+            { question: "問題5", hint: ["これはヒント5です"], answer: "ほわいと" },
+            { question: "問題6", hint: ["これはヒント6です"], answer: "わがさ" },
+            { question: "問題7", hint: ["これはヒント7です"], answer: "りょうり" },
+            { 
+                question: "FINAL", 
+                hint: [
+                    "ヒント1: 最終問題の画像が表示されていないトラブルのようです。最終問題の画像を見ることなく最終回答を導く方法はないでしょうか",
+                    "ヒント2: FINALの一口メモを見てみると、この問題はAIと共に作ったようです。また、そのAIはQ3の返答も行っていたようです。",
+                    "ヒント3: FINALの一口メモの画像を見てみるとQ3に利用するために「AIの記録や記憶を消すことについて相談をしているようです」",
+                    "ヒント4: ここでQ3の一口メモを見るとAIの設定用コードが見れますが、画像上部には「記録や記憶を消すコマンド」がありますが、false となっています。これは「うまく記録がきえていない」可能性があります。",
+                    "ヒント5: Q3はこの謎解きを制作した記録が残っていました。Q3でのチャットを利用して最終問題について相談をしましょう。しかし、AIは設定によって「はい」や「いいえ」など淡白な回答しか返せません。根気よく質問して最終問題を推測しましょう。",
+                    "ヒント6: ",
+                    "ヒント7: 問題8のヒント7です。",
+                    "ヒント8: 問題8のヒント8です。",
+                    "ヒント9: 問題8のヒント9です。",
+                    "ヒント10: 問題8のヒント10です。"
+                ], 
+                answer: "さいと" 
+            }
+        ];
+
+        const contentDiv = document.getElementById("content");
+
+        problems.forEach((problem, index) => {
+            const section = document.createElement("div");
+            section.classList.add("section");
+            
+            // メインボタン
+            const mainButton = document.createElement("button");
+            mainButton.classList.add("main-button");
+            mainButton.innerText = problem.question;
+            mainButton.onclick = () => toggleSection(index);
+
+            // ヒントボタンの生成
+            let hintSection;
+            if (problem.hint.length > 1) {
+                // 3問目と8問目用のヒントボタンを10段階で生成
+                hintSection = document.createElement("div");
+                hintSection.classList.add("hints-container");
+                problem.hint.forEach((h, hintIndex) => {
+                    const hintButton = document.createElement("button");
+                    hintButton.classList.add("hint-button");
+                    hintButton.innerText = `ヒント${hintIndex + 1}`;
+                    hintButton.onclick = () => toggleHint(index, hintIndex);
+                    hintSection.appendChild(hintButton);
+                });
+            } else {
+                // 他の問題用の単一ヒントボタン
+                const hintButton = document.createElement("button");
+                hintButton.classList.add("hint-button");
+                hintButton.innerText = "ヒントを表示/非表示";
+                hintButton.onclick = () => toggleHint(index, 0);
+                hintSection = hintButton;
+            }
+
+            // 答えボタン
+            const answerButton = document.createElement("button");
+            answerButton.classList.add("answer-button");
+            answerButton.innerText = "答えを表示/非表示";
+            answerButton.onclick = () => toggleAnswer(index);
+
+            // ヒント表示エリア
+            const hintDisplay = document.createElement("div");
+            hintDisplay.classList.add("hint");
+            hintDisplay.id = `hint-${index}`;
+
+            // 答え表示エリア
+            const answerDisplay = document.createElement("div");
+            answerDisplay.classList.add("answer");
+            answerDisplay.id = `answer-${index}`;
+            answerDisplay.innerText = problem.answer;
+
+            // セクションに要素を追加
+            section.appendChild(mainButton);
+            section.appendChild(hintSection);
+            section.appendChild(answerButton);
+            section.appendChild(hintDisplay);
+            section.appendChild(answerDisplay);
+
+            contentDiv.appendChild(section);
+        });
+
+        // セクションの展開・縮小をトグル
+        function toggleSection(index) {
+            const section = document.getElementsByClassName("section")[index];
+            section.classList.toggle("expanded");
+        }
+
+        // ヒントの展開・縮小をトグル
+        function toggleHint(index, hintIndex) {
+            const hintElement = document.getElementById(`hint-${index}-hint${hintIndex}`);
+            
+            if (!hintElement) {
+                const section = document.getElementsByClassName("section")[index];
+                const hintsContainer = section.querySelector(".hints-container") || section;
+                
+                const newHint = document.createElement("div");
+                newHint.classList.add("hint");
+                newHint.id = `hint-${index}-hint${hintIndex}`;
+                newHint.innerText = problems[index].hint[hintIndex];
+                hintsContainer.appendChild(newHint);
+            } else {
+                hintElement.style.display = hintElement.style.display === "block" ? "none" : "block";
+            }
+        }
+
+        // 答えの展開・縮小をトグル
+        function toggleAnswer(index) {
+            const answerElement = document.getElementById(`answer-${index}`);
+            answerElement.style.display = answerElement.style.display === "block" ? "none" : "block";
+        }
+    </script>
+
+</body>
+</html>
+
+

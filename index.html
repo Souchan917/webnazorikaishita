@@ -236,8 +236,11 @@
             <h2 class="section-title">ヒントシステム</h2>
             <p class="section-content">
                 ヒントは間に合えば実装します。もし間に合わなかったら、自力での挑戦をお楽しみください。<br>
-                ※間に合ってません
+
+                
             </p>
+            <h1>ヒントページ</h1>
+            <button onclick="openHintPage()">ヒントページを表示</button>
         </div>
 
         <div class="section-card">
@@ -309,6 +312,12 @@
                 }, 200 * index);
             });
         });
+
+
+
+        function openHintPage() {
+            window.open("https://souchan917.github.io/webnazorikaishita/hint.html", "_blank");
+        }
     </script>
 </body>
 </html>
