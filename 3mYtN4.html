@@ -645,9 +645,11 @@
         }
 
         // 質問を処理する関数
-        // 質問を処理する関数
         async function handleQuestion() {
-            if (isSubmitting) return;
+            if (isSubmitting) return; // 送信中ならリターンして処理を中断
+            isSubmitting = true; // 処理開始時にフラグを立てる
+            questionInput.disabled = true; // すぐに非活性化
+
             console.log("Handling question submission.");
 
             const question = questionInput.value.trim();
@@ -658,16 +660,16 @@
 
             if (!question) {
                 showError('Please enter a question.');
+                isSubmitting = false;
+                questionInput.disabled = false;
                 return;
             }
 
             try {
                 console.log("Starting question submission process.");
-                isSubmitting = true;
                 addMessage(question, 'user');  // ユーザーの質問を表示
                 saveChatHistory(question, 'user');  // ユーザーの質問を保存
 
-                questionInput.disabled = true;
                 typingIndicator.style.display = 'block';
 
                 const response = await getAIResponse(question, selectedProblem);  // AIからの応答を取得
@@ -684,18 +686,19 @@
                 showError('Communication error. Please try again.');
                 console.error("Error during question submission:", error);
             } finally {
-                isSubmitting = false;
                 typingIndicator.style.display = 'none';
                 questionInput.value = '';
                 
-                // 質問送信後に6秒間待機してから入力を有効化
+                // 6秒間の待機時間を設ける
                 setTimeout(() => {
+                    isSubmitting = false; // 待機後に再送信可能にする
                     questionInput.disabled = false;
                     questionInput.focus();
                     console.log("Wait time ended. Question input enabled.");
-                }, 6000); // 6秒間の待機時間を設定
+                }, 10000); // 6秒間の待機時間
             }
         }
+
 
 
 
