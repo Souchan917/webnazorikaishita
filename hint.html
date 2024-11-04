@@ -80,41 +80,98 @@
     <script>
         // 問題数と仮の内容
         const problems = [
-            { question: "問題1", hint: "これはヒント1です", answer: "これは答え1です" },
-            { question: "問題2", hint: "これはヒント2です", answer: "これは答え2です" },
-            { question: "問題3", hint: "これはヒント3です", answer: "これは答え3です" },
-            { question: "問題4", hint: "これはヒント4です", answer: "これは答え4です" },
-            { question: "問題5", hint: "これはヒント5です", answer: "これは答え5です" },
-            { question: "問題6", hint: "これはヒント6です", answer: "これは答え6です" },
-            { question: "問題7", hint: "これはヒント7です", answer: "これは答え7です" },
-            { question: "問題8", hint: "これはヒント8です", answer: "これは答え8です" }
+            { question: "問題1", hint: ["これはヒント1です"], answer: "これは答え1です" },
+            { question: "問題2", hint: ["これはヒント2です"], answer: "これは答え2です" },
+            { 
+                question: "問題3", 
+                hint: [
+                    "ヒント1", "ヒント2", "ヒント3", "ヒント4", "ヒント5", 
+                    "ヒント6", "ヒント7", "ヒント8", "ヒント9", "ヒント10"
+                ], 
+                answer: "これは答え3です" 
+            },
+            { question: "問題4", hint: ["これはヒント4です"], answer: "これは答え4です" },
+            { question: "問題5", hint: ["これはヒント5です"], answer: "これは答え5です" },
+            { question: "問題6", hint: ["これはヒント6です"], answer: "これは答え6です" },
+            { question: "問題7", hint: ["これはヒント7です"], answer: "これは答え7です" },
+            { 
+                question: "問題8", 
+                hint: [
+                    "ヒント1", "ヒント2", "ヒント3", "ヒント4", "ヒント5", 
+                    "ヒント6", "ヒント7", "ヒント8", "ヒント9", "ヒント10"
+                ], 
+                answer: "これは答え8です" 
+            }
         ];
 
-        // 各セクションを生成
         const contentDiv = document.getElementById("content");
+
         problems.forEach((problem, index) => {
             const section = document.createElement("div");
             section.classList.add("section");
+            
+            // ヒントの表示要素を複数段階に対応
+            let hintHtml = '';
+            if (problem.hint.length > 1) {
+                hintHtml = `<button onclick="showNextHint(${index})">次のヒントを表示</button><div id="hints-${index}"></div>`;
+            } else {
+                hintHtml = `<button onclick="toggleHint(${index})">ヒントを表示/非表示</button><div class="hint" id="hint-${index}">${problem.hint[0]}</div>`;
+            }
+
             section.innerHTML = `
                 <h2>${problem.question}</h2>
-                <button onclick="showHint(${index})">ヒントを表示</button>
-                <div class="hint" id="hint-${index}">${problem.hint}</div>
-                <button onclick="showAnswer(${index})">答えを表示</button>
+                ${hintHtml}
+                <button onclick="toggleAnswer(${index})">答えを表示/非表示</button>
                 <div class="answer" id="answer-${index}">${problem.answer}</div>
             `;
             contentDiv.appendChild(section);
         });
 
-        // ヒント表示関数
-        function showHint(index) {
-            document.getElementById(`hint-${index}`).style.display = "block";
+        // 段階的ヒント表示のためのインデックスを管理
+        const currentHintIndex = {};
+
+        // 段階的ヒント表示/非表示
+        function showNextHint(index) {
+            if (!currentHintIndex[index]) currentHintIndex[index] = 0;
+            const hintElement = document.getElementById(`hints-${index}`);
+            if (currentHintIndex[index] < problems[index].hint.length) {
+                const newHint = document.createElement("div");
+                newHint.classList.add("hint");
+                newHint.innerText = problems[index].hint[currentHintIndex[index]];
+                hintElement.appendChild(newHint);
+                currentHintIndex[index]++;
+            } else {
+                hintElement.innerHTML = ''; // すべてのヒントが表示されたらリセット
+                currentHintIndex[index] = 0;
+            }
         }
 
-        // 答え表示関数
-        function showAnswer(index) {
-            document.getElementById(`answer-${index}`).style.display = "block";
+        // 単一ヒント表示/非表示のトグル
+        function toggleHint(index) {
+            const hintElement = document.getElementById(`hint-${index}`);
+            hintElement.style.display = hintElement.style.display === "block" ? "none" : "block";
+        }
+
+        // 答え表示/非表示のトグル
+        function toggleAnswer(index) {
+            const answerElement = document.getElementById(`answer-${index}`);
+            answerElement.style.display = answerElement.style.display === "block" ? "none" : "block";
         }
     </script>
 
 </body>
 </html>
+
+
+
+<!-- 
+const problems = [
+{ question: "問題1", hint: "画像に文字が重なり見えにくくなっていますが、画像の中央には「はたこじまり」と書かれています。また、「たぬき」「こけし」のイラストが存在しています。", answer: "「はたこじまり」から「た」「こ」を消して「はじまり」が答えです" },
+{ question: "問題2", hint: "画像が半分に切れていますが、推測で解くことができそうです。中央にある記号は「方位記号」です", answer: "ういんく" },
+{ question: "問題3", hint: "AIに質問をして回答を当てます", answer: "カラスです" },
+{ question: "問題4", hint: "これはヒント4です", answer: "これは答え4です" },
+{ question: "問題5", hint: "これはヒント5です", answer: "これは答え5です" },
+{ question: "問題6", hint: "これはヒント6です", answer: "これは答え6です" },
+{ question: "問題7", hint: "これはヒント7です", answer: "これは答え7です" },
+{ question: "問題8", hint: "これはヒント8です", answer: "これは答え8です" }
+]; -->
