@@ -689,8 +689,16 @@
                 questionInput.value = '';
                 questionInput.focus();
                 console.log("Question submission process ended.");
+
+                // 質問送信後に一定時間待機する
+                questionInput.disabled = true;
+                setTimeout(() => {
+                    questionInput.disabled = false;
+                    console.log("Wait time ended. Question input enabled.");
+                }, 7000); // ここで3秒間の待機時間を設定
             }
         }
+
 
         // チャットメッセージを追加する関数
         function addMessage(content, type) {
