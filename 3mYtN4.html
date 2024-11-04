@@ -584,22 +584,21 @@
 
         function updateProblemSelector() {
             const progress = parseInt(localStorage.getItem('puzzleProgress') || '1');
-            console.log("Updating problem selector. Current progress:", progress);
-            
+            console.log("Updating problem selection. Current progress:", progress);
+
+            // 進行度が7以下なら「3問目」、8なら「8問目」を強制的に選択
             if (progress < 8) {
                 problemSelector.value = "3";
-                problemSelector.disabled = true;
-                console.log("Problem selector locked to Q3.");
+                console.log("Problem forced to Q3.");
             } else {
-                Array.from(problemSelector.options).forEach(option => {
-                    option.disabled = false;
-                    option.style.display = 'block';
-                });
-                problemSelector.disabled = false;
-                problemSelector.value = "3";
-                console.log("Problem selector unlocked.");
+                problemSelector.value = "8";
+                console.log("Problem forced to Q8.");
             }
+
+            // 問題セレクターを非表示にする
+            problemSelector.style.display = 'none';
         }
+
 
         document.addEventListener('DOMContentLoaded', () => {
             console.log('--- Page loaded ---');
