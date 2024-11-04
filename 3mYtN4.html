@@ -646,10 +646,9 @@
 
         // 質問を処理する関数
         async function handleQuestion() {
-            if (isSubmitting) return; // 送信中ならリターンして処理を中断
+            if (isSubmitting) return; // 送信中なら処理を中断
             isSubmitting = true; // 処理開始時にフラグを立てる
-            questionInput.disabled = true; // すぐに非活性化
-
+            questionInput.disabled = true; // 入力をすぐに無効化
             console.log("Handling question submission.");
 
             const question = questionInput.value.trim();
@@ -688,16 +687,18 @@
             } finally {
                 typingIndicator.style.display = 'none';
                 questionInput.value = '';
-                
+
                 // 6秒間の待機時間を設ける
+                const WAIT_TIME = 6000; // 6秒待機時間
                 setTimeout(() => {
                     isSubmitting = false; // 待機後に再送信可能にする
                     questionInput.disabled = false;
                     questionInput.focus();
                     console.log("Wait time ended. Question input enabled.");
-                }, 10000); // 6秒間の待機時間
+                }, WAIT_TIME);
             }
         }
+
 
 
 
