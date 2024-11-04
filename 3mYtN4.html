@@ -645,6 +645,7 @@
         }
 
         // 質問を処理する関数
+        // 質問を処理する関数
         async function handleQuestion() {
             if (isSubmitting) return;
             console.log("Handling question submission.");
@@ -684,20 +685,18 @@
                 console.error("Error during question submission:", error);
             } finally {
                 isSubmitting = false;
-                questionInput.disabled = false;
                 typingIndicator.style.display = 'none';
                 questionInput.value = '';
-                questionInput.focus();
-                console.log("Question submission process ended.");
-
-                // 質問送信後に一定時間待機する
-                questionInput.disabled = true;
+                
+                // 質問送信後に6秒間待機してから入力を有効化
                 setTimeout(() => {
                     questionInput.disabled = false;
+                    questionInput.focus();
                     console.log("Wait time ended. Question input enabled.");
-                }, 7000); // ここで3秒間の待機時間を設定
+                }, 6000); // 6秒間の待機時間を設定
             }
         }
+
 
 
         // チャットメッセージを追加する関数
