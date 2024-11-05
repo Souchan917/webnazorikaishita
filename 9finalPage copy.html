@@ -77,7 +77,6 @@
             position: relative;
             padding: 2rem;
             z-index: 2;
-            margin-top: 90px;
         }
 
         .chaos-overlay {
@@ -344,6 +343,8 @@
 
 
 
+        </div>
+    
         <button class="bgm-button" id="bgmToggle">
             <span class="bgm-icon">♪</span>
             <span class="bgm-status">OFF</span>
@@ -352,7 +353,7 @@
         <!-- <button class="start-button" id="startButton">
             START_EXTRA_CHALLENGE();
         </button>
-        -->
+     -->
         <button class="back-button" onclick="window.location.href='8yC3sN.html'">
             BACK_TO_FINAL();
         </button>
@@ -414,9 +415,56 @@
             document.body.style.opacity = 0;
             document.body.style.transform = 'scale(1.5)';
             setTimeout(() => {
-                window.location.href = '1qXyZ3.html';
+                window.location.href = 'question-10.html';
             }, 800);
         });
+
+
+
+
+
+
+
+
+ 
+        // ページ読み込み後に音楽オブジェクトを初期化
+        document.addEventListener('DOMContentLoaded', () => {
+            const autoPlayAudio = new Audio('https://souchan917.github.io/webnazorikaishita/assets/audio/Q4_nazo.mp3');
+            autoPlayAudio.loop = true; // ループ再生設定
+
+            // 最初のユーザー操作で音楽を再生
+            const startAudio = () => {
+                autoPlayAudio.play().then(() => {
+                    console.log('音楽が再生されました。');
+                }).catch(error => {
+                    console.log('音楽再生エラー:', error);
+                });
+                // イベントリスナーを削除して一度だけ実行する
+                document.removeEventListener('click', startAudio);
+                document.removeEventListener('touchstart', startAudio);
+            };
+
+            // ユーザーがクリックまたはタッチしたときに音楽を再生
+            document.addEventListener('click', startAudio, { once: true });
+            document.addEventListener('touchstart', startAudio, { once: true });
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
