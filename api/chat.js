@@ -174,15 +174,22 @@ module.exports = async (req, res) => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
             },
+
+
+
+
+
             body: JSON.stringify({
+                model: "gpt-4o-mini",
 
 
 
-                model: "gpt-4o",
 
 
 
 
+
+                
                 messages: [
                     {
                         role: "system",
@@ -197,6 +204,7 @@ module.exports = async (req, res) => {
                 temperature: 0.7
             })
         });
+        
         console.log('OpenAI APIレスポンスステータス:', response.status);
 
         // APIレスポンスのエラーハンドリング
