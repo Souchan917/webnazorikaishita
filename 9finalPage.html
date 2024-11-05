@@ -426,6 +426,53 @@
 
 
 
+ 
+        // ページ読み込み後に音楽オブジェクトを初期化
+        document.addEventListener('DOMContentLoaded', () => {
+            const autoPlayAudio = new Audio('https://souchan917.github.io/webnazorikaishita/assets/audio/Q4_nazo.mp3');
+            autoPlayAudio.loop = true; // ループ再生設定
+
+            // 最初のユーザー操作で音楽を再生
+            const startAudio = () => {
+                autoPlayAudio.play().then(() => {
+                    console.log('音楽が再生されました。');
+                }).catch(error => {
+                    console.log('音楽再生エラー:', error);
+                });
+                // イベントリスナーを削除して一度だけ実行する
+                document.removeEventListener('click', startAudio);
+                document.removeEventListener('touchstart', startAudio);
+            };
+
+            // ユーザーがクリックまたはタッチしたときに音楽を再生
+            document.addEventListener('click', startAudio, { once: true });
+            document.addEventListener('touchstart', startAudio, { once: true });
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
