@@ -180,7 +180,7 @@ module.exports = async (req, res) => {
 
 
             body: JSON.stringify({
-                model: "gpt-4o-mini",
+                model: "gpt-4o",
 
 
 
@@ -189,7 +189,7 @@ module.exports = async (req, res) => {
 
 
 
-                
+
                 messages: [
                     {
                         role: "system",
