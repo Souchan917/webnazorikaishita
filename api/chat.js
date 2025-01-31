@@ -195,7 +195,7 @@ module.exports = async (req, res) => {
                 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
             },
             body: JSON.stringify({
-                model: "o3-mini",
+                model: "gpt-4o-mini",  // より費用対効果の良いモデルに変更
                 messages: [
                     {
                         role: "system",
@@ -206,7 +206,7 @@ module.exports = async (req, res) => {
                         content: userMessage
                     }
                 ],
-                max_completion_tokens: 200
+                max_tokens: 200  // max_completion_tokensではなくmax_tokensを使用
             })
         });
         
