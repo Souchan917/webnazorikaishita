@@ -195,7 +195,7 @@ module.exports = async (req, res) => {
                 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
             },
             body: JSON.stringify({
-                model: "o3-mini",
+                model: "o1-mini",
                 messages: [
                     {
                         role: "system",
