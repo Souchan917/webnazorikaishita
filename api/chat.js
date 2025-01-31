@@ -198,11 +198,16 @@ module.exports = async (req, res) => {
                 model: "o1-mini-2024-09-12",
                 messages: [
                     {
+                        role: "assistant",  // systemの代わりにassistantを使用
+                        content: config.prompt
+                    },
+                    {
                         role: "user",
-                        content: config.prompt + "\n\n" + userMessage
+                        content: userMessage
                     }
                 ],
-                max_completion_tokens: 200
+                // max_completion_tokensの代わりにmax_tokensを使用し、値を増やす
+                max_tokens: 500
             })
         });
         
