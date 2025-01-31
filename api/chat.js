@@ -195,7 +195,7 @@ module.exports = async (req, res) => {
                 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
             },
             body: JSON.stringify({
-                model: "gpt-4o-mini",  // より費用対効果の良いモデルに変更
+                model: "o1-mini",  // より費用対効果の良いモデルに変更
                 messages: [
                     {
                         role: "system",
