@@ -206,7 +206,7 @@ module.exports = async (req, res) => {
                         content: userMessage
                     }
                 ],
-                max_tokens: 100,
+                max_completion_tokens: 100,
                 temperature: 0.7
             })
         });
