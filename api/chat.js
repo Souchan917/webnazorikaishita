@@ -206,8 +206,7 @@ module.exports = async (req, res) => {
                         content: userMessage
                     }
                 ],
-                // max_completion_tokensの代わりにmax_tokensを使用し、値を増やす
-                max_tokens: 500
+                max_completion_tokens: 500  // max_tokensからmax_completion_tokensに変更
             })
         });
         
