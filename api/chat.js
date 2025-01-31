@@ -200,7 +200,7 @@ module.exports = async (req, res) => {
 
 
             body: JSON.stringify({
-                model: "gpt-4o",
+                model: "gpt-o3-mini",
 
 
 
