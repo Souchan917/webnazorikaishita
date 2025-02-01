@@ -201,6 +201,7 @@ module.exports = async (req, res) => {
                 error: "無効な問題番号です"
             });
         }
+        
 
         // API Key の検証
         if (!process.env.OPENAI_API_KEY) {
