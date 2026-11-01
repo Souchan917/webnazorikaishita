@@ -9,6 +9,9 @@
   "author": "",
   "license": "ISC",
   "description": "",
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
     "node-fetch": "^2.6.1"
   }
