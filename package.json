@@ -10,7 +10,7 @@
   "license": "ISC",
   "description": "",
   "engines": {
-    "node": "22.x"
+    "node": "26.x"
   },
   "dependencies": {
     "node-fetch": "^2.6.1"
